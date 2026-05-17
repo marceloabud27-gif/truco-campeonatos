@@ -1,19 +1,22 @@
 :root {
   color-scheme: dark;
-  --felt: #062b1a;
-  --felt-deep: #02140d;
-  --surface: #10160f;
-  --surface-soft: #172018;
-  --line: #35513a;
-  --text: #f7f7f2;
-  --muted: #c9d4c6;
-  --accent: #d32f2f;
-  --accent-dark: #8f1d1d;
-  --accent-hot: #f04444;
-  --gold: #d6a84f;
-  --gold-soft: #f0d28c;
-  --neon: #20c997;
-  --petrol: #0e7490;
+  --felt: #072719;
+  --felt-deep: #03100d;
+  --surface: #101711;
+  --surface-soft: #17231a;
+  --line: #2f4d3a;
+  --text: #fffaf0;
+  --muted: #c6d2c6;
+  --accent: #c92f34;
+  --accent-dark: #8d1f25;
+  --accent-hot: #ef4b4f;
+  --gold: #d9ad59;
+  --gold-soft: #ffe09a;
+  --neon: #28c7a4;
+  --petrol: #0f6d7f;
+  --ink: #041114;
+  --royal: #082f46;
+  --aqua: #42d7ec;
 }
 
 * {
@@ -23,7 +26,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--felt-deep);
+  background:
+    radial-gradient(circle at 50% -10%, rgba(217, 173, 89, 0.18), transparent 34%),
+    linear-gradient(180deg, #061f18, var(--felt-deep) 46%);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   letter-spacing: 0;
@@ -48,10 +53,10 @@ textarea {
   min-height: 330px;
   padding: 28px 18px 34px;
   background:
-    radial-gradient(circle at 18% 20%, rgba(214, 168, 79, 0.28), transparent 29%),
-    radial-gradient(circle at 78% 78%, rgba(32, 201, 151, 0.16), transparent 32%),
-    linear-gradient(90deg, rgba(2, 20, 13, 0.18), rgba(2, 20, 13, 0.78) 55%, rgba(2, 20, 13, 0.98)),
-    linear-gradient(180deg, rgba(2, 20, 13, 0.05), rgba(2, 20, 13, 0.98)),
+    radial-gradient(circle at 18% 20%, rgba(217, 173, 89, 0.24), transparent 30%),
+    radial-gradient(circle at 78% 68%, rgba(66, 215, 236, 0.14), transparent 32%),
+    linear-gradient(90deg, rgba(3, 16, 13, 0.28), rgba(3, 16, 13, 0.78) 50%, rgba(3, 16, 13, 0.98)),
+    linear-gradient(180deg, rgba(3, 16, 13, 0.1), rgba(3, 16, 13, 0.98)),
     url("/assets/truco-argentino-hero.png");
   background-position: center;
   background-size: cover;
@@ -65,9 +70,9 @@ textarea {
   width: fit-content;
   margin: 0 0 10px;
   padding: 5px 9px;
-  border: 1px solid rgba(214, 168, 79, 0.72);
+  border: 1px solid rgba(217, 173, 89, 0.72);
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(214, 168, 79, 0.18), rgba(16, 22, 15, 0.72));
+  background: linear-gradient(135deg, rgba(217, 173, 89, 0.18), rgba(10, 21, 18, 0.74));
   color: var(--gold-soft);
   font-size: 0.78rem;
   font-weight: 700;
@@ -88,7 +93,7 @@ h1 {
   line-height: 1.04;
   text-shadow:
     0 4px 22px rgba(0, 0, 0, 0.58),
-    0 0 26px rgba(214, 168, 79, 0.12);
+    0 0 26px rgba(217, 173, 89, 0.16);
 }
 
 .brand-subtitle {
@@ -113,8 +118,8 @@ h3 {
 main {
   padding: 18px 14px 96px;
   background:
-    linear-gradient(180deg, rgba(214, 168, 79, 0.08), transparent 170px),
-    radial-gradient(circle at 88% 18%, rgba(14, 116, 144, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(217, 173, 89, 0.08), transparent 180px),
+    radial-gradient(circle at 88% 18%, rgba(66, 215, 236, 0.1), transparent 34%),
     var(--felt);
 }
 
@@ -149,13 +154,16 @@ main {
 
 #fixtureTournamentSelect,
 #positionsTournamentSelect {
-  min-height: 50px;
-  border-color: rgba(214, 168, 79, 0.62);
-  background: #f7f2df;
-  color: #11140f;
+  min-height: 52px;
+  border-color: rgba(217, 173, 89, 0.7);
+  background:
+    linear-gradient(180deg, #fff8e6, #ead8ac);
+  color: #12150f;
   font-size: 1rem;
   font-weight: 800;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.52);
 }
 
 #fixtureTournamentSelect option,
@@ -545,22 +553,22 @@ th {
 .cup-board {
   position: relative;
   display: grid;
-  gap: 16px;
+  gap: 18px;
   padding: 18px;
-  border: 1px solid rgba(36, 209, 255, 0.34);
+  border: 1px solid rgba(217, 173, 89, 0.3);
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(36, 209, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(36, 209, 255, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 50% 9%, rgba(36, 209, 255, 0.34), transparent 24%),
-    radial-gradient(circle at 50% 34%, rgba(214, 168, 79, 0.2), transparent 22%),
-    radial-gradient(circle at 16% 20%, rgba(36, 209, 255, 0.18), transparent 28%),
-    linear-gradient(145deg, #061e34 0%, #082837 38%, #03140f 100%);
-  background-size: 42px 42px, 42px 42px, auto, auto, auto, auto;
+    linear-gradient(90deg, rgba(66, 215, 236, 0.055) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(66, 215, 236, 0.045) 1px, transparent 1px),
+    radial-gradient(circle at 50% 9%, rgba(66, 215, 236, 0.18), transparent 24%),
+    radial-gradient(circle at 50% 30%, rgba(217, 173, 89, 0.18), transparent 24%),
+    radial-gradient(circle at 12% 14%, rgba(66, 215, 236, 0.12), transparent 26%),
+    linear-gradient(145deg, #092234 0%, #092b2d 40%, #061812 100%);
+  background-size: 46px 46px, 46px 46px, auto, auto, auto, auto;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-    inset 0 0 48px rgba(36, 209, 255, 0.08),
-    0 24px 46px rgba(0, 0, 0, 0.26);
+    inset 0 0 48px rgba(66, 215, 236, 0.05),
+    0 24px 48px rgba(0, 0, 0, 0.28);
   overflow: hidden;
 }
 
@@ -579,7 +587,7 @@ th {
   position: absolute;
   width: 58px;
   height: 58px;
-  border-color: rgba(36, 209, 255, 0.78);
+  border-color: rgba(217, 173, 89, 0.72);
   pointer-events: none;
 }
 
@@ -623,12 +631,12 @@ th {
 
 .cup-title-band {
   width: min(100%, 360px);
-  padding: 8px 18px;
+  padding: 9px 18px;
   transform: skewX(-13deg);
-  background: linear-gradient(90deg, #19b8ff, #51e7ff 54%, #1486c6);
-  color: #03213a;
+  background: linear-gradient(90deg, #c98e32, #ffe49b 48%, #d8a34a 76%, #8f5b1d);
+  color: #1b1309;
   box-shadow:
-    0 0 22px rgba(36, 209, 255, 0.34),
+    0 0 24px rgba(217, 173, 89, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.38);
 }
 
@@ -645,7 +653,7 @@ th {
   position: relative;
   width: 86px;
   height: 96px;
-  margin-top: 3px;
+  margin-top: 5px;
 }
 
 .cup-bowl {
@@ -706,13 +714,13 @@ th {
   color: #f9fcff;
   font-size: clamp(1.35rem, 4vw, 2rem);
   text-shadow:
-    0 0 18px rgba(36, 209, 255, 0.38),
+    0 0 18px rgba(217, 173, 89, 0.22),
     0 3px 14px rgba(0, 0, 0, 0.64);
 }
 
 .cup-header p {
   margin: 0;
-  color: #bcefff;
+  color: #d6efe9;
   font-weight: 800;
 }
 
@@ -724,17 +732,17 @@ th {
 }
 
 .cup-round-card {
-  border-color: rgba(36, 209, 255, 0.34);
+  border-color: rgba(217, 173, 89, 0.22);
   background:
-    linear-gradient(90deg, rgba(36, 209, 255, 0.12), transparent 11%),
-    radial-gradient(circle at 12% 0%, rgba(214, 168, 79, 0.18), transparent 28%),
-    linear-gradient(180deg, rgba(5, 28, 44, 0.94), rgba(3, 18, 16, 0.96));
+    linear-gradient(90deg, rgba(66, 215, 236, 0.08), transparent 14%),
+    radial-gradient(circle at 12% 0%, rgba(217, 173, 89, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(7, 30, 36, 0.96), rgba(5, 20, 15, 0.97));
 }
 
 .round-kicker {
   display: block;
   margin-bottom: 3px;
-  color: #8ee9ff;
+  color: var(--gold-soft);
   font-size: 0.72rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -747,17 +755,20 @@ th {
 }
 
 .cup-board .match-card {
-  border-color: rgba(36, 209, 255, 0.32);
+  border-color: rgba(66, 215, 236, 0.25);
   background:
-    linear-gradient(90deg, rgba(36, 209, 255, 0.1), transparent 14%),
-    radial-gradient(circle at 90% 0%, rgba(214, 168, 79, 0.18), transparent 27%),
-    linear-gradient(180deg, rgba(7, 34, 45, 0.98), rgba(5, 18, 16, 0.98));
+    linear-gradient(90deg, rgba(66, 215, 236, 0.07), transparent 14%),
+    radial-gradient(circle at 90% 0%, rgba(217, 173, 89, 0.15), transparent 28%),
+    linear-gradient(180deg, rgba(8, 31, 34, 0.98), rgba(6, 19, 15, 0.98));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 14px 24px rgba(0, 0, 0, 0.2);
 }
 
 .cup-board .mesa-badge {
-  border-color: rgba(36, 209, 255, 0.72);
-  background: linear-gradient(90deg, rgba(36, 209, 255, 0.22), rgba(214, 168, 79, 0.12));
-  color: #ecfbff;
+  border-color: rgba(66, 215, 236, 0.48);
+  background: linear-gradient(90deg, rgba(66, 215, 236, 0.14), rgba(217, 173, 89, 0.12));
+  color: #f3feff;
 }
 
 .round-header {
@@ -826,17 +837,17 @@ th {
 }
 
 .match-body {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+  gap: 12px;
 }
 
 .team-name {
-  flex: 0 1 auto;
   color: var(--text);
   font-size: 1.02rem;
   font-weight: 800;
+  line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
@@ -1045,18 +1056,18 @@ dialog::backdrop {
 
 @media (max-width: 560px) {
   .hero {
-    min-height: 280px;
-    padding: 64px 14px 24px;
+    min-height: 250px;
+    padding: 60px 14px 22px;
     gap: 12px;
     background-position: 32% center;
   }
 
   h1 {
-    font-size: 2.35rem;
+    font-size: 2.18rem;
   }
 
   .brand-subtitle {
-    font-size: 1.06rem;
+    font-size: 1rem;
   }
 
   .hero-actions {
@@ -1111,14 +1122,18 @@ dialog::backdrop {
   }
 
   .match-body {
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 6px 8px;
+    grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
+    gap: 8px;
   }
 
   .versus-cell {
-    width: auto;
-    text-align: left;
+    width: 34px;
+    text-align: center;
+    font-size: 0.86rem;
+  }
+
+  .team-name {
+    font-size: 0.96rem;
   }
 
   .waiting-player {
@@ -1162,7 +1177,7 @@ dialog::backdrop {
   }
 
   .cup-board {
-    padding: 14px 10px;
+    padding: 14px 10px 16px;
   }
 
   .cup-frame {
@@ -1171,7 +1186,8 @@ dialog::backdrop {
   }
 
   .cup-title-band {
-    width: min(100%, 300px);
+    width: min(100%, 286px);
+    padding: 8px 14px;
   }
 
   .cup-trophy {
@@ -1180,7 +1196,7 @@ dialog::backdrop {
   }
 
   .cup-header h3 {
-    font-size: 1.34rem;
+    font-size: 1.28rem;
   }
 
   .cup-header p {
