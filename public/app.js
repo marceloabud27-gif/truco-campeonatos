@@ -102,7 +102,7 @@ function applyAuthUi() {
   if (!isAdmin() && !$('#fixtureView').classList.contains('active')) {
     switchView('fixtureView');
   }
-  if (isFixturePublicMode()) {
+  if (isFixturePublicMode() && !isAdmin()) {
     switchView('fixtureView');
   }
 }

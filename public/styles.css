@@ -668,32 +668,31 @@ th {
   display: none !important;
 }
 
-.fixture-public-mode .hero-actions,
-.fixture-public-mode .quick-actions,
-.fixture-public-mode .login-button,
-.fixture-public-mode .bottom-nav,
-.fixture-public-mode .live-strip,
-.fixture-public-mode #positionsView,
-.fixture-public-mode #loadView,
-.fixture-public-mode #historyView,
-.fixture-public-mode .title-actions .danger {
+.fixture-public-mode.spectator-fixture-only .hero-actions,
+.fixture-public-mode.spectator-fixture-only .quick-actions,
+.fixture-public-mode.spectator-fixture-only .bottom-nav,
+.fixture-public-mode.spectator-fixture-only .live-strip,
+.fixture-public-mode.spectator-fixture-only #positionsView,
+.fixture-public-mode.spectator-fixture-only #loadView,
+.fixture-public-mode.spectator-fixture-only #historyView,
+.fixture-public-mode.spectator-fixture-only .title-actions .danger {
   display: none !important;
 }
 
-.fixture-public-mode .hero {
+.fixture-public-mode.spectator-fixture-only .hero {
   min-height: 230px;
 }
 
-.fixture-public-mode main {
+.fixture-public-mode.spectator-fixture-only main {
   padding-bottom: 28px;
 }
 
-.fixture-public-mode .section-title {
+.fixture-public-mode.spectator-fixture-only .section-title {
   align-items: stretch;
   flex-direction: column;
 }
 
-.fixture-public-mode .title-actions {
+.fixture-public-mode.spectator-fixture-only .title-actions {
   width: 100%;
 }
 
