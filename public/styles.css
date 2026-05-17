@@ -667,60 +667,71 @@ th {
 .cup-trophy {
   position: relative;
   width: 72px;
-  height: 76px;
+  height: 92px;
   margin-top: 0;
 }
 
 .cup-bowl {
   position: absolute;
-  left: 17px;
-  top: 6px;
-  width: 38px;
-  height: 35px;
-  border-radius: 8px 8px 24px 24px;
-  background: linear-gradient(90deg, #b96d12, #ffd25b 36%, #fff1a8 52%, #e8961c 78%, #8d4d0d);
+  left: 19px;
+  top: 3px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 28%, #fff6b8 0 12%, transparent 13%),
+    radial-gradient(circle at 62% 67%, rgba(8, 84, 43, 0.82) 0 16%, transparent 17%),
+    radial-gradient(circle at 34% 62%, rgba(13, 126, 69, 0.9) 0 14%, transparent 15%),
+    linear-gradient(135deg, #b56b10, #ffd86a 42%, #fff1a8 56%, #d48718 82%, #7c430b);
   box-shadow:
     inset 0 4px 8px rgba(255, 255, 255, 0.4),
-    0 9px 22px rgba(255, 181, 43, 0.32);
+    0 8px 20px rgba(255, 181, 43, 0.32);
 }
 
 .cup-bowl::before,
 .cup-bowl::after {
   content: "";
   position: absolute;
-  top: 7px;
-  width: 21px;
-  height: 17px;
-  border: 4px solid #f2a325;
-  border-bottom-color: transparent;
-  border-radius: 50%;
+  top: 23px;
+  width: 19px;
+  height: 44px;
+  background: linear-gradient(180deg, #ffdc74, #d88a18 55%, #8f520f);
+  clip-path: polygon(50% 0, 100% 100%, 54% 88%, 0 100%);
+  transform-origin: top center;
 }
 
 .cup-bowl::before {
-  left: -20px;
+  left: -6px;
+  transform: rotate(-20deg);
 }
 
 .cup-bowl::after {
-  right: -20px;
+  right: -6px;
+  transform: rotate(20deg);
 }
 
 .cup-stem {
   position: absolute;
   left: 31px;
-  top: 40px;
+  top: 38px;
   width: 10px;
-  height: 20px;
-  background: linear-gradient(90deg, #9e5d12, #ffcf57, #d98618);
+  height: 31px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #83500d, #ffcf57 50%, #b96d12),
+    linear-gradient(180deg, transparent, rgba(8, 102, 54, 0.32));
 }
 
 .cup-base {
   position: absolute;
-  left: 19px;
-  bottom: 4px;
+  left: 17px;
+  bottom: 5px;
   width: 34px;
-  height: 12px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #85490d, #ffd25b, #a45b10);
+  height: 18px;
+  border-radius: 4px 4px 3px 3px;
+  background:
+    linear-gradient(180deg, rgba(11, 124, 65, 0.9), rgba(3, 70, 39, 0.92) 42%, transparent 43%),
+    linear-gradient(90deg, #85490d, #ffd25b, #a45b10);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
 }
 
