@@ -247,10 +247,13 @@ function renderFixture(detail) {
   }
 
   const grouped = groupBy(partidos, (partido) => partido.ronda);
-  $('#fixtureContent').innerHTML = Object.entries(grouped).map(([ronda, items]) => `
-    <section class="round-card">
-      <div class="round-header">
-        <p class="round-title">Ronda ${ronda}</p>
+  const rounds = Object.entries(grouped).map(([ronda, items]) => `
+    <section class="round-card cup-round-card">
+      <div class="round-header cup-round-header">
+        <div>
+          <span class="round-kicker">Ronda</span>
+          <p class="round-title">${ronda}</p>
+        </div>
         ${torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, items) : ''}
       </div>
       <div class="match-grid">
@@ -258,6 +261,30 @@ function renderFixture(detail) {
       </div>
     </section>
   `).join('');
+
+  $('#fixtureContent').innerHTML = `
+    <div class="cup-board">
+      <div class="cup-frame top-left"></div>
+      <div class="cup-frame top-right"></div>
+      <div class="cup-frame bottom-left"></div>
+      <div class="cup-frame bottom-right"></div>
+      <header class="cup-header">
+        <div class="cup-title-band">
+          <span>Fixture Oficial</span>
+        </div>
+        <div class="cup-trophy" aria-hidden="true">
+          <div class="cup-bowl"></div>
+          <div class="cup-stem"></div>
+          <div class="cup-base"></div>
+        </div>
+        <h3>${torneo.nombre_torneo}</h3>
+        <p>${fixtureModeLabel(torneo.modalidad)}</p>
+      </header>
+      <div class="cup-rounds">
+        ${rounds}
+      </div>
+    </div>
+  `;
 }
 
 function fixtureRowForMode(modalidad, partido, index) {
@@ -268,6 +295,16 @@ function fixtureRowForMode(modalidad, partido, index) {
     return individual1v1FixtureRow(partido, index);
   }
   return individualFixtureRow(partido, index);
+}
+
+function fixtureModeLabel(modalidad) {
+  if (modalidad === 'americano_parejas_fijas') {
+    return 'Americano por parejas fijas';
+  }
+  if (modalidad === 'americano_individual_1v1') {
+    return 'Americano individual 1 vs 1';
+  }
+  return 'Americano individual por duplas rotativas';
 }
 
 function renderWaitingPlayers(detail, roundMatches) {
