@@ -269,6 +269,7 @@ function renderFixture(detail) {
       <div class="cup-frame bottom-left"></div>
       <div class="cup-frame bottom-right"></div>
       <header class="cup-header">
+        <span class="public-pill">Fixture publico</span>
         <div class="cup-title-band">
           <span>Fixture Oficial</span>
         </div>

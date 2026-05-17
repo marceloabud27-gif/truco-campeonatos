@@ -538,7 +538,7 @@ th {
 .round-card {
   display: grid;
   gap: 10px;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid rgba(214, 168, 79, 0.2);
   border-radius: 8px;
   background:
@@ -553,8 +553,8 @@ th {
 .cup-board {
   position: relative;
   display: grid;
-  gap: 18px;
-  padding: 18px;
+  gap: 14px;
+  padding: 16px;
   border: 1px solid rgba(217, 173, 89, 0.3);
   border-radius: 8px;
   background:
@@ -624,14 +624,29 @@ th {
   z-index: 1;
   display: grid;
   justify-items: center;
-  gap: 8px;
-  padding: 12px 8px 8px;
+  gap: 7px;
+  padding: 8px 8px 4px;
   text-align: center;
 }
 
+.public-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid rgba(217, 173, 89, 0.34);
+  border-radius: 999px;
+  background: rgba(6, 24, 18, 0.82);
+  color: #ffe7a8;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .cup-title-band {
-  width: min(100%, 360px);
-  padding: 9px 18px;
+  width: min(100%, 340px);
+  padding: 8px 16px;
   transform: skewX(-13deg);
   background: linear-gradient(90deg, #c98e32, #ffe49b 48%, #d8a34a 76%, #8f5b1d);
   color: #1b1309;
@@ -643,7 +658,7 @@ th {
 .cup-title-band span {
   display: block;
   transform: skewX(13deg);
-  font-size: clamp(1.2rem, 4vw, 2.1rem);
+  font-size: clamp(1.08rem, 4vw, 1.86rem);
   font-weight: 950;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -651,17 +666,17 @@ th {
 
 .cup-trophy {
   position: relative;
-  width: 86px;
-  height: 96px;
-  margin-top: 5px;
+  width: 72px;
+  height: 76px;
+  margin-top: 0;
 }
 
 .cup-bowl {
   position: absolute;
-  left: 19px;
-  top: 8px;
-  width: 48px;
-  height: 44px;
+  left: 17px;
+  top: 6px;
+  width: 38px;
+  height: 35px;
   border-radius: 8px 8px 24px 24px;
   background: linear-gradient(90deg, #b96d12, #ffd25b 36%, #fff1a8 52%, #e8961c 78%, #8d4d0d);
   box-shadow:
@@ -673,46 +688,46 @@ th {
 .cup-bowl::after {
   content: "";
   position: absolute;
-  top: 9px;
-  width: 26px;
-  height: 22px;
-  border: 5px solid #f2a325;
+  top: 7px;
+  width: 21px;
+  height: 17px;
+  border: 4px solid #f2a325;
   border-bottom-color: transparent;
   border-radius: 50%;
 }
 
 .cup-bowl::before {
-  left: -25px;
+  left: -20px;
 }
 
 .cup-bowl::after {
-  right: -25px;
+  right: -20px;
 }
 
 .cup-stem {
   position: absolute;
-  left: 38px;
-  top: 50px;
-  width: 11px;
-  height: 26px;
+  left: 31px;
+  top: 40px;
+  width: 10px;
+  height: 20px;
   background: linear-gradient(90deg, #9e5d12, #ffcf57, #d98618);
 }
 
 .cup-base {
   position: absolute;
-  left: 22px;
-  bottom: 7px;
-  width: 43px;
-  height: 15px;
+  left: 19px;
+  bottom: 4px;
+  width: 34px;
+  height: 12px;
   border-radius: 3px;
   background: linear-gradient(90deg, #85490d, #ffd25b, #a45b10);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
 }
 
 .cup-header h3 {
-  margin: 3px 0 0;
+  margin: 0;
   color: #f9fcff;
-  font-size: clamp(1.35rem, 4vw, 2rem);
+  font-size: clamp(1.26rem, 4vw, 1.78rem);
   text-shadow:
     0 0 18px rgba(217, 173, 89, 0.22),
     0 3px 14px rgba(0, 0, 0, 0.64);
@@ -721,6 +736,7 @@ th {
 .cup-header p {
   margin: 0;
   color: #d6efe9;
+  font-size: 0.92rem;
   font-weight: 800;
 }
 
@@ -728,7 +744,7 @@ th {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .cup-round-card {
@@ -796,14 +812,14 @@ th {
 
 .match-grid {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .match-card {
   position: relative;
   display: grid;
-  gap: 10px;
-  padding: 13px;
+  gap: 8px;
+  padding: 11px 12px;
   border: 1px solid rgba(32, 201, 151, 0.28);
   border-radius: 8px;
   background:
@@ -845,7 +861,7 @@ th {
 
 .team-name {
   color: var(--text);
-  font-size: 1.02rem;
+  font-size: 1rem;
   font-weight: 800;
   line-height: 1.25;
   overflow-wrap: anywhere;
@@ -927,10 +943,12 @@ th {
 }
 
 .fixture-public-mode.spectator-fixture-only .hero {
-  min-height: 230px;
+  min-height: 188px;
+  padding-bottom: 22px;
 }
 
 .fixture-public-mode.spectator-fixture-only main {
+  padding-top: 12px;
   padding-bottom: 28px;
 }
 
@@ -941,6 +959,14 @@ th {
 
 .fixture-public-mode.spectator-fixture-only .title-actions {
   width: 100%;
+}
+
+.fixture-public-mode.spectator-fixture-only h1 {
+  font-size: clamp(2.05rem, 8vw, 3.25rem);
+}
+
+.fixture-public-mode.spectator-fixture-only .brand-subtitle {
+  font-size: clamp(0.96rem, 4vw, 1.2rem);
 }
 
 .spectator-fixture-only #positionsView,
@@ -1056,8 +1082,8 @@ dialog::backdrop {
 
 @media (max-width: 560px) {
   .hero {
-    min-height: 250px;
-    padding: 60px 14px 22px;
+    min-height: 220px;
+    padding: 56px 14px 18px;
     gap: 12px;
     background-position: 32% center;
   }
@@ -1088,7 +1114,7 @@ dialog::backdrop {
   }
 
   main {
-    padding: 14px 10px 86px;
+    padding: 12px 9px 86px;
   }
 
   .section-title {
@@ -1118,7 +1144,7 @@ dialog::backdrop {
   .round-header {
     align-items: flex-start;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
 
   .match-body {
@@ -1133,7 +1159,7 @@ dialog::backdrop {
   }
 
   .team-name {
-    font-size: 0.96rem;
+    font-size: 0.94rem;
   }
 
   .waiting-player {
@@ -1177,7 +1203,8 @@ dialog::backdrop {
   }
 
   .cup-board {
-    padding: 14px 10px 16px;
+    gap: 12px;
+    padding: 12px 9px 14px;
   }
 
   .cup-frame {
@@ -1186,21 +1213,35 @@ dialog::backdrop {
   }
 
   .cup-title-band {
-    width: min(100%, 286px);
-    padding: 8px 14px;
+    width: min(100%, 270px);
+    padding: 7px 14px;
   }
 
   .cup-trophy {
-    transform: scale(0.86);
-    margin: -4px 0 -8px;
+    transform: scale(0.82);
+    margin: -7px 0 -12px;
   }
 
   .cup-header h3 {
-    font-size: 1.28rem;
+    font-size: 1.22rem;
   }
 
   .cup-header p {
-    font-size: 0.9rem;
+    font-size: 0.84rem;
+  }
+
+  .cup-round-card {
+    padding: 11px 10px;
+  }
+
+  .cup-board .match-card {
+    padding: 10px;
+  }
+
+  .mesa-badge {
+    min-width: 68px;
+    min-height: 27px;
+    font-size: 0.72rem;
   }
 
   .wide-dialog th,
