@@ -147,6 +147,24 @@ main {
   flex: 1;
 }
 
+#fixtureTournamentSelect,
+#positionsTournamentSelect {
+  min-height: 50px;
+  border-color: rgba(214, 168, 79, 0.62);
+  background: #f7f2df;
+  color: #11140f;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+#fixtureTournamentSelect option,
+#positionsTournamentSelect option {
+  background: #f7f2df;
+  color: #11140f;
+  font-weight: 700;
+}
+
 .hero-actions,
 .dialog-actions {
   display: grid;
