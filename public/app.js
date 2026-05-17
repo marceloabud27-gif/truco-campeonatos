@@ -352,7 +352,7 @@ function pairFixtureRow(partido, index) {
         <span class="versus-cell">vs</span>
         <span class="team-name">${partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2}</span>
       </div>
-      ${adminOnlyFixtureMeta(`<div class="match-score">Ganador: ${partido.ganador || '-'}</div>`)}
+      ${fixtureResultMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
     </article>
   `;
 }
@@ -364,12 +364,11 @@ function individualFixtureRow(partido, index) {
         ${mesaBadge(index)}
         ${adminOnlyFixtureMeta(statusBadge(partido.estado))}
       </div>
-      <div class="match-body">
-        <span class="team-name">${partido.jugador_a} / ${partido.jugador_b}</span>
+      <div class="match-body ${partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
+        ${teamScoreCell(`${partido.jugador_a} / ${partido.jugador_b}`, partido.puntaje_dupla1, partido.estado)}
         <span class="versus-cell">vs</span>
-        <span class="team-name">${partido.jugador_c} / ${partido.jugador_d}</span>
+        ${teamScoreCell(`${partido.jugador_c} / ${partido.jugador_d}`, partido.puntaje_dupla2, partido.estado)}
       </div>
-      ${adminOnlyFixtureMeta(`<div class="match-score">Puntaje: ${scoreText(partido)}</div>`)}
     </article>
   `;
 }
@@ -381,12 +380,11 @@ function individual1v1FixtureRow(partido, index) {
         ${mesaBadge(index)}
         ${adminOnlyFixtureMeta(statusBadge(partido.es_fecha_libre ? 'libre' : partido.estado))}
       </div>
-      <div class="match-body">
-        <span class="team-name">${partido.jugador_1}</span>
+      <div class="match-body ${partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
+        ${teamScoreCell(partido.jugador_1, partido.puntaje_jugador_1, partido.estado)}
         <span class="versus-cell">${partido.es_fecha_libre ? 'libre' : 'vs'}</span>
-        <span class="team-name">${partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2}</span>
+        ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, partido.puntaje_jugador_2, partido.estado)}
       </div>
-      ${adminOnlyFixtureMeta(`<div class="match-score">Puntaje: ${scoreText1v1(partido)}</div>`)}
     </article>
   `;
 }
@@ -395,22 +393,19 @@ function adminOnlyFixtureMeta(html) {
   return isAdmin() ? html : '';
 }
 
+function fixtureResultMeta(html) {
+  return html || '';
+}
+
+function teamScoreCell(name, score, status) {
+  const scoreBadge = status === 'finalizado'
+    ? `<span class="score-number">${score ?? 0}</span>`
+    : '';
+  return `<span class="team-score-cell"><span class="team-name">${name}</span>${scoreBadge}</span>`;
+}
+
 function mesaBadge(index) {
   return `<span class="mesa-badge">Mesa ${index + 1}</span>`;
-}
-
-function scoreText(partido) {
-  if (partido.estado !== 'finalizado') {
-    return '-';
-  }
-  return `${partido.puntaje_dupla1} - ${partido.puntaje_dupla2}`;
-}
-
-function scoreText1v1(partido) {
-  if (partido.estado !== 'finalizado') {
-    return '-';
-  }
-  return `${partido.puntaje_jugador_1} - ${partido.puntaje_jugador_2}`;
 }
 
 function statusBadge(status) {
