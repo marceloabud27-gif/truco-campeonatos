@@ -770,6 +770,7 @@ function parseParticipants(mode) {
         throw new Error(`Completa equipo y 2 jugadores en la fila ${index + 1}.`);
       }
     });
+    assertUniqueNames(parejas.map((pareja) => pareja.nombre_equipo), 'equipo');
     return { parejas };
   }
 
@@ -782,7 +783,19 @@ function parseParticipants(mode) {
       ? 'El torneo individual 1 vs 1 empieza desde 2 jugadores.'
       : 'El torneo americano individual empieza desde 7 jugadores.');
   }
+  assertUniqueNames(jugadores.map((jugador) => jugador.nombre), 'jugador');
   return { jugadores };
+}
+
+function assertUniqueNames(names, label) {
+  const seen = new Map();
+  for (const [index, name] of names.entries()) {
+    const normalized = name.trim().toLocaleLowerCase('es');
+    if (seen.has(normalized)) {
+      throw new Error(`Hay un ${label} repetido: "${name}" en las filas ${seen.get(normalized) + 1} y ${index + 1}. Usa un apellido o apodo para diferenciarlos.`);
+    }
+    seen.set(normalized, index);
+  }
 }
 
 function bindEvents() {

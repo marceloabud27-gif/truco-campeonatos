@@ -29,6 +29,19 @@ function assertModalidad(modalidad) {
   }
 }
 
+function assertUniqueNames(values, label) {
+  const seen = new Set();
+  for (const value of values) {
+    const normalized = String(value || '').trim().toLocaleLowerCase('es');
+    if (seen.has(normalized)) {
+      const error = new Error(`Hay un ${label} repetido: "${value}". Usa un apellido o apodo para diferenciarlo.`);
+      error.statusCode = 400;
+      throw error;
+    }
+    seen.add(normalized);
+  }
+}
+
 async function listarTorneos(req, res, next) {
   try {
     const { estado } = req.query;
@@ -327,6 +340,7 @@ async function crearTorneo(req, res, next) {
           error.statusCode = 400;
           throw error;
         }
+        assertUniqueNames(parejas.map((pareja) => pareja.nombre_equipo), 'equipo');
         for (const pareja of parejas) {
           await client.query(
             `INSERT INTO parejas (id_torneo, nombre_equipo, jugador_1, jugador_2)
@@ -343,6 +357,7 @@ async function crearTorneo(req, res, next) {
           error.statusCode = 400;
           throw error;
         }
+        assertUniqueNames(jugadores.map((jugador) => jugador.nombre), 'jugador');
         for (const jugador of jugadores) {
           await client.query(
             `INSERT INTO jugadores_individuales (id_torneo, nombre, alias)
