@@ -500,11 +500,12 @@ th {
 
 .versus-cell {
   width: 46px;
-  color: var(--gold-soft);
-  font-weight: 900;
+  color: rgba(255, 224, 154, 0.74);
+  font-size: 0.86rem;
+  font-weight: 400;
   text-align: center;
   text-transform: uppercase;
-  text-shadow: 0 0 14px rgba(214, 168, 79, 0.44);
+  text-shadow: none;
 }
 
 .mesa-badge {
@@ -872,8 +873,8 @@ th {
 
 .team-name {
   color: var(--text);
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 1.06rem;
+  font-weight: 750;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
@@ -1166,11 +1167,11 @@ dialog::backdrop {
   .versus-cell {
     width: 34px;
     text-align: center;
-    font-size: 0.86rem;
+    font-size: 0.76rem;
   }
 
   .team-name {
-    font-size: 0.94rem;
+    font-size: 1rem;
   }
 
   .waiting-player {
