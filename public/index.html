@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Truco Campeonatos</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Campeonato americano</p>
+        <h1>Torneos American Express</h1>
+        <p class="brand-subtitle">La Cofradía-2026</p>
+      </div>
+      <div class="hero-actions">
+        <button class="primary" data-open-create="americano_parejas_fijas">Torneo Americano Parejas Fijas</button>
+        <button class="secondary" data-open-create="americano_individual">Torneo Americano Individual</button>
+        <button class="secondary" data-open-create="americano_individual_1v1">Torneo Americano Individual 1 vs 1</button>
+      </div>
+      <div class="quick-actions">
+        <button id="shareLinkButton" class="ghost" type="button">Compartir enlace</button>
+        <button id="backupButton" class="ghost admin-only" type="button">Backup</button>
+      </div>
+      <button class="login-button" id="loginToggle">Admin</button>
+    </header>
+
+    <main>
+      <div class="live-strip">
+        <span class="status-dot"></span>
+        <span id="liveStatus">En vivo</span>
+      </div>
+      <section id="fixtureView" class="view active">
+        <div class="section-title">
+          <h2>Fixture</h2>
+          <div class="title-actions">
+            <select id="fixtureTournamentSelect" aria-label="Torneo para fixture"></select>
+            <button id="deleteFixtureTournamentButton" class="danger admin-only" type="button">Borrar</button>
+          </div>
+        </div>
+        <div id="fixtureContent" class="stack"></div>
+      </section>
+
+      <section id="positionsView" class="view">
+        <div class="section-title">
+          <h2>Posiciones</h2>
+          <div class="title-actions">
+            <select id="positionsTournamentSelect" aria-label="Torneo para posiciones"></select>
+            <button id="deletePositionsTournamentButton" class="danger admin-only" type="button">Borrar</button>
+          </div>
+        </div>
+        <div id="positionsContent"></div>
+      </section>
+
+      <section id="loadView" class="view admin-only">
+        <div class="section-title">
+          <h2>Cargar</h2>
+          <button id="generateFixtureButton" class="icon-action" title="Regenerar fixture">Regenerar</button>
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card active" type="button" data-mode-pick="americano_parejas_fijas">
+            <strong>Torneo Americano Parejas Fijas</strong>
+            <span>Desde 5 parejas</span>
+          </button>
+          <button class="mode-card" type="button" data-mode-pick="americano_individual">
+            <strong>Torneo Americano Individual</strong>
+            <span>Desde 7 jugadores</span>
+          </button>
+          <button class="mode-card" type="button" data-mode-pick="americano_individual_1v1">
+            <strong>Torneo Americano Individual 1 vs 1</strong>
+            <span>Todos contra todos</span>
+          </button>
+        </div>
+
+        <form id="createTournamentForm" class="panel">
+          <h3>Crear Torneo</h3>
+          <input id="createMode" type="hidden">
+          <label>
+            Nombre
+            <input id="tournamentName" type="text" required>
+          </label>
+          <div>
+            <label class="field-title">Participantes</label>
+            <div id="participantsRows" class="participants-grid"></div>
+            <button id="addParticipantButton" class="ghost full-button" type="button">Agregar participante</button>
+          </div>
+          <p id="modeSummary" class="meta"></p>
+          <button class="secondary" type="submit">Crear Torneo</button>
+        </form>
+
+        <form id="resultForm" class="panel">
+          <h3>Resultado</h3>
+          <label class="check-row">
+            <input id="showFinishedMatches" type="checkbox">
+            Ver partidos ya cargados
+          </label>
+          <label>
+            Partido
+            <select id="matchSelect" required></select>
+          </label>
+          <p id="matchStatusHint" class="match-hint"></p>
+          <div id="pairResultFields" class="conditional-fields">
+            <label>
+              Ganador
+              <select id="winnerSelect"></select>
+            </label>
+          </div>
+          <div id="individualResultFields" class="conditional-fields">
+            <label>
+              <span id="scoreOneLabel">Dupla 1</span>
+              <input id="scoreOne" type="number" min="0" max="40" inputmode="numeric" required>
+            </label>
+            <label>
+              <span id="scoreTwoLabel">Dupla 2</span>
+              <input id="scoreTwo" type="number" min="0" max="40" inputmode="numeric" required>
+            </label>
+          </div>
+          <button class="primary" type="submit">Guardar Resultado</button>
+        </form>
+      </section>
+
+      <section id="historyView" class="view">
+        <div class="section-title">
+          <h2>Historial</h2>
+          <button id="clearHistoryButton" class="danger admin-only" type="button">Borrar historial</button>
+        </div>
+        <div id="historyContent" class="cards"></div>
+      </section>
+    </main>
+
+    <dialog id="loginDialog">
+      <form id="loginForm" method="dialog" class="panel dialog-panel">
+        <h3>Acceso Admin</h3>
+        <label>
+          Usuario
+          <input id="username" type="text" autocomplete="username" required>
+        </label>
+        <label>
+          Password
+          <input id="password" type="password" autocomplete="current-password" required>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" class="ghost" id="logoutButton">Salir</button>
+          <button type="submit" class="primary">Ingresar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <nav class="bottom-nav" aria-label="Navegacion principal">
+      <button class="nav-item active" data-view="fixtureView">Fixture</button>
+      <button class="nav-item" data-view="positionsView">Posiciones</button>
+      <button class="nav-item admin-only" data-view="loadView">Cargar</button>
+      <button class="nav-item" data-view="historyView">Historial</button>
+    </nav>
+
+    <dialog id="winnerDialog">
+      <div class="winner-panel wide-dialog">
+        <p class="eyebrow">Torneo finalizado</p>
+        <div id="winnerTableContent"></div>
+        <div id="winnerHighlights" class="highlight-grid"></div>
+        <h2 id="winnerTitle"></h2>
+        <p id="winnerMessage"></p>
+        <p id="lastPlaceMessage" class="last-place"></p>
+        <div class="dialog-actions">
+          <button id="copyWinnerTableButton" class="secondary" type="button">Copiar tabla</button>
+          <button id="closeWinnerDialog" class="primary" type="button">Cerrar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="historyDialog">
+      <div class="winner-panel wide-dialog">
+        <p class="eyebrow">Historial</p>
+        <h2 id="historyDialogTitle"></h2>
+        <p id="historyDialogMeta" class="meta"></p>
+        <div id="historyDialogTable"></div>
+        <div class="dialog-actions">
+          <button id="copyHistoryTableButton" class="secondary" type="button">Copiar tabla</button>
+          <button id="closeHistoryDialog" class="primary" type="button">Cerrar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
