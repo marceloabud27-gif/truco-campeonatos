@@ -107,7 +107,6 @@ function partidoPublico(torneo, partido) {
       es_fecha_libre: partido.es_fecha_libre,
       pareja1: partido.pareja1,
       pareja2: partido.pareja2,
-      ganador: partido.ganador,
     };
   }
 
@@ -121,8 +120,6 @@ function partidoPublico(torneo, partido) {
       id_jugador_2: partido.id_jugador_2,
       jugador_1: partido.jugador_1,
       jugador_2: partido.jugador_2,
-      puntaje_jugador_1: partido.puntaje_jugador_1,
-      puntaje_jugador_2: partido.puntaje_jugador_2,
     };
   }
 
@@ -138,8 +135,6 @@ function partidoPublico(torneo, partido) {
     jugador_b: partido.jugador_b,
     jugador_c: partido.jugador_c,
     jugador_d: partido.jugador_d,
-    puntaje_dupla1: partido.puntaje_dupla1,
-    puntaje_dupla2: partido.puntaje_dupla2,
   };
 }
 

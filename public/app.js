@@ -396,7 +396,7 @@ function pairFixtureRow(partido, index) {
         <span class="versus-cell">vs</span>
         <span class="team-name">${partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2}</span>
       </div>
-      ${fixtureResultMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
+      ${adminOnlyFixtureMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
     </article>
   `;
 }
@@ -408,7 +408,7 @@ function individualFixtureRow(partido, index) {
         ${mesaBadge(index)}
         ${adminOnlyFixtureMeta(statusBadge(partido.estado))}
       </div>
-      <div class="match-body ${partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
+      <div class="match-body ${canShowFixtureResults() && partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
         ${teamScoreCell(`${partido.jugador_a} / ${partido.jugador_b}`, partido.puntaje_dupla1, partido.estado)}
         <span class="versus-cell">vs</span>
         ${teamScoreCell(`${partido.jugador_c} / ${partido.jugador_d}`, partido.puntaje_dupla2, partido.estado)}
@@ -424,7 +424,7 @@ function individual1v1FixtureRow(partido, index) {
         ${mesaBadge(index)}
         ${adminOnlyFixtureMeta(statusBadge(partido.es_fecha_libre ? 'libre' : partido.estado))}
       </div>
-      <div class="match-body ${partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
+      <div class="match-body ${canShowFixtureResults() && partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
         ${teamScoreCell(partido.jugador_1, partido.puntaje_jugador_1, partido.estado)}
         <span class="versus-cell">${partido.es_fecha_libre ? 'libre' : 'vs'}</span>
         ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, partido.puntaje_jugador_2, partido.estado)}
@@ -437,12 +437,12 @@ function adminOnlyFixtureMeta(html) {
   return isAdmin() ? html : '';
 }
 
-function fixtureResultMeta(html) {
-  return html || '';
+function canShowFixtureResults() {
+  return isAdmin();
 }
 
 function teamScoreCell(name, score, status) {
-  const scoreBadge = status === 'finalizado'
+  const scoreBadge = canShowFixtureResults() && status === 'finalizado'
     ? `<span class="score-number">${score ?? 0}</span>`
     : '';
   return `<span class="team-score-cell"><span class="team-name">${name}</span>${scoreBadge}</span>`;
