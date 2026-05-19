@@ -247,6 +247,7 @@ function renderFixture(detail) {
   }
 
   const grouped = groupBy(partidos, (partido) => partido.ronda);
+  const upcoming = renderUpcomingMatches(detail, grouped);
   const rounds = Object.entries(grouped).map(([ronda, items]) => `
     <section class="round-card cup-round-card">
       <div class="round-header cup-round-header">
@@ -281,10 +282,53 @@ function renderFixture(detail) {
         <h3>${torneo.nombre_torneo}</h3>
         <p>${fixtureModeLabel(torneo.modalidad)}</p>
       </header>
+      ${upcoming}
       <div class="cup-rounds">
         ${rounds}
       </div>
     </div>
+  `;
+}
+
+function renderUpcomingMatches(detail, grouped) {
+  const { torneo } = detail;
+  const upcomingRound = Object.entries(grouped)
+    .sort(([roundA], [roundB]) => Number(roundA) - Number(roundB))
+    .map(([ronda, items]) => ({
+      ronda,
+      matches: items
+        .map((partido, index) => ({ partido, index }))
+        .filter(({ partido }) => partido.estado !== 'finalizado' && !partido.es_fecha_libre),
+      allItems: items,
+    }))
+    .find((round) => round.matches.length);
+
+  if (!upcomingRound) {
+    return `
+      <section class="upcoming-panel is-complete">
+        <div class="upcoming-head">
+          <span class="round-kicker">Estado</span>
+          <p class="round-title">Todos los partidos estan cargados</p>
+        </div>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="upcoming-panel">
+      <div class="upcoming-head">
+        <div>
+          <span class="round-kicker">Proximos partidos</span>
+          <p class="round-title">Ronda ${upcomingRound.ronda}</p>
+        </div>
+        ${torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, upcomingRound.allItems) : ''}
+      </div>
+      <div class="match-grid upcoming-grid">
+        ${upcomingRound.matches
+          .map(({ partido, index }) => fixtureRowForMode(torneo.modalidad, partido, index))
+          .join('')}
+      </div>
+    </section>
   `;
 }
 
