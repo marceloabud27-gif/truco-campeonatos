@@ -239,10 +239,24 @@ function emptyCard(text) {
   return `<div class="card"><p class="meta">${text}</p></div>`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 function renderFixture(detail) {
   const { torneo, partidos } = detail;
   if (!partidos.length) {
     $('#fixtureContent').innerHTML = emptyCard('Fixture pendiente de generacion.');
+    return;
+  }
+
+  if (isFixturePublicMode() && !isAdmin()) {
+    renderPublicFixturePremium(detail);
     return;
   }
 
@@ -290,9 +304,39 @@ function renderFixture(detail) {
   `;
 }
 
-function renderUpcomingMatches(detail, grouped) {
-  const { torneo } = detail;
-  const upcomingRound = Object.entries(grouped)
+function renderPublicFixturePremium(detail) {
+  const { torneo, partidos } = detail;
+  const grouped = groupBy(partidos, (partido) => partido.ronda);
+  const upcomingRound = getUpcomingRound(grouped);
+  const historicalRounds = Object.entries(grouped)
+    .sort(([roundA], [roundB]) => Number(roundA) - Number(roundB))
+    .map(([ronda, items]) => ({ ronda, items }));
+
+  $('#fixtureContent').innerHTML = `
+    <article class="relative overflow-hidden rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(25,82,51,0.78),rgba(6,33,24,0.98))] px-6 pb-7 pt-12 shadow-[0_28px_70px_rgba(0,0,0,0.34),inset_0_0_0_1px_rgba(255,255,255,0.04)]">
+      <div class="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(90deg,rgba(255,255,255,.32)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.28)_1px,transparent_1px)] [background-size:58px_58px]"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(circle_at_50%_0%,rgba(197,168,92,.34),transparent_62%)]"></div>
+
+      <header class="relative z-[1] grid justify-items-center text-center">
+        ${renderOfficialPlaque()}
+        ${renderPremiumTrophy()}
+        <h3 class="mt-4 font-serif text-[2.05rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_4px_9px_rgba(0,0,0,.55)]">${escapeHtml(torneo.nombre_torneo)}</h3>
+        <p class="mt-5 max-w-[24rem] text-center text-[1.12rem] font-extrabold leading-tight tracking-wide text-white/70">${fixtureModeLabel(torneo.modalidad)}</p>
+      </header>
+
+      <div class="relative z-[1] mt-10">
+        ${renderPublicUpcomingPremium(detail, upcomingRound)}
+      </div>
+
+      <div class="relative z-[1] mt-8 border-t border-[#c5a85c]/18 pt-7">
+        ${historicalRounds.map(({ ronda, items }) => renderPublicRoundPreview(detail, ronda, items)).join('')}
+      </div>
+    </article>
+  `;
+}
+
+function getUpcomingRound(grouped) {
+  return Object.entries(grouped)
     .sort(([roundA], [roundB]) => Number(roundA) - Number(roundB))
     .map(([ronda, items]) => ({
       ronda,
@@ -302,6 +346,103 @@ function renderUpcomingMatches(detail, grouped) {
       allItems: items,
     }))
     .find((round) => round.matches.length);
+}
+
+function renderOfficialPlaque() {
+  return `
+    <div class="relative grid min-h-[82px] w-[82%] max-w-[32rem] grid-cols-[3.75rem_1fr] items-center gap-4 rounded-[12px] bg-[linear-gradient(100deg,#8b5b20_0%,#dbb85e_22%,#fff0a8_48%,#b77b2d_78%,#6f4218_100%)] px-7 py-4 text-[#21190f] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.44),inset_0_-2px_0_rgba(70,43,13,.34)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)]">
+      <span class="absolute left-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.35)]"></span>
+      <span class="absolute right-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.35)]"></span>
+      <span class="relative h-14 w-14 rounded-[18px_18px_26px_26px] border-[3px] border-[#342716]/55 [clip-path:polygon(10%_0,90%_0,90%_58%,50%_100%,10%_58%)]">
+        <span class="absolute left-1/2 top-2 h-8 w-1.5 -translate-x-1/2 rounded-full bg-[#342716]/70 shadow-[-11px_10px_0_-1px_rgba(52,39,22,.55),11px_10px_0_-1px_rgba(52,39,22,.55)]"></span>
+        <span class="absolute bottom-3 left-4 right-4 h-1 rounded-full bg-[#342716]/65"></span>
+      </span>
+      <span class="text-left text-[clamp(1.15rem,4.5vw,1.92rem)] font-black uppercase tracking-wide">Fixture Oficial</span>
+    </div>
+  `;
+}
+
+function renderPremiumTrophy() {
+  return `
+    <div class="relative mt-9 h-[110px] w-[112px]" aria-hidden="true">
+      <div class="absolute left-[27px] top-1 h-[50px] w-[58px] rounded-b-[28px] rounded-t-xl bg-[radial-gradient(circle_at_36%_22%,rgba(255,255,255,.9),transparent_17%),radial-gradient(circle_at_53%_54%,rgba(8,111,57,.65)_0_18%,transparent_19%),linear-gradient(100deg,#8f5d22,#ffeaa6_42%,#bb812e_78%,#6a3f16)] shadow-[inset_0_2px_0_rgba(255,255,255,.6),0_13px_22px_rgba(0,0,0,.3)]"></div>
+      <div class="absolute left-[5px] top-2 h-10 w-8 rounded-full border-[5px] border-r-0 border-[#d1aa5e]"></div>
+      <div class="absolute right-[5px] top-2 h-10 w-8 rounded-full border-[5px] border-l-0 border-[#d1aa5e]"></div>
+      <div class="absolute left-[51px] top-[50px] h-[38px] w-3 bg-[linear-gradient(90deg,#86551e,#fff0a8,#9d641f)]"></div>
+      <div class="absolute bottom-2 left-[32px] h-5 w-12 rounded bg-[linear-gradient(90deg,#6b3d13,#e7bf61,#78501d)] shadow-[0_-8px_0_-3px_#b88231,0_8px_14px_rgba(0,0,0,.34)]"></div>
+    </div>
+  `;
+}
+
+function renderPublicUpcomingPremium(detail, upcomingRound) {
+  if (!upcomingRound) {
+    return `
+      <section class="rounded-[22px] border border-[#c5a85c]/25 bg-[#1d2426]/95 p-6 shadow-[0_18px_34px_rgba(0,0,0,.24)]">
+        <p class="text-sm font-black uppercase tracking-wide text-[#e4c56f]">Estado</p>
+        <h2 class="mt-2 font-serif text-4xl font-extrabold text-[#f5e3b1]">Fixture completo</h2>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(37,43,45,.98),rgba(21,25,27,.98))] p-6 shadow-[0_20px_38px_rgba(0,0,0,.28)]">
+      <div>
+        <p class="text-[1rem] font-black uppercase tracking-wide text-[#e4c56f]">Proximos partidos</p>
+        <h2 class="mt-1 font-serif text-[3rem] font-extrabold leading-none text-[#f5e3b1]">Ronda ${upcomingRound.ronda}</h2>
+        ${detail.torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, upcomingRound.allItems) : ''}
+      </div>
+      <div class="mt-7 grid gap-5">
+        ${upcomingRound.matches
+          .map(({ partido, index }) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderPublicRoundPreview(detail, ronda, items) {
+  return `
+    <section class="mb-7 rounded-[20px] border border-white/10 bg-[#1a2022]/80 p-5">
+      <p class="text-sm font-black uppercase tracking-wide text-[#e4c56f]">Ronda</p>
+      <h2 class="mt-1 font-serif text-[2.35rem] font-extrabold leading-none text-[#f5e3b1]">${ronda}</h2>
+      <div class="mt-5 grid gap-4">
+        ${items
+          .map((partido, index) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function publicFixtureRowForMode(modalidad, partido, index) {
+  if (modalidad === 'americano_parejas_fijas') {
+    return renderPublicMatchCard(partido.pareja1, partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2, index);
+  }
+  if (modalidad === 'americano_individual_1v1') {
+    return renderPublicMatchCard(partido.jugador_1, partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, index);
+  }
+  return renderPublicMatchCard(`${partido.jugador_a} / ${partido.jugador_b}`, `${partido.jugador_c} / ${partido.jugador_d}`, index);
+}
+
+function renderPublicMatchCard(leftName, rightName, index) {
+  return `
+    <article class="rounded-[18px] border border-[#c5a85c]/55 bg-[linear-gradient(90deg,rgba(197,168,92,.52),transparent_18px),linear-gradient(180deg,rgba(47,51,53,.98),rgba(26,29,31,.98))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_14px_24px_rgba(0,0,0,.24)]">
+      <div class="inline-grid min-h-10 min-w-[6.4rem] place-items-center rounded-xl bg-[linear-gradient(180deg,#7d6b28,#51441e)] px-4 text-[1rem] font-black text-[#f1ddb0]">Mesa ${index + 1}</div>
+      <div class="mt-5 grid grid-cols-[minmax(0,1fr)_3.7rem_minmax(0,1fr)] items-center gap-3">
+        <span class="min-w-0 whitespace-normal text-left text-[clamp(1.08rem,4.15vw,1.42rem)] font-black uppercase leading-[1.12] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${escapeHtml(leftName)}</span>
+        <span class="grid place-items-center text-center font-serif text-[#352615]">
+          <span class="grid h-11 w-11 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.66),transparent_22%),linear-gradient(145deg,#fff0ad,#b58434_70%,#684216)] text-[.92rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)]">VS</span>
+          <small class="mt-1 text-[.68rem] font-black lowercase tracking-wide text-[#d3bd7d]">versus</small>
+        </span>
+        <span class="min-w-0 whitespace-normal text-right text-[clamp(1.08rem,4.15vw,1.42rem)] font-black uppercase leading-[1.12] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${escapeHtml(rightName)}</span>
+      </div>
+    </article>
+  `;
+}
+
+function renderUpcomingMatches(detail, grouped) {
+  const { torneo } = detail;
+  const upcomingRound = getUpcomingRound(grouped);
 
   if (!upcomingRound) {
     return `
