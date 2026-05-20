@@ -284,15 +284,8 @@ function renderFixture(detail) {
       <div class="cup-frame bottom-left"></div>
       <div class="cup-frame bottom-right"></div>
       <header class="cup-header">
-        <div class="official-plaque" aria-label="Fixture oficial">
-          <span class="plaque-icon" aria-hidden="true"></span>
-          <span>Fixture Oficial</span>
-        </div>
-        <div class="classic-trophy" aria-hidden="true">
-          <div class="classic-trophy-cup"></div>
-          <div class="classic-trophy-stem"></div>
-          <div class="classic-trophy-base"></div>
-        </div>
+        ${renderOfficialPlaque()}
+        ${renderPremiumTrophy()}
         <h3>${torneo.nombre_torneo}</h3>
         <p>${fixtureModeLabel(torneo.modalidad)}</p>
       </header>
