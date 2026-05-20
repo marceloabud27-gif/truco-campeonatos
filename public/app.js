@@ -270,14 +270,14 @@ function renderFixture(detail) {
       <div class="cup-frame bottom-left"></div>
       <div class="cup-frame bottom-right"></div>
       <header class="cup-header">
-        <span class="public-pill">Fixture publico</span>
-        <div class="cup-title-band">
+        <div class="official-plaque" aria-label="Fixture oficial">
+          <span class="plaque-icon" aria-hidden="true"></span>
           <span>Fixture Oficial</span>
         </div>
-        <div class="cup-trophy" aria-hidden="true">
-          <div class="cup-bowl"></div>
-          <div class="cup-stem"></div>
-          <div class="cup-base"></div>
+        <div class="classic-trophy" aria-hidden="true">
+          <div class="classic-trophy-cup"></div>
+          <div class="classic-trophy-stem"></div>
+          <div class="classic-trophy-base"></div>
         </div>
         <h3>${torneo.nombre_torneo}</h3>
         <p>${fixtureModeLabel(torneo.modalidad)}</p>
@@ -393,7 +393,7 @@ function pairFixtureRow(partido, index) {
       </div>
       <div class="match-body">
         <span class="team-name">${partido.pareja1}</span>
-        <span class="versus-cell">vs</span>
+        <span class="versus-cell"><span>VS</span><small>versus</small></span>
         <span class="team-name">${partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2}</span>
       </div>
       ${adminOnlyFixtureMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
@@ -410,7 +410,7 @@ function individualFixtureRow(partido, index) {
       </div>
       <div class="match-body ${canShowFixtureResults() && partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
         ${teamScoreCell(`${partido.jugador_a} / ${partido.jugador_b}`, partido.puntaje_dupla1, partido.estado)}
-        <span class="versus-cell">vs</span>
+        <span class="versus-cell"><span>VS</span><small>versus</small></span>
         ${teamScoreCell(`${partido.jugador_c} / ${partido.jugador_d}`, partido.puntaje_dupla2, partido.estado)}
       </div>
     </article>
@@ -426,7 +426,7 @@ function individual1v1FixtureRow(partido, index) {
       </div>
       <div class="match-body ${canShowFixtureResults() && partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
         ${teamScoreCell(partido.jugador_1, partido.puntaje_jugador_1, partido.estado)}
-        <span class="versus-cell">${partido.es_fecha_libre ? 'libre' : 'vs'}</span>
+        <span class="versus-cell">${partido.es_fecha_libre ? '<span>Libre</span>' : '<span>VS</span><small>versus</small>'}</span>
         ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, partido.puntaje_jugador_2, partido.estado)}
       </div>
     </article>

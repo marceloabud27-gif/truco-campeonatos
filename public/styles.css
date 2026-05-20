@@ -971,6 +971,389 @@ th {
   font-size: 0.72rem;
 }
 
+/* Premium public fixture skin */
+.fixture-public-mode.spectator-fixture-only {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(205, 174, 106, 0.18), transparent 32%),
+    linear-gradient(180deg, #061914 0%, #0b2d1e 34%, #05130f 100%);
+}
+
+.fixture-public-mode.spectator-fixture-only .hero {
+  min-height: 202px;
+  padding: 92px 24px 26px;
+  background:
+    linear-gradient(90deg, rgba(3, 10, 9, 0.58), rgba(5, 20, 18, 0.82) 48%, rgba(2, 10, 9, 0.97)),
+    linear-gradient(180deg, rgba(3, 10, 9, 0.18), rgba(3, 14, 11, 0.98)),
+    url("/assets/truco-argentino-hero.png");
+  background-position: center top;
+  background-size: cover;
+  justify-content: flex-end;
+}
+
+.fixture-public-mode.spectator-fixture-only .eyebrow {
+  display: none;
+}
+
+.fixture-public-mode.spectator-fixture-only h1 {
+  margin: 0;
+  color: #f7e6b8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  text-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.68),
+    0 0 18px rgba(214, 168, 79, 0.16);
+}
+
+.fixture-public-mode.spectator-fixture-only .brand-subtitle {
+  margin-top: 12px;
+  color: #e9c977;
+  font-size: clamp(1.35rem, 6vw, 1.85rem);
+  font-weight: 900;
+}
+
+.fixture-public-mode.spectator-fixture-only main {
+  padding: 30px 22px 42px;
+  background:
+    linear-gradient(180deg, rgba(18, 72, 45, 0.84), #062419 360px),
+    radial-gradient(circle at 50% 8%, rgba(214, 168, 79, 0.18), transparent 34%);
+}
+
+.fixture-public-mode.spectator-fixture-only .section-title {
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.fixture-public-mode.spectator-fixture-only .section-title h2 {
+  color: #f3e1b5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 10vw, 3rem);
+  font-weight: 800;
+}
+
+.fixture-public-mode.spectator-fixture-only #fixtureTournamentSelect {
+  min-height: 76px;
+  padding: 0 28px;
+  border: 2px solid rgba(224, 194, 128, 0.72);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(36, 46, 45, 0.98), rgba(22, 29, 31, 0.98));
+  color: #f4e2b4;
+  font-size: clamp(1.28rem, 5vw, 1.62rem);
+  font-weight: 900;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 32px rgba(0, 0, 0, 0.24);
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-board {
+  gap: 26px;
+  padding: 48px 22px 24px;
+  border: 1px solid rgba(219, 196, 145, 0.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(20, 87, 57, 0.62), rgba(5, 28, 22, 0.98)),
+    radial-gradient(circle at 50% 0%, rgba(214, 168, 79, 0.22), transparent 34%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    inset 0 32px 84px rgba(255, 255, 255, 0.03),
+    0 22px 44px rgba(0, 0, 0, 0.3);
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-board::before {
+  opacity: 0.22;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.66), transparent 74%);
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-frame,
+.fixture-public-mode.spectator-fixture-only .public-pill,
+.fixture-public-mode.spectator-fixture-only .cup-title-band,
+.fixture-public-mode.spectator-fixture-only .cup-trophy {
+  display: none;
+}
+
+.official-plaque {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 16px;
+  width: min(100%, 520px);
+  min-height: 92px;
+  padding: 18px 34px;
+  border: 1px solid rgba(84, 55, 17, 0.42);
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, rgba(95, 59, 18, 0.36), transparent 14%, transparent 86%, rgba(95, 59, 18, 0.34)),
+    linear-gradient(100deg, #9d6824 0%, #e4c36c 21%, #fff0ae 48%, #c18a33 76%, #6b4017 100%);
+  color: #2a2118;
+  font-size: clamp(1.28rem, 4.5vw, 2rem);
+  font-weight: 950;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.36),
+    inset 0 2px 0 rgba(255, 255, 255, 0.46),
+    inset 0 -2px 0 rgba(82, 50, 14, 0.3);
+}
+
+.official-plaque::before,
+.official-plaque::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(96, 62, 20, 0.48);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.34);
+  transform: translateY(-50%);
+}
+
+.official-plaque::before {
+  left: 14px;
+}
+
+.official-plaque::after {
+  right: 14px;
+}
+
+.plaque-icon {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border: 4px solid rgba(56, 41, 24, 0.56);
+  border-radius: 18px 18px 26px 26px;
+  clip-path: polygon(10% 0, 90% 0, 90% 58%, 50% 100%, 10% 58%);
+}
+
+.plaque-icon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 7px;
+  height: 39px;
+  border-radius: 999px;
+  background: rgba(56, 41, 24, 0.66);
+  box-shadow:
+    -13px 12px 0 -1px rgba(56, 41, 24, 0.5),
+    13px 12px 0 -1px rgba(56, 41, 24, 0.5);
+  transform: translateX(-50%);
+}
+
+.plaque-icon::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  height: 4px;
+  background: rgba(56, 41, 24, 0.58);
+}
+
+.classic-trophy {
+  position: relative;
+  width: 106px;
+  height: 112px;
+  margin: 2px 0 -2px;
+}
+
+.classic-trophy-cup {
+  position: absolute;
+  left: 24px;
+  top: 6px;
+  width: 58px;
+  height: 47px;
+  border-radius: 7px 7px 24px 24px;
+  background:
+    radial-gradient(circle at 35% 24%, rgba(255, 255, 255, 0.84), transparent 16%),
+    linear-gradient(100deg, #8f5d22, #ffeaa6 40%, #bb812e 78%, #6a3f16);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.6),
+    0 10px 18px rgba(0, 0, 0, 0.28);
+}
+
+.classic-trophy-cup::before,
+.classic-trophy-cup::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  width: 28px;
+  height: 34px;
+  border: 5px solid rgba(205, 169, 94, 0.9);
+  border-radius: 999px;
+}
+
+.classic-trophy-cup::before {
+  left: -23px;
+  border-right: 0;
+}
+
+.classic-trophy-cup::after {
+  right: -23px;
+  border-left: 0;
+}
+
+.classic-trophy-stem {
+  position: absolute;
+  left: 48px;
+  top: 50px;
+  width: 11px;
+  height: 38px;
+  background: linear-gradient(90deg, #8a581f, #fff0a8, #9d641f);
+}
+
+.classic-trophy-base {
+  position: absolute;
+  left: 29px;
+  bottom: 6px;
+  width: 48px;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #6b3d13, #e7bf61, #78501d);
+  box-shadow:
+    0 -8px 0 -3px #b88231,
+    0 7px 14px rgba(0, 0, 0, 0.36);
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-header {
+  gap: 16px;
+  padding: 0 0 6px;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-header h3 {
+  color: #f2e0b3;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 8vw, 2.55rem);
+  font-weight: 800;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-header p {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(1.05rem, 4.2vw, 1.34rem);
+  font-weight: 850;
+}
+
+.fixture-public-mode.spectator-fixture-only .upcoming-panel,
+.fixture-public-mode.spectator-fixture-only .cup-round-card {
+  padding: 20px;
+  border: 1px solid rgba(220, 202, 160, 0.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(37, 43, 45, 0.96), rgba(18, 24, 27, 0.98));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 16px 30px rgba(0, 0, 0, 0.22);
+}
+
+.fixture-public-mode.spectator-fixture-only .round-kicker {
+  color: #e9c977;
+  font-size: clamp(0.95rem, 3.8vw, 1.12rem);
+  font-weight: 950;
+}
+
+.fixture-public-mode.spectator-fixture-only .upcoming-panel .round-title,
+.fixture-public-mode.spectator-fixture-only .cup-round-header .round-title {
+  color: #f1ddad;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-weight: 800;
+}
+
+.fixture-public-mode.spectator-fixture-only .match-grid {
+  gap: 18px;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-board .match-card {
+  gap: 16px;
+  padding: 17px 22px 22px;
+  border: 2px solid rgba(220, 190, 124, 0.52);
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(221, 182, 88, 0.52), transparent 18px),
+    linear-gradient(180deg, rgba(48, 52, 55, 0.98), rgba(27, 30, 33, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 24px rgba(0, 0, 0, 0.24);
+}
+
+.fixture-public-mode.spectator-fixture-only .match-card::before {
+  display: none;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-board .mesa-badge {
+  min-width: 116px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 229, 145, 0.28), transparent 38%),
+    linear-gradient(180deg, #746125, #4f421e);
+  color: #f3dfad;
+  font-size: clamp(1rem, 3.9vw, 1.28rem);
+  font-weight: 950;
+}
+
+.fixture-public-mode.spectator-fixture-only .match-body {
+  gap: 14px;
+}
+
+.fixture-public-mode.spectator-fixture-only .team-name {
+  color: #ffffff;
+  font-size: clamp(1.28rem, 5vw, 1.72rem);
+  font-weight: 950;
+  line-height: 1.12;
+  text-transform: uppercase;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.58),
+    0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+.fixture-public-mode.spectator-fixture-only .versus-cell {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 70px;
+  min-width: 70px;
+  color: #372815;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.06rem;
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.fixture-public-mode.spectator-fixture-only .versus-cell span {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  background:
+    radial-gradient(circle at 38% 24%, rgba(255, 255, 255, 0.62), transparent 22%),
+    linear-gradient(145deg, #fff0ad, #b58434 70%, #684216);
+  clip-path: polygon(50% 0, 90% 17%, 84% 76%, 50% 100%, 16% 76%, 10% 17%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 8px 14px rgba(0, 0, 0, 0.26);
+}
+
+.fixture-public-mode.spectator-fixture-only .versus-cell small {
+  margin-top: 5px;
+  color: #d3bd7d;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+  text-transform: lowercase;
+}
+
 .status {
   display: inline-flex;
   align-items: center;
@@ -1451,5 +1834,98 @@ dialog::backdrop {
     transform: translateX(-50%);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
+  }
+}
+
+/* Keep the public WhatsApp view on the premium skin after generic responsive rules. */
+.fixture-public-mode.spectator-fixture-only .hero {
+  min-height: 202px;
+  padding: 92px 24px 26px;
+}
+
+.fixture-public-mode.spectator-fixture-only h1 {
+  color: #f7e6b8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  line-height: 0.92;
+}
+
+.fixture-public-mode.spectator-fixture-only .brand-subtitle {
+  color: #e9c977;
+  font-size: clamp(1.35rem, 6vw, 1.85rem);
+}
+
+.fixture-public-mode.spectator-fixture-only main {
+  padding: 30px 22px 42px;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-board {
+  padding: 48px 22px 24px;
+}
+
+.fixture-public-mode.spectator-fixture-only .cup-rounds {
+  grid-template-columns: 1fr;
+}
+
+.fixture-public-mode.spectator-fixture-only .team-name {
+  font-size: clamp(1.1rem, 4.8vw, 1.72rem);
+}
+
+@media (max-width: 420px) {
+  .fixture-public-mode.spectator-fixture-only main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .cup-board {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .official-plaque {
+    gap: 10px;
+    min-height: 76px;
+    padding: 14px 22px;
+    font-size: 1.18rem;
+  }
+
+  .plaque-icon {
+    width: 48px;
+    height: 48px;
+    border-width: 3px;
+  }
+
+  .plaque-icon::before {
+    top: 7px;
+    width: 5px;
+    height: 28px;
+    box-shadow:
+      -9px 9px 0 -1px rgba(56, 41, 24, 0.5),
+      9px 9px 0 -1px rgba(56, 41, 24, 0.5);
+  }
+
+  .plaque-icon::after {
+    left: 12px;
+    right: 12px;
+    bottom: 11px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .cup-board .match-card {
+    padding: 16px 16px 18px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .versus-cell {
+    width: 54px;
+    min-width: 54px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .versus-cell span {
+    width: 42px;
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .versus-cell small {
+    font-size: 0.66rem;
   }
 }
