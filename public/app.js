@@ -368,7 +368,7 @@ function renderPremiumTrophy() {
       src="/assets/copa-referencia.png?v=20260519"
       alt=""
       aria-hidden="true"
-      class="mt-7 h-[92px] w-auto object-contain drop-shadow-[0_12px_16px_rgba(0,0,0,.34)]"
+      class="mt-7 h-[88px] w-auto object-contain drop-shadow-[0_13px_16px_rgba(0,0,0,.36)]"
     >
   `;
 }
@@ -425,22 +425,22 @@ function publicFixtureRowForMode(modalidad, partido, index) {
 
 function renderPublicMatchCard(leftName, rightName, index) {
   return `
-    <article class="rounded-[17px] border border-[#c5a85c]/55 bg-[linear-gradient(90deg,rgba(197,168,92,.48),transparent_17px),linear-gradient(180deg,rgba(47,51,53,.98),rgba(26,29,31,.98))] px-4 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_14px_24px_rgba(0,0,0,.24)]">
-      <div class="inline-grid min-h-9 min-w-[5.9rem] place-items-center rounded-[11px] bg-[linear-gradient(180deg,#7d6b28,#51441e)] px-4 text-[.92rem] font-black text-[#f1ddb0]">Mesa ${index + 1}</div>
-      <div class="mt-4 grid grid-cols-[minmax(0,1fr)_3.15rem_minmax(0,1fr)] items-center gap-2">
-        <span class="min-w-0 whitespace-nowrap text-left text-[clamp(.86rem,3.25vw,1.12rem)] font-black uppercase leading-none text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(leftName)}</span>
+    <article class="overflow-hidden rounded-[17px] border border-[#c5a85c]/55 bg-[linear-gradient(90deg,rgba(197,168,92,.48),transparent_17px),linear-gradient(180deg,rgba(47,51,53,.98),rgba(26,29,31,.98))] px-3 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_14px_24px_rgba(0,0,0,.24)]">
+      <div class="inline-grid min-h-9 min-w-[5.7rem] place-items-center rounded-[11px] bg-[linear-gradient(180deg,#7d6b28,#51441e)] px-4 text-[.9rem] font-black text-[#f1ddb0]">Mesa ${index + 1}</div>
+      <div class="mt-4 grid grid-cols-[minmax(0,1fr)_2.7rem_minmax(0,1fr)] items-center gap-2">
+        <span class="min-w-0 whitespace-normal text-left text-[clamp(.72rem,2.58vw,.96rem)] font-black uppercase leading-[1.05] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(leftName)}</span>
         <span class="grid place-items-center text-center font-serif text-[#352615]">
-          <span class="grid h-9 w-9 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.66),transparent_22%),linear-gradient(145deg,#fff0ad,#b58434_70%,#684216)] text-[.78rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)]">VS</span>
-          <small class="mt-1 text-[.58rem] font-black lowercase tracking-wide text-[#d3bd7d]">versus</small>
+          <span class="grid h-8 w-8 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.66),transparent_22%),linear-gradient(145deg,#fff0ad,#b58434_70%,#684216)] text-[.7rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)]">VS</span>
+          <small class="mt-1 text-[.52rem] font-black lowercase tracking-wide text-[#d3bd7d]">versus</small>
         </span>
-        <span class="min-w-0 whitespace-nowrap text-right text-[clamp(.86rem,3.25vw,1.12rem)] font-black uppercase leading-none text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(rightName)}</span>
+        <span class="min-w-0 whitespace-normal text-right text-[clamp(.72rem,2.58vw,.96rem)] font-black uppercase leading-[1.05] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(rightName)}</span>
       </div>
     </article>
   `;
 }
 
 function formatPublicTeamName(name) {
-  return escapeHtml(name).replaceAll(' / ', '&nbsp;/&nbsp;');
+  return escapeHtml(name);
 }
 
 function renderUpcomingMatches(detail, grouped) {
