@@ -1049,7 +1049,7 @@ th {
 
 .fixture-public-mode.spectator-fixture-only .cup-board {
   gap: 26px;
-  padding: 48px 22px 24px;
+  padding: 42px 22px 24px;
   border: 1px solid rgba(219, 196, 145, 0.22);
   border-radius: 18px;
   background:
@@ -1083,16 +1083,16 @@ th {
   grid-template-columns: auto 1fr;
   align-items: center;
   gap: 16px;
-  width: min(100%, 520px);
-  min-height: 92px;
-  padding: 18px 34px;
+  width: min(82%, 520px);
+  min-height: 78px;
+  padding: 15px 30px;
   border: 1px solid rgba(84, 55, 17, 0.42);
-  border-radius: 10px;
+  border-radius: 8px;
   background:
     linear-gradient(90deg, rgba(95, 59, 18, 0.36), transparent 14%, transparent 86%, rgba(95, 59, 18, 0.34)),
     linear-gradient(100deg, #9d6824 0%, #e4c36c 21%, #fff0ae 48%, #c18a33 76%, #6b4017 100%);
   color: #2a2118;
-  font-size: clamp(1.28rem, 4.5vw, 2rem);
+  font-size: clamp(1.08rem, 4vw, 1.78rem);
   font-weight: 950;
   text-transform: uppercase;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
@@ -1100,6 +1100,10 @@ th {
     0 14px 24px rgba(0, 0, 0, 0.36),
     inset 0 2px 0 rgba(255, 255, 255, 0.46),
     inset 0 -2px 0 rgba(82, 50, 14, 0.3);
+}
+
+.official-plaque {
+  clip-path: polygon(4% 0, 96% 0, 96% 18%, 100% 18%, 100% 82%, 96% 82%, 96% 100%, 4% 100%, 4% 82%, 0 82%, 0 18%, 4% 18%);
 }
 
 .official-plaque::before,
@@ -1125,9 +1129,9 @@ th {
 
 .plaque-icon {
   position: relative;
-  width: 70px;
-  height: 70px;
-  border: 4px solid rgba(56, 41, 24, 0.56);
+  width: 56px;
+  height: 56px;
+  border: 3px solid rgba(56, 41, 24, 0.56);
   border-radius: 18px 18px 26px 26px;
   clip-path: polygon(10% 0, 90% 0, 90% 58%, 50% 100%, 10% 58%);
 }
@@ -1136,40 +1140,40 @@ th {
   content: "";
   position: absolute;
   left: 50%;
-  top: 10px;
-  width: 7px;
-  height: 39px;
+  top: 8px;
+  width: 6px;
+  height: 32px;
   border-radius: 999px;
   background: rgba(56, 41, 24, 0.66);
   box-shadow:
-    -13px 12px 0 -1px rgba(56, 41, 24, 0.5),
-    13px 12px 0 -1px rgba(56, 41, 24, 0.5);
+    -11px 10px 0 -1px rgba(56, 41, 24, 0.5),
+    11px 10px 0 -1px rgba(56, 41, 24, 0.5);
   transform: translateX(-50%);
 }
 
 .plaque-icon::after {
   content: "";
   position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 16px;
+  left: 15px;
+  right: 15px;
+  bottom: 13px;
   height: 4px;
   background: rgba(56, 41, 24, 0.58);
 }
 
 .classic-trophy {
   position: relative;
-  width: 106px;
-  height: 112px;
-  margin: 2px 0 -2px;
+  width: 86px;
+  height: 94px;
+  margin: 0 0 -4px;
 }
 
 .classic-trophy-cup {
   position: absolute;
-  left: 24px;
+  left: 20px;
   top: 6px;
-  width: 58px;
-  height: 47px;
+  width: 46px;
+  height: 38px;
   border-radius: 7px 7px 24px 24px;
   background:
     radial-gradient(circle at 35% 24%, rgba(255, 255, 255, 0.84), transparent 16%),
@@ -1184,37 +1188,37 @@ th {
   content: "";
   position: absolute;
   top: 5px;
-  width: 28px;
-  height: 34px;
-  border: 5px solid rgba(205, 169, 94, 0.9);
+  width: 23px;
+  height: 28px;
+  border: 4px solid rgba(205, 169, 94, 0.9);
   border-radius: 999px;
 }
 
 .classic-trophy-cup::before {
-  left: -23px;
+  left: -19px;
   border-right: 0;
 }
 
 .classic-trophy-cup::after {
-  right: -23px;
+  right: -19px;
   border-left: 0;
 }
 
 .classic-trophy-stem {
   position: absolute;
-  left: 48px;
-  top: 50px;
-  width: 11px;
-  height: 38px;
+  left: 39px;
+  top: 42px;
+  width: 9px;
+  height: 31px;
   background: linear-gradient(90deg, #8a581f, #fff0a8, #9d641f);
 }
 
 .classic-trophy-base {
   position: absolute;
-  left: 29px;
+  left: 24px;
   bottom: 6px;
-  width: 48px;
-  height: 20px;
+  width: 39px;
+  height: 16px;
   border-radius: 4px;
   background: linear-gradient(90deg, #6b3d13, #e7bf61, #78501d);
   box-shadow:
@@ -1223,26 +1227,26 @@ th {
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-header {
-  gap: 16px;
+  gap: 13px;
   padding: 0 0 6px;
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-header h3 {
   color: #f2e0b3;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 8vw, 2.55rem);
+  font-size: clamp(1.72rem, 7.2vw, 2.35rem);
   font-weight: 800;
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-header p {
   color: rgba(255, 255, 255, 0.72);
-  font-size: clamp(1.05rem, 4.2vw, 1.34rem);
+  font-size: clamp(0.96rem, 3.7vw, 1.18rem);
   font-weight: 850;
 }
 
 .fixture-public-mode.spectator-fixture-only .upcoming-panel,
 .fixture-public-mode.spectator-fixture-only .cup-round-card {
-  padding: 20px;
+  padding: 18px;
   border: 1px solid rgba(220, 202, 160, 0.22);
   border-radius: 18px;
   background:
@@ -1262,17 +1266,17 @@ th {
 .fixture-public-mode.spectator-fixture-only .cup-round-header .round-title {
   color: #f1ddad;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-size: clamp(1.82rem, 7.2vw, 2.55rem);
   font-weight: 800;
 }
 
 .fixture-public-mode.spectator-fixture-only .match-grid {
-  gap: 18px;
+  gap: 14px;
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-board .match-card {
-  gap: 16px;
-  padding: 17px 22px 22px;
+  gap: 12px;
+  padding: 13px 16px 15px;
   border: 2px solid rgba(220, 190, 124, 0.52);
   border-radius: 14px;
   background:
@@ -1288,28 +1292,30 @@ th {
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-board .mesa-badge {
-  min-width: 116px;
-  min-height: 44px;
+  min-width: 92px;
+  min-height: 36px;
   border: 0;
   border-radius: 10px;
   background:
     radial-gradient(circle at 12% 18%, rgba(255, 229, 145, 0.28), transparent 38%),
     linear-gradient(180deg, #746125, #4f421e);
   color: #f3dfad;
-  font-size: clamp(1rem, 3.9vw, 1.28rem);
+  font-size: clamp(0.88rem, 3.4vw, 1.08rem);
   font-weight: 950;
 }
 
 .fixture-public-mode.spectator-fixture-only .match-body {
-  gap: 14px;
+  gap: 9px;
 }
 
 .fixture-public-mode.spectator-fixture-only .team-name {
   color: #ffffff;
-  font-size: clamp(1.28rem, 5vw, 1.72rem);
+  font-size: clamp(0.98rem, 3.85vw, 1.38rem);
   font-weight: 950;
   line-height: 1.12;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow-wrap: normal;
   text-shadow:
     0 2px 0 rgba(0, 0, 0, 0.58),
     0 0 12px rgba(255, 255, 255, 0.08);
@@ -1319,11 +1325,11 @@ th {
   display: grid;
   place-items: center;
   align-self: center;
-  width: 70px;
-  min-width: 70px;
+  width: 56px;
+  min-width: 56px;
   color: #372815;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.06rem;
+  font-size: 0.92rem;
   font-weight: 800;
   line-height: 0.95;
   text-transform: uppercase;
@@ -1333,8 +1339,8 @@ th {
 .fixture-public-mode.spectator-fixture-only .versus-cell span {
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   background:
     radial-gradient(circle at 38% 24%, rgba(255, 255, 255, 0.62), transparent 22%),
     linear-gradient(145deg, #fff0ad, #b58434 70%, #684216);
@@ -1348,7 +1354,7 @@ th {
   margin-top: 5px;
   color: #d3bd7d;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.66rem;
   font-weight: 800;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
   text-transform: lowercase;
@@ -1860,7 +1866,7 @@ dialog::backdrop {
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-board {
-  padding: 48px 22px 24px;
+  padding: 42px 22px 24px;
 }
 
 .fixture-public-mode.spectator-fixture-only .cup-rounds {
@@ -1868,7 +1874,7 @@ dialog::backdrop {
 }
 
 .fixture-public-mode.spectator-fixture-only .team-name {
-  font-size: clamp(1.1rem, 4.8vw, 1.72rem);
+  font-size: clamp(0.98rem, 3.85vw, 1.38rem);
 }
 
 @media (max-width: 420px) {
@@ -1883,10 +1889,11 @@ dialog::backdrop {
   }
 
   .official-plaque {
-    gap: 10px;
-    min-height: 76px;
-    padding: 14px 22px;
-    font-size: 1.18rem;
+    gap: 11px;
+    width: min(82%, 520px);
+    min-height: 66px;
+    padding: 12px 20px;
+    font-size: 1rem;
   }
 
   .plaque-icon {
@@ -1911,21 +1918,21 @@ dialog::backdrop {
   }
 
   .fixture-public-mode.spectator-fixture-only .cup-board .match-card {
-    padding: 16px 16px 18px;
+    padding: 13px 13px 15px;
   }
 
   .fixture-public-mode.spectator-fixture-only .versus-cell {
-    width: 54px;
-    min-width: 54px;
+    width: 46px;
+    min-width: 46px;
   }
 
   .fixture-public-mode.spectator-fixture-only .versus-cell span {
-    width: 42px;
-    height: 42px;
-    font-size: 0.9rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.78rem;
   }
 
   .fixture-public-mode.spectator-fixture-only .versus-cell small {
-    font-size: 0.66rem;
+    font-size: 0.58rem;
   }
 }
