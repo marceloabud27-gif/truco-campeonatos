@@ -2089,3 +2089,74 @@ dialog::backdrop {
   font-weight: 950;
   text-transform: lowercase;
 }
+
+@media (min-width: 900px) {
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 42px 34px 34px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-header {
+    margin-bottom: 4px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel {
+    width: min(100%, 860px);
+    margin: 0 auto;
+    padding: 26px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .round-title {
+    font-size: 3.25rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-grid {
+    gap: 14px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .match-card {
+    min-height: 108px;
+    padding: 16px 18px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .match-body {
+    grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .team-name {
+    font-size: 1.28rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .team-score-cell:first-child .team-name,
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .match-body > .team-name:first-child {
+    text-align: left;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .team-score-cell:last-child .team-name,
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .match-body > .team-name:last-child {
+    text-align: right;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .versus-cell {
+    width: 74px;
+    min-width: 74px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .versus-cell span {
+    width: 44px;
+    height: 44px;
+    font-size: 0.86rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .versus-cell small {
+    margin-top: 4px;
+    font-size: 0.62rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-rounds {
+    width: min(100%, 980px);
+    margin: 0 auto;
+  }
+}
