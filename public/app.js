@@ -306,18 +306,18 @@ function renderPublicFixturePremium(detail) {
     .map(([ronda, items]) => ({ ronda, items }));
 
   $('#fixtureContent').innerHTML = `
-    <article class="relative overflow-hidden rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(25,82,51,0.78),rgba(6,33,24,0.98))] px-6 pb-7 pt-9 shadow-[0_28px_70px_rgba(0,0,0,0.34),inset_0_0_0_1px_rgba(255,255,255,0.04)]">
+    <article class="relative overflow-hidden rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(25,82,51,0.78),rgba(6,33,24,0.98))] px-4 pb-6 pt-7 shadow-[0_28px_70px_rgba(0,0,0,0.34),inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:px-6 sm:pb-7 sm:pt-9">
       <div class="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(90deg,rgba(255,255,255,.32)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.28)_1px,transparent_1px)] [background-size:58px_58px]"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(circle_at_50%_0%,rgba(197,168,92,.34),transparent_62%)]"></div>
 
       <header class="relative z-[1] grid justify-items-center text-center">
         ${renderOfficialPlaque()}
         ${renderPremiumTrophy()}
-        <h3 class="mt-3 font-serif text-[2.05rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_4px_9px_rgba(0,0,0,.55)]">${escapeHtml(torneo.nombre_torneo)}</h3>
-        <p class="mt-4 max-w-[24rem] text-center text-[1.08rem] font-extrabold leading-tight tracking-wide text-white/70">${fixtureModeLabel(torneo.modalidad)}</p>
+        <h3 class="mt-2 font-serif text-[1.9rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_4px_9px_rgba(0,0,0,.55)] sm:mt-3 sm:text-[2.05rem]">${escapeHtml(torneo.nombre_torneo)}</h3>
+        <p class="mt-3 max-w-[24rem] text-center text-[1rem] font-extrabold leading-tight tracking-wide text-white/72 sm:mt-4 sm:text-[1.08rem]">${fixtureModeLabel(torneo.modalidad)}</p>
       </header>
 
-      <div class="relative z-[1] mt-8">
+      <div class="relative z-[1] mt-7 sm:mt-8">
         ${renderPublicUpcomingPremium(detail, upcomingRound)}
       </div>
 
@@ -343,12 +343,12 @@ function getUpcomingRound(grouped) {
 
 function renderOfficialPlaque() {
   return `
-    <div class="relative grid min-h-[70px] w-[78%] max-w-[32rem] place-items-center rounded-[12px] bg-[linear-gradient(100deg,#7d4d18_0%,#c99133_18%,#ffe9a3_45%,#d0a14c_60%,#9a5e1d_100%)] px-8 py-3 text-[#160f08] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.5),inset_0_-2px_0_rgba(70,43,13,.34),inset_0_0_0_1px_rgba(255,242,184,.28)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)]">
+    <div class="relative grid min-h-[58px] w-[82%] max-w-[32rem] place-items-center rounded-[12px] bg-[linear-gradient(100deg,#7d4d18_0%,#c99133_18%,#ffe9a3_45%,#d0a14c_60%,#9a5e1d_100%)] px-6 py-3 text-[#160f08] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.5),inset_0_-2px_0_rgba(70,43,13,.34),inset_0_0_0_1px_rgba(255,242,184,.28)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)] sm:min-h-[70px] sm:w-[78%] sm:px-8">
       <span class="pointer-events-none absolute inset-x-8 top-2 h-px bg-white/45"></span>
       <span class="pointer-events-none absolute inset-x-10 bottom-2 h-px bg-[#5b3713]/35"></span>
       <span class="absolute left-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.42),0_1px_2px_rgba(0,0,0,.24)]"></span>
       <span class="absolute right-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.42),0_1px_2px_rgba(0,0,0,.24)]"></span>
-      <span class="text-center text-[clamp(1.18rem,4.45vw,1.9rem)] font-black uppercase tracking-[0.08em] drop-shadow-[0_1px_0_rgba(255,255,255,.28)]">Fixture Oficial</span>
+      <span class="text-center text-[clamp(1.04rem,4.2vw,1.9rem)] font-black uppercase tracking-[0.08em] drop-shadow-[0_1px_0_rgba(255,255,255,.28)]">Fixture Oficial</span>
     </div>
   `;
 }
@@ -359,7 +359,7 @@ function renderPremiumTrophy() {
       src="/assets/copa-referencia.png?v=20260519"
       alt=""
       aria-hidden="true"
-      class="mt-6 h-[84px] w-auto object-contain drop-shadow-[0_13px_16px_rgba(0,0,0,.36)]"
+      class="mt-5 h-[74px] w-auto object-contain drop-shadow-[0_13px_16px_rgba(0,0,0,.36)] sm:mt-6 sm:h-[84px]"
     >
   `;
 }
@@ -375,13 +375,13 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
   }
 
   return `
-    <section class="rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(37,43,45,.98),rgba(21,25,27,.98))] p-5 shadow-[0_20px_38px_rgba(0,0,0,.28)]">
+    <section class="rounded-[22px] border border-[#c5a85c]/25 bg-[linear-gradient(180deg,rgba(37,43,45,.98),rgba(21,25,27,.98))] p-4 shadow-[0_20px_38px_rgba(0,0,0,.28)] sm:p-5">
       <div>
-        <p class="text-[1rem] font-black uppercase tracking-wide text-[#e4c56f]">Proximos partidos</p>
-        <h2 class="mt-1 font-serif text-[3rem] font-extrabold leading-none text-[#f5e3b1]">Ronda ${upcomingRound.ronda}</h2>
+        <p class="text-[.92rem] font-black uppercase tracking-wide text-[#e4c56f] sm:text-[1rem]">Proximos partidos</p>
+        <h2 class="mt-1 font-serif text-[2.75rem] font-extrabold leading-none text-[#f5e3b1] sm:text-[3rem]">Ronda ${upcomingRound.ronda}</h2>
         ${detail.torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, upcomingRound.allItems) : ''}
       </div>
-      <div class="mt-6 grid gap-4">
+      <div class="mt-5 grid gap-3.5 sm:mt-6 sm:gap-4">
         ${upcomingRound.matches
           .map(({ partido, index }) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
           .join('')}
@@ -416,22 +416,22 @@ function publicFixtureRowForMode(modalidad, partido, index) {
 
 function renderPublicMatchCard(leftName, rightName, index) {
   return `
-    <article class="overflow-hidden rounded-[17px] border border-[#c5a85c]/55 bg-[linear-gradient(90deg,rgba(197,168,92,.48),transparent_17px),linear-gradient(180deg,rgba(47,51,53,.98),rgba(26,29,31,.98))] px-3.5 pb-3.5 pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_14px_24px_rgba(0,0,0,.24)]">
+    <article class="rounded-[17px] border border-[#c5a85c]/55 bg-[linear-gradient(90deg,rgba(197,168,92,.48),transparent_17px),linear-gradient(180deg,rgba(47,51,53,.98),rgba(26,29,31,.98))] px-3.5 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_14px_24px_rgba(0,0,0,.24)]">
       <div class="inline-grid min-h-8 min-w-[5.45rem] place-items-center rounded-[10px] bg-[linear-gradient(180deg,#7d6b28,#51441e)] px-3 text-[.86rem] font-black text-[#f1ddb0]">Mesa ${index + 1}</div>
-      <div class="mt-3 grid grid-cols-[minmax(0,1fr)_2.45rem_minmax(0,1fr)] items-center gap-1.5">
-        <span class="min-w-0 whitespace-nowrap text-left text-[clamp(.75rem,2.75vw,1.02rem)] font-black uppercase leading-none text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(leftName)}</span>
+      <div class="mt-4 grid grid-cols-[minmax(0,1fr)_2.35rem_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[minmax(0,1fr)_2.55rem_minmax(0,1fr)] sm:gap-3">
+        <span class="min-w-0 text-left text-[clamp(.82rem,3.1vw,1.08rem)] font-black uppercase leading-[1.04] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)] [text-wrap:balance]">${formatPublicTeamName(leftName)}</span>
         <span class="grid place-items-center text-center font-serif text-[#352615]">
           <span class="grid h-7 w-7 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.66),transparent_22%),linear-gradient(145deg,#fff0ad,#b58434_70%,#684216)] text-[.64rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)]">VS</span>
           <small class="mt-0.5 text-[.48rem] font-black lowercase tracking-wide text-[#d3bd7d]">versus</small>
         </span>
-        <span class="min-w-0 whitespace-nowrap text-right text-[clamp(.75rem,2.75vw,1.02rem)] font-black uppercase leading-none text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)]">${formatPublicTeamName(rightName)}</span>
+        <span class="min-w-0 text-right text-[clamp(.82rem,3.1vw,1.08rem)] font-black uppercase leading-[1.04] text-white drop-shadow-[0_3px_0_rgba(0,0,0,.5)] [text-wrap:balance]">${formatPublicTeamName(rightName)}</span>
       </div>
     </article>
   `;
 }
 
 function formatPublicTeamName(name) {
-  return escapeHtml(name);
+  return escapeHtml(name).replace(/\s+\/\s+/g, ' /<wbr> ');
 }
 
 function renderUpcomingMatches(detail, grouped) {
