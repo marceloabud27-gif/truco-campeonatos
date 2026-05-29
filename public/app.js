@@ -343,14 +343,12 @@ function getUpcomingRound(grouped) {
 
 function renderOfficialPlaque() {
   return `
-    <div class="relative grid min-h-[72px] w-[78%] max-w-[32rem] grid-cols-[3.15rem_1fr] items-center gap-3 rounded-[12px] bg-[linear-gradient(100deg,#8b5b20_0%,#dbb85e_22%,#fff0a8_48%,#b77b2d_78%,#6f4218_100%)] px-6 py-3 text-[#21190f] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.44),inset_0_-2px_0_rgba(70,43,13,.34)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)]">
-      <span class="absolute left-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.35)]"></span>
-      <span class="absolute right-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.35)]"></span>
-      <span class="relative h-12 w-12 rounded-[16px_16px_22px_22px] border-[3px] border-[#342716]/55 [clip-path:polygon(10%_0,90%_0,90%_58%,50%_100%,10%_58%)]">
-        <span class="absolute left-1/2 top-2 h-7 w-1.5 -translate-x-1/2 rounded-full bg-[#342716]/70 shadow-[-9px_9px_0_-1px_rgba(52,39,22,.55),9px_9px_0_-1px_rgba(52,39,22,.55)]"></span>
-        <span class="absolute bottom-3 left-3.5 right-3.5 h-1 rounded-full bg-[#342716]/65"></span>
-      </span>
-      <span class="text-left text-[clamp(1.02rem,4.15vw,1.72rem)] font-black uppercase tracking-wide">Fixture Oficial</span>
+    <div class="relative grid min-h-[70px] w-[78%] max-w-[32rem] place-items-center rounded-[12px] bg-[linear-gradient(100deg,#7d4d18_0%,#c99133_18%,#ffe9a3_45%,#d0a14c_60%,#9a5e1d_100%)] px-8 py-3 text-[#160f08] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.5),inset_0_-2px_0_rgba(70,43,13,.34),inset_0_0_0_1px_rgba(255,242,184,.28)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)]">
+      <span class="pointer-events-none absolute inset-x-8 top-2 h-px bg-white/45"></span>
+      <span class="pointer-events-none absolute inset-x-10 bottom-2 h-px bg-[#5b3713]/35"></span>
+      <span class="absolute left-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.42),0_1px_2px_rgba(0,0,0,.24)]"></span>
+      <span class="absolute right-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.42),0_1px_2px_rgba(0,0,0,.24)]"></span>
+      <span class="text-center text-[clamp(1.18rem,4.45vw,1.9rem)] font-black uppercase tracking-[0.08em] drop-shadow-[0_1px_0_rgba(255,255,255,.28)]">Fixture Oficial</span>
     </div>
   `;
 }
