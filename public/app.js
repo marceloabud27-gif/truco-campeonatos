@@ -313,14 +313,7 @@ function renderPublicFixturePremium(detail) {
       <div class="pointer-events-none absolute inset-0 opacity-[0.10] [background-image:linear-gradient(90deg,rgba(255,255,255,.30)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.24)_1px,transparent_1px)] [background-size:58px_58px]"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_50%_22%,rgba(245,211,126,.24),rgba(18,71,45,.22)_38%,transparent_72%)]"></div>
 
-      <header class="relative z-[1] grid justify-items-center overflow-hidden rounded-[26px] border border-[#c5a85c]/40 bg-[radial-gradient(circle_at_50%_18%,rgba(197,168,92,.18),transparent_34%),linear-gradient(180deg,rgba(17,52,35,.88),rgba(4,18,13,.92))] px-3 pb-7 pt-5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_20px_46px_rgba(0,0,0,.32)] sm:px-5 sm:pb-8 sm:pt-7">
-        <div class="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(90deg,rgba(255,255,255,.30)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.24)_1px,transparent_1px)] [background-size:64px_64px]"></div>
-        ${renderPremiumIdentitySeal()}
-        ${renderLuxuryOfficialPlaque()}
-        ${renderPremiumTrophy()}
-        <h3 class="relative z-[3] mt-2 font-serif text-[2.22rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_5px_10px_rgba(0,0,0,.6)] sm:text-[2.65rem]">${escapeHtml(torneo.nombre_torneo)}</h3>
-        <p class="relative z-[3] mt-3 max-w-[24rem] text-center text-[.98rem] font-semibold leading-tight tracking-wide text-[#e9e1c9]/78 sm:text-[1.08rem]">${fixtureModeLabel(torneo.modalidad)}</p>
-      </header>
+      ${renderOfficialShowpiece(torneo)}
 
       <div class="relative z-[1] mt-7 sm:mt-8">
         ${renderPublicUpcomingPremium(detail, upcomingRound)}
@@ -370,6 +363,54 @@ function isPwaStandalone() {
 
 function isIosDevice() {
   return /iphone|ipad|ipod/i.test(window.navigator.userAgent || '');
+}
+
+function renderOfficialShowpiece(torneo) {
+  return `
+    <header class="relative z-[1] overflow-hidden rounded-[24px] border border-[#c5a85c]/60 bg-[radial-gradient(circle_at_25%_20%,rgba(245,211,126,.14),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(197,168,92,.16),transparent_30%),linear-gradient(140deg,rgba(13,38,27,.98),rgba(4,15,11,.99)_72%)] px-4 pb-4 pt-4 text-center shadow-[0_22px_48px_rgba(0,0,0,.38),inset_0_0_0_1px_rgba(255,245,190,.08)] sm:rounded-[28px] sm:px-7 sm:pb-6 sm:pt-6">
+      <div class="pointer-events-none absolute inset-2 rounded-[20px] border border-[#c5a85c]/28 sm:inset-3 sm:rounded-[24px]"></div>
+      <div class="pointer-events-none absolute inset-0 opacity-[0.22] [background-image:linear-gradient(115deg,transparent_0%,rgba(255,242,184,.12)_42%,transparent_68%),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.10)_1px,transparent_1px)] [background-size:100%_100%,72px_72px,72px_72px]"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_50%_0%,rgba(255,230,154,.25),transparent_66%)]"></div>
+
+      <div class="relative z-[2] grid min-h-[12.5rem] grid-cols-[minmax(0,1.05fr)_minmax(5.5rem,.74fr)] items-start gap-2 sm:min-h-[17rem] sm:grid-cols-[minmax(0,1fr)_minmax(8rem,.72fr)] sm:gap-4">
+        <div class="relative flex min-w-0 items-center justify-center pt-1 sm:pt-2">
+          <div class="absolute h-[9.4rem] w-[9.4rem] rounded-full bg-[radial-gradient(circle,rgba(245,211,126,.20),transparent_69%)] blur-sm sm:h-[13.5rem] sm:w-[13.5rem]"></div>
+          <img
+            src="/assets/pwa/icon-512.png?v=20260724"
+            alt=""
+            aria-hidden="true"
+            class="relative h-[8.4rem] w-[8.4rem] rounded-[1.65rem] object-contain opacity-[.84] mix-blend-screen drop-shadow-[0_22px_34px_rgba(0,0,0,.42)] sm:h-[12rem] sm:w-[12rem] sm:rounded-[2.15rem]"
+          >
+        </div>
+
+        <div class="relative flex min-w-0 justify-center pt-5 sm:pt-8">
+          <div class="absolute top-4 h-[9rem] w-[5.2rem] rounded-full bg-[radial-gradient(circle,rgba(255,225,145,.22),transparent_64%)] blur-md sm:top-6 sm:h-[13rem] sm:w-[7rem]"></div>
+          <img
+            src="/assets/copa-referencia.png?v=20260519"
+            alt=""
+            aria-hidden="true"
+            class="relative h-[8.25rem] w-auto object-contain drop-shadow-[0_22px_26px_rgba(0,0,0,.58)] sm:h-[12.5rem]"
+          >
+        </div>
+      </div>
+
+      <div class="relative z-[3] -mt-10 grid min-h-[5.35rem] place-items-center rounded-[14px] border border-[#dcbf72]/80 bg-[linear-gradient(100deg,#6f4517_0%,#17120d_8%,#302617_21%,#11100e_52%,#211810_78%,#8b5a22_100%)] p-[2px] shadow-[0_18px_32px_rgba(0,0,0,.56),0_0_24px_rgba(197,168,92,.24)] [clip-path:polygon(5%_0,95%_0,95%_13%,100%_13%,100%_87%,95%_87%,95%_100%,5%_100%,5%_87%,0_87%,0_13%,5%_13%)] sm:-mt-14 sm:min-h-[7rem]">
+        <div class="relative grid h-full min-h-[5rem] w-full place-items-center rounded-[12px] bg-[linear-gradient(180deg,rgba(24,22,19,.98),rgba(7,8,8,.99))] px-8 py-3 shadow-[inset_0_0_0_1px_rgba(255,235,170,.24),inset_0_9px_20px_rgba(255,255,255,.05)] sm:min-h-[6.6rem]">
+          <span class="pointer-events-none absolute inset-x-7 top-2 h-px bg-[#fff0b8]/45"></span>
+          <span class="pointer-events-none absolute inset-x-7 bottom-2 h-px bg-[#7b571f]/60"></span>
+          <span class="absolute left-3 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_35%,#fff0b8,#9d6d28_68%,#3e260d)] sm:h-3 sm:w-3"></span>
+          <span class="absolute right-3 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_35%_35%,#fff0b8,#9d6d28_68%,#3e260d)] sm:h-3 sm:w-3"></span>
+          <span class="text-center font-serif text-[clamp(1.55rem,7.4vw,3.6rem)] font-black uppercase leading-[.92] tracking-[0.08em] text-[#f4dfaa] drop-shadow-[0_2px_0_rgba(0,0,0,.78),0_0_14px_rgba(245,211,126,.26)]">Fixture<br class="sm:hidden"> Oficial</span>
+        </div>
+      </div>
+
+      <div class="relative z-[3] mt-4 flex items-center justify-center gap-4 sm:mt-5">
+        <span class="h-px w-14 bg-[#c5a85c]/50"></span>
+        <h3 class="font-serif text-[1.05rem] font-black uppercase tracking-[0.18em] text-[#d6b967] drop-shadow-[0_2px_0_rgba(0,0,0,.48)]">${escapeHtml(torneo.nombre_torneo)}</h3>
+        <span class="h-px w-14 bg-[#c5a85c]/50"></span>
+      </div>
+    </header>
+  `;
 }
 
 function getUpcomingRound(grouped) {

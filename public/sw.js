@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260724-install-banner';
+const CACHE_NAME = 'truco-campeonatos-v20260724-official-card';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/styles.css?v=20260519-tailwind-premium',
-  '/app.js?v=20260724-install-banner',
+  '/app.js?v=20260724-official-card',
   '/manifest.webmanifest',
   '/assets/copa-referencia.png?v=20260519',
   '/assets/pwa/icon-192.png',
