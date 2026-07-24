@@ -7,6 +7,7 @@ const state = {
   currentDetail: null,
   lastFinishedDetail: null,
   selectedHistoryTournament: null,
+  installPromptEvent: null,
 };
 
 const MODES = {
@@ -30,6 +31,7 @@ const MODES = {
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const PUBLIC_MODE = new URLSearchParams(window.location.search).get('public');
+const INSTALL_BANNER_DISMISSED_KEY = 'truco_install_banner_dismissed';
 
 function isAdmin() {
   return Boolean(state.token);
@@ -306,6 +308,7 @@ function renderPublicFixturePremium(detail) {
     .map(([ronda, items]) => ({ ronda, items }));
 
   $('#fixtureContent').innerHTML = `
+    ${renderPwaInstallBanner()}
     <article class="relative overflow-hidden rounded-[28px] border border-[#c5a85c]/30 bg-[linear-gradient(180deg,rgba(9,32,23,.98),rgba(3,15,11,.99))] px-4 pb-6 pt-5 shadow-[0_28px_70px_rgba(0,0,0,0.42),inset_0_0_0_1px_rgba(255,255,255,0.04)] sm:px-6 sm:pb-7 sm:pt-7">
       <div class="pointer-events-none absolute inset-0 opacity-[0.10] [background-image:linear-gradient(90deg,rgba(255,255,255,.30)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.24)_1px,transparent_1px)] [background-size:58px_58px]"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_50%_22%,rgba(245,211,126,.24),rgba(18,71,45,.22)_38%,transparent_72%)]"></div>
@@ -328,6 +331,45 @@ function renderPublicFixturePremium(detail) {
       </div>
     </article>
   `;
+}
+
+function renderPwaInstallBanner() {
+  if (!shouldShowInstallBanner()) {
+    return '';
+  }
+
+  const isAppleMobile = isIosDevice();
+  const buttonLabel = state.installPromptEvent ? 'Instalar' : (isAppleMobile ? 'Como instalar' : 'Instalar');
+  const helperText = isAppleMobile
+    ? 'Compartir > Agregar a pantalla de inicio'
+    : 'Acceso directo al fixture';
+
+  return `
+    <section class="relative z-[2] mb-4 grid grid-cols-[3.25rem_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-[18px] border border-[#c5a85c]/45 bg-[linear-gradient(120deg,rgba(18,21,21,.96),rgba(7,18,13,.95))] p-3 shadow-[0_18px_34px_rgba(0,0,0,.28),inset_0_1px_0_rgba(255,255,255,.06)] sm:mb-5 sm:grid-cols-[3.75rem_minmax(0,1fr)_auto_auto] sm:p-3.5">
+      <img src="/assets/pwa/icon-192.png?v=20260724" alt="" aria-hidden="true" class="h-12 w-12 rounded-[13px] border border-[#c5a85c]/35 object-cover shadow-[0_10px_20px_rgba(0,0,0,.28)] sm:h-14 sm:w-14">
+      <div class="min-w-0">
+        <p class="truncate font-serif text-[1.18rem] font-bold leading-tight text-[#f4dfaa] sm:text-[1.32rem]">Instalá La Cofradía</p>
+        <p class="mt-0.5 text-[.76rem] font-semibold leading-tight text-white/62 sm:text-[.86rem]">${helperText}</p>
+      </div>
+      <button type="button" data-install-pwa class="rounded-[10px] border border-[#f4dfaa]/40 bg-[linear-gradient(180deg,#ffe7a0,#b78228)] px-3.5 py-2 text-[.82rem] font-black text-[#17100a] shadow-[0_10px_20px_rgba(0,0,0,.26),inset_0_1px_0_rgba(255,255,255,.52)] sm:px-4 sm:text-[.9rem]">${buttonLabel}</button>
+      <button type="button" data-dismiss-install-banner aria-label="Cerrar aviso de instalacion" class="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[.03] text-xl leading-none text-[#f4dfaa]/80">×</button>
+    </section>
+  `;
+}
+
+function shouldShowInstallBanner() {
+  return isFixturePublicMode()
+    && !isAdmin()
+    && !isPwaStandalone()
+    && localStorage.getItem(INSTALL_BANNER_DISMISSED_KEY) !== '1';
+}
+
+function isPwaStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function isIosDevice() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent || '');
 }
 
 function getUpcomingRound(grouped) {
@@ -1108,6 +1150,58 @@ function bindEvents() {
     }
     openHistoryTournament(Number(button.dataset.historyOpen));
   });
+  $('#fixtureContent').addEventListener('click', handleFixtureContentClick);
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    state.installPromptEvent = event;
+    if (state.currentDetail) {
+      renderFixture(state.currentDetail);
+    }
+  });
+  window.addEventListener('appinstalled', () => {
+    localStorage.setItem(INSTALL_BANNER_DISMISSED_KEY, '1');
+    state.installPromptEvent = null;
+    toast('La Cofradía instalada.');
+    if (state.currentDetail) {
+      renderFixture(state.currentDetail);
+    }
+  });
+}
+
+async function handleFixtureContentClick(event) {
+  if (event.target.closest('[data-dismiss-install-banner]')) {
+    localStorage.setItem(INSTALL_BANNER_DISMISSED_KEY, '1');
+    if (state.currentDetail) {
+      renderFixture(state.currentDetail);
+    }
+    return;
+  }
+
+  if (event.target.closest('[data-install-pwa]')) {
+    await promptInstallPwa();
+  }
+}
+
+async function promptInstallPwa() {
+  if (state.installPromptEvent) {
+    state.installPromptEvent.prompt();
+    const result = await state.installPromptEvent.userChoice.catch(() => null);
+    state.installPromptEvent = null;
+    if (result?.outcome === 'accepted') {
+      localStorage.setItem(INSTALL_BANNER_DISMISSED_KEY, '1');
+    }
+    if (state.currentDetail) {
+      renderFixture(state.currentDetail);
+    }
+    return;
+  }
+
+  if (isIosDevice()) {
+    toast('iPhone: Compartir > Agregar a pantalla de inicio.');
+    return;
+  }
+
+  toast('En el navegador toca menu > Agregar a pantalla principal.');
 }
 
 async function shareLink() {
