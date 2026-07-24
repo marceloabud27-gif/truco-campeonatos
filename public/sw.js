@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260724-emblem';
+const CACHE_NAME = 'truco-campeonatos-v20260724-luxury-emblem';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/styles.css?v=20260519-tailwind-premium',
-  '/app.js?v=20260724-emblem',
+  '/app.js?v=20260724-luxury-emblem',
   '/manifest.webmanifest',
   '/assets/copa-referencia.png?v=20260519',
   '/assets/pwa/icon-192.png',
