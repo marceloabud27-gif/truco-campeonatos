@@ -1,6 +1,6 @@
 {
-  "name": "Truco Campeonatos",
-  "short_name": "Truco",
+  "name": "La Cofradía",
+  "short_name": "La Cofradía",
   "description": "Fixture y administracion de campeonatos de Truco.",
   "lang": "es",
   "start_url": "/?public=fixture&source=pwa",

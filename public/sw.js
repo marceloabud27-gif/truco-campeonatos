@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-campeonatos-v20260724-luxury-emblem';
+const CACHE_NAME = 'truco-campeonatos-v20260724-la-cofradia';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
