@@ -1,0 +1,27 @@
+{
+  "name": "Truco Campeonatos",
+  "short_name": "Truco",
+  "description": "Fixture y administracion de campeonatos de Truco.",
+  "lang": "es",
+  "start_url": "/?public=fixture&source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#061911",
+  "theme_color": "#0b2a1d",
+  "categories": ["sports", "games", "utilities"],
+  "icons": [
+    {
+      "src": "/assets/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

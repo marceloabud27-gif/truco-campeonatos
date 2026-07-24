@@ -4,6 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Truco Campeonatos</title>
+    <meta name="theme-color" content="#0b2a1d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Truco">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/pwa/favicon-32.png">
+    <link rel="apple-touch-icon" href="/assets/pwa/apple-touch-icon.png">
     <script>
       window.tailwind = window.tailwind || {};
       window.tailwind.config = { corePlugins: { preflight: false } };
@@ -189,5 +197,12 @@
 
     <div id="toast" role="status" aria-live="polite"></div>
     <script src="/app.js?v=20260519-tailwind-premium" type="module"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>
