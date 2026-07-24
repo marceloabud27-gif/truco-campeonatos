@@ -310,11 +310,12 @@ function renderPublicFixturePremium(detail) {
       <div class="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(90deg,rgba(255,255,255,.32)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,.28)_1px,transparent_1px)] [background-size:58px_58px]"></div>
       <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(circle_at_50%_0%,rgba(197,168,92,.34),transparent_62%)]"></div>
 
-      <header class="relative z-[1] grid justify-items-center text-center">
+      <header class="relative z-[1] grid justify-items-center overflow-hidden rounded-[18px] py-1 text-center">
+        ${renderPremiumIdentitySeal()}
         ${renderOfficialPlaque()}
         ${renderPremiumTrophy()}
-        <h3 class="mt-2 font-serif text-[1.9rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_4px_9px_rgba(0,0,0,.55)] sm:mt-3 sm:text-[2.05rem]">${escapeHtml(torneo.nombre_torneo)}</h3>
-        <p class="mt-3 max-w-[24rem] text-center text-[1rem] font-extrabold leading-tight tracking-wide text-white/72 sm:mt-4 sm:text-[1.08rem]">${fixtureModeLabel(torneo.modalidad)}</p>
+        <h3 class="relative z-[2] mt-2 font-serif text-[1.9rem] font-extrabold leading-none text-[#f4dfaa] drop-shadow-[0_4px_9px_rgba(0,0,0,.55)] sm:mt-3 sm:text-[2.05rem]">${escapeHtml(torneo.nombre_torneo)}</h3>
+        <p class="relative z-[2] mt-3 max-w-[24rem] text-center text-[1rem] font-extrabold leading-tight tracking-wide text-white/72 sm:mt-4 sm:text-[1.08rem]">${fixtureModeLabel(torneo.modalidad)}</p>
       </header>
 
       <div class="relative z-[1] mt-7 sm:mt-8">
@@ -343,7 +344,7 @@ function getUpcomingRound(grouped) {
 
 function renderOfficialPlaque() {
   return `
-    <div class="relative grid min-h-[58px] w-[82%] max-w-[32rem] place-items-center rounded-[12px] bg-[linear-gradient(100deg,#7d4d18_0%,#c99133_18%,#ffe9a3_45%,#d0a14c_60%,#9a5e1d_100%)] px-6 py-3 text-[#160f08] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.5),inset_0_-2px_0_rgba(70,43,13,.34),inset_0_0_0_1px_rgba(255,242,184,.28)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)] sm:min-h-[70px] sm:w-[78%] sm:px-8">
+    <div class="relative z-[2] grid min-h-[58px] w-[82%] max-w-[32rem] place-items-center rounded-[12px] bg-[linear-gradient(100deg,#7d4d18_0%,#c99133_18%,#ffe9a3_45%,#d0a14c_60%,#9a5e1d_100%)] px-6 py-3 text-[#160f08] shadow-[0_18px_28px_rgba(0,0,0,.38),inset_0_2px_0_rgba(255,255,255,.5),inset_0_-2px_0_rgba(70,43,13,.34),inset_0_0_0_1px_rgba(255,242,184,.28)] [clip-path:polygon(4%_0,96%_0,96%_18%,100%_18%,100%_82%,96%_82%,96%_100%,4%_100%,4%_82%,0_82%,0_18%,4%_18%)] sm:min-h-[70px] sm:w-[78%] sm:px-8">
       <span class="pointer-events-none absolute inset-x-8 top-2 h-px bg-white/45"></span>
       <span class="pointer-events-none absolute inset-x-10 bottom-2 h-px bg-[#5b3713]/35"></span>
       <span class="absolute left-4 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#6c471a]/55 shadow-[inset_0_1px_1px_rgba(255,255,255,.42),0_1px_2px_rgba(0,0,0,.24)]"></span>
@@ -353,13 +354,25 @@ function renderOfficialPlaque() {
   `;
 }
 
+function renderPremiumIdentitySeal() {
+  return `
+    <div class="pointer-events-none absolute left-1/2 top-[-1.65rem] z-[1] h-[13.25rem] w-[13.25rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,211,126,.24),rgba(25,82,51,.14)_42%,transparent_68%)] opacity-90 blur-[1px] sm:h-[16rem] sm:w-[16rem]"></div>
+    <img
+      src="/assets/pwa/icon-512.png?v=20260724"
+      alt=""
+      aria-hidden="true"
+      class="pointer-events-none absolute left-1/2 top-[-2.25rem] z-[1] h-[12.5rem] w-[12.5rem] -translate-x-1/2 rounded-[2rem] object-contain opacity-[0.18] mix-blend-screen drop-shadow-[0_24px_42px_rgba(197,168,92,.32)] sm:h-[15rem] sm:w-[15rem]"
+    >
+  `;
+}
+
 function renderPremiumTrophy() {
   return `
     <img
       src="/assets/copa-referencia.png?v=20260519"
       alt=""
       aria-hidden="true"
-      class="mt-5 h-[74px] w-auto object-contain drop-shadow-[0_13px_16px_rgba(0,0,0,.36)] sm:mt-6 sm:h-[84px]"
+      class="relative z-[2] mt-5 h-[74px] w-auto object-contain drop-shadow-[0_13px_16px_rgba(0,0,0,.36)] sm:mt-6 sm:h-[84px]"
     >
   `;
 }
