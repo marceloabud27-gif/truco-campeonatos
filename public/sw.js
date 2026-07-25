@@ -1,11 +1,11 @@
-const CACHE_NAME = 'truco-campeonatos-v20260724-unified-gold';
+const CACHE_NAME = 'truco-campeonatos-v20260724-admin-luxury';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/styles.css?v=20260519-tailwind-premium',
-  '/app.js?v=20260724-unified-gold',
-  '/assets/fixture-oficial-card.png?v=20260724',
+  '/app.js?v=20260724-admin-luxury',
+  '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/manifest.webmanifest',
   '/assets/copa-referencia.png?v=20260519',
   '/assets/pwa/icon-192.png',

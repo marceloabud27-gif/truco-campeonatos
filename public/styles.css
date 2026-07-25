@@ -2160,3 +2160,116 @@ dialog::backdrop {
     margin: 0 auto;
   }
 }
+
+/* Admin premium polish: same visual family as the public fixture, without changing behavior. */
+.fixture-public-mode:not(.spectator-fixture-only) .section-title {
+  width: min(100%, 1040px);
+  margin: 0 auto 18px;
+  align-items: end;
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .section-title h2,
+.fixture-public-mode:not(.spectator-fixture-only) .section-title label {
+  color: #f2dfac;
+  font-family: Georgia, "Times New Roman", serif;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.42);
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) #fixtureTournamentSelect,
+.fixture-public-mode:not(.spectator-fixture-only) #positionsTournamentSelect {
+  min-height: 58px;
+  border: 1px solid rgba(197, 168, 92, 0.78);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(36, 46, 45, 0.98), rgba(20, 27, 28, 0.98));
+  color: #f4e2b4;
+  font-size: clamp(1.05rem, 3.2vw, 1.24rem);
+  font-weight: 900;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 32px rgba(0, 0, 0, 0.28);
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) #fixtureTournamentSelect option,
+.fixture-public-mode:not(.spectator-fixture-only) #positionsTournamentSelect option {
+  background: #151b1b;
+  color: #f4e2b4;
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .title-actions .danger {
+  min-height: 52px;
+  border: 1px solid rgba(255, 190, 118, 0.24);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #d93a3a, #9d1f25);
+  color: #fff4df;
+  font-weight: 950;
+  box-shadow:
+    0 14px 26px rgba(116, 15, 20, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .cup-board {
+  padding: 18px;
+  border-color: rgba(197, 168, 92, 0.34);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(9, 32, 23, 0.98), rgba(3, 15, 11, 0.99)),
+    radial-gradient(circle at 50% 14%, rgba(245, 211, 126, 0.2), transparent 42%);
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .cup-board > header {
+  width: min(100%, 860px);
+  margin: 0 auto;
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel,
+.fixture-public-mode:not(.spectator-fixture-only) .cup-round-card,
+.fixture-public-mode:not(.spectator-fixture-only) .panel,
+.fixture-public-mode:not(.spectator-fixture-only) .card {
+  border-color: rgba(159, 111, 42, 0.62);
+  background:
+    linear-gradient(180deg, rgba(32, 36, 37, 0.98), rgba(17, 20, 21, 0.99));
+  color: #f6ead0;
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .bottom-nav {
+  left: 50%;
+  right: auto;
+  bottom: 12px;
+  width: min(calc(100% - 28px), 720px);
+  transform: translateX(-50%);
+  gap: 8px;
+  border: 1px solid rgba(197, 168, 92, 0.36);
+  border-radius: 12px;
+  background: rgba(2, 20, 13, 0.96);
+  box-shadow:
+    0 -12px 34px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .nav-item {
+  border-radius: 8px;
+}
+
+.fixture-public-mode:not(.spectator-fixture-only) .nav-item.active {
+  border: 1px solid rgba(197, 168, 92, 0.34);
+  background:
+    linear-gradient(180deg, rgba(126, 107, 40, 0.34), rgba(17, 22, 14, 0.96));
+  color: #f4e2b4;
+}
+
+@media (max-width: 720px) {
+  .fixture-public-mode:not(.spectator-fixture-only) .section-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .title-actions {
+    width: 100%;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board {
+    padding: 12px;
+    border-radius: 22px;
+  }
+}

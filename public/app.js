@@ -281,16 +281,7 @@ function renderFixture(detail) {
 
   $('#fixtureContent').innerHTML = `
     <div class="cup-board">
-      <div class="cup-frame top-left"></div>
-      <div class="cup-frame top-right"></div>
-      <div class="cup-frame bottom-left"></div>
-      <div class="cup-frame bottom-right"></div>
-      <header class="cup-header">
-        ${renderOfficialPlaque()}
-        ${renderPremiumTrophy()}
-        <h3>${torneo.nombre_torneo}</h3>
-        <p>${fixtureModeLabel(torneo.modalidad)}</p>
-      </header>
+      ${renderOfficialShowpiece(torneo)}
       ${upcoming}
       <div class="cup-rounds">
         ${rounds}
@@ -369,7 +360,7 @@ function renderOfficialShowpiece(torneo) {
   return `
     <header class="relative z-[1] overflow-hidden rounded-[24px] border border-[#c5a85c]/55 bg-[#06150f] p-1.5 shadow-[0_22px_48px_rgba(0,0,0,.38),inset_0_0_0_1px_rgba(255,245,190,.08)] sm:rounded-[28px] sm:p-2">
       <img
-        src="/assets/fixture-oficial-card.png?v=20260724"
+        src="/assets/fixture-oficial-card.png?v=20260724-admin-luxury"
         alt="Fixture oficial ${escapeHtml(torneo.nombre_torneo)}"
         class="block aspect-[641/475] w-full rounded-[20px] object-cover shadow-[inset_0_0_0_1px_rgba(255,245,190,.08)] sm:rounded-[24px]"
         loading="eager"
