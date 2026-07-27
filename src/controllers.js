@@ -7,7 +7,9 @@ const {
 } = require('./fixtures');
 
 const VALID_MODALIDADES = new Set(['americano_parejas_fijas', 'americano_individual', 'americano_individual_1v1']);
-const MIN_PAREJAS_FIJAS = 5;
+const MIN_PAREJAS_FIJAS = 4;
+const PUNTAJE_PAREJAS_EXPRESS = 18;
+const PUNTOS_VICTORIA_PAREJAS = 3;
 const MIN_JUGADORES_INDIVIDUAL = 7;
 const MIN_JUGADORES_1V1 = 2;
 
@@ -138,6 +140,16 @@ function partidoPublico(torneo, partido) {
   };
 }
 
+function assertPairScore(value, label) {
+  const number = Number(value);
+  if (!Number.isInteger(number) || number < 0 || number > PUNTAJE_PAREJAS_EXPRESS) {
+    const error = new Error(`${label} debe ser un entero entre 0 y ${PUNTAJE_PAREJAS_EXPRESS}.`);
+    error.statusCode = 400;
+    throw error;
+  }
+  return number;
+}
+
 function responderDetalleTorneo(req, res, detail) {
   if (req.admin) {
     return res.json(detail);
@@ -239,7 +251,7 @@ async function obtenerTorneo(req, res, next) {
           `SELECT *
              FROM parejas
             WHERE id_torneo = $1
-            ORDER BY puntos_totales DESC, partidos_ganados DESC, partidos_perdidos ASC, nombre_equipo ASC`,
+            ORDER BY nombre_equipo ASC`,
           [idTorneo]
         ),
         db.query(
@@ -254,7 +266,11 @@ async function obtenerTorneo(req, res, next) {
           [idTorneo]
         ),
       ]);
-      return responderDetalleTorneo(req, res, { torneo, participantes: participantes.rows, partidos: partidos.rows });
+      return responderDetalleTorneo(req, res, {
+        torneo,
+        participantes: ordenarParejas(participantes.rows, partidos.rows),
+        partidos: partidos.rows,
+      });
     }
 
     if (torneo.modalidad === 'americano_individual_1v1') {
@@ -398,6 +414,18 @@ async function generarFixture(req, res, next) {
 
       if (torneo.modalidad === 'americano_parejas_fijas') {
         await client.query('DELETE FROM partidos_parejas WHERE id_torneo = $1', [idTorneo]);
+        await client.query(
+          `UPDATE parejas
+              SET partidos_jugados = 0,
+                  partidos_ganados = 0,
+                  partidos_perdidos = 0,
+                  puntos_totales = 0,
+                  puntos_a_favor = 0,
+                  puntos_en_contra = 0,
+                  diferencia_puntos = 0
+            WHERE id_torneo = $1`,
+          [idTorneo]
+        );
         const parejasResult = await client.query('SELECT id, nombre_equipo FROM parejas WHERE id_torneo = $1 ORDER BY id', [idTorneo]);
         const partidos = generarRoundRobinParejas(parejasResult.rows);
         for (const partido of partidos) {
@@ -448,7 +476,19 @@ async function generarFixture(req, res, next) {
 async function cargarResultadoParejas(req, res, next) {
   try {
     const idPartido = Number(req.params.id);
-    const ganadorId = Number(req.body.ganador_id);
+    const puntajePareja1 = assertPairScore(req.body.puntaje_pareja1, 'puntaje_pareja1');
+    const puntajePareja2 = assertPairScore(req.body.puntaje_pareja2, 'puntaje_pareja2');
+
+    if (puntajePareja1 === puntajePareja2) {
+      const error = new Error('No se permiten empates en parejas. Carga un ganador.');
+      error.statusCode = 400;
+      throw error;
+    }
+    if (Math.max(puntajePareja1, puntajePareja2) !== PUNTAJE_PAREJAS_EXPRESS) {
+      const error = new Error(`El ganador debe llegar a ${PUNTAJE_PAREJAS_EXPRESS} puntos.`);
+      error.statusCode = 400;
+      throw error;
+    }
 
     const partido = await db.withTransaction(async (client) => {
       const partidoResult = await client.query('SELECT * FROM partidos_parejas WHERE id = $1 FOR UPDATE', [idPartido]);
@@ -463,25 +503,25 @@ async function cargarResultadoParejas(req, res, next) {
         error.statusCode = 400;
         throw error;
       }
-      if (![actual.id_pareja1, actual.id_pareja2].includes(ganadorId)) {
-        const error = new Error('El ganador debe pertenecer al partido.');
-        error.statusCode = 400;
-        throw error;
-      }
 
       if (actual.estado === 'finalizado' && actual.ganador_id) {
         const perdedorAnterior = actual.ganador_id === actual.id_pareja1 ? actual.id_pareja2 : actual.id_pareja1;
+        const puntosVictoriaAnterior = actual.puntaje_pareja1 == null || actual.puntaje_pareja2 == null
+          ? 1
+          : PUNTOS_VICTORIA_PAREJAS;
         await client.query(
           `UPDATE parejas
-              SET puntos_totales = puntos_totales - 1,
+              SET puntos_totales = puntos_totales - $1,
                   partidos_ganados = partidos_ganados - 1
-            WHERE id = $1`,
-          [actual.ganador_id]
+            WHERE id = $2`,
+          [puntosVictoriaAnterior, actual.ganador_id]
         );
         await client.query(
           'UPDATE parejas SET partidos_perdidos = partidos_perdidos - 1 WHERE id = $1',
           [perdedorAnterior]
         );
+        await aplicarDeltaPareja(client, actual.id_pareja1, -(actual.puntaje_pareja1 || 0), -(actual.puntaje_pareja2 || 0));
+        await aplicarDeltaPareja(client, actual.id_pareja2, -(actual.puntaje_pareja2 || 0), -(actual.puntaje_pareja1 || 0));
       } else {
         await client.query(
           'UPDATE parejas SET partidos_jugados = partidos_jugados + 1 WHERE id IN ($1, $2)',
@@ -489,25 +529,31 @@ async function cargarResultadoParejas(req, res, next) {
         );
       }
 
+      const ganadorId = puntajePareja1 > puntajePareja2 ? actual.id_pareja1 : actual.id_pareja2;
       const perdedorId = ganadorId === actual.id_pareja1 ? actual.id_pareja2 : actual.id_pareja1;
       await client.query(
         `UPDATE parejas
-            SET puntos_totales = puntos_totales + 1,
+            SET puntos_totales = puntos_totales + $1,
                 partidos_ganados = partidos_ganados + 1
-          WHERE id = $1`,
-        [ganadorId]
+          WHERE id = $2`,
+        [PUNTOS_VICTORIA_PAREJAS, ganadorId]
       );
       await client.query(
         'UPDATE parejas SET partidos_perdidos = partidos_perdidos + 1 WHERE id = $1',
         [perdedorId]
       );
+      await aplicarDeltaPareja(client, actual.id_pareja1, puntajePareja1, puntajePareja2);
+      await aplicarDeltaPareja(client, actual.id_pareja2, puntajePareja2, puntajePareja1);
 
       const updated = await client.query(
         `UPDATE partidos_parejas
-            SET ganador_id = $1, estado = 'finalizado'
-          WHERE id = $2
+            SET ganador_id = $1,
+                puntaje_pareja1 = $2,
+                puntaje_pareja2 = $3,
+                estado = 'finalizado'
+          WHERE id = $4
           RETURNING *`,
-        [ganadorId, idPartido]
+        [ganadorId, puntajePareja1, puntajePareja2, idPartido]
       );
       return updated.rows[0];
     });
@@ -565,6 +611,17 @@ async function cargarResultadoIndividual(req, res, next) {
   } catch (error) {
     return next(error);
   }
+}
+
+async function aplicarDeltaPareja(client, parejaId, puntosFavor, puntosContra) {
+  await client.query(
+    `UPDATE parejas
+        SET puntos_a_favor = puntos_a_favor + $1,
+            puntos_en_contra = puntos_en_contra + $2,
+            diferencia_puntos = diferencia_puntos + $3
+      WHERE id = $4`,
+    [puntosFavor, puntosContra, puntosFavor - puntosContra, parejaId]
+  );
 }
 
 async function cargarResultadoIndividual1v1(req, res, next) {
@@ -674,16 +731,28 @@ async function finalizarTorneo(req, res, next) {
       }
 
       if (torneo.modalidad === 'americano_parejas_fijas') {
-        const campeonResult = await client.query(
-          `SELECT id, nombre_equipo AS nombre
+        const parejasResult = await client.query(
+          `SELECT *
              FROM parejas
             WHERE id_torneo = $1
-            ORDER BY puntos_totales DESC, partidos_ganados DESC, partidos_perdidos ASC, nombre_equipo ASC
-            LIMIT 1`,
+            ORDER BY nombre_equipo ASC`,
           [idTorneo]
         );
+        const partidosResult = await client.query(
+          `SELECT *
+             FROM partidos_parejas
+            WHERE id_torneo = $1
+            ORDER BY ronda, id`,
+          [idTorneo]
+        );
+        const campeon = ordenarParejas(parejasResult.rows, partidosResult.rows)[0];
         await guardarHistorialPosiciones(client, torneo);
-        return cerrarConCampeon(client, idTorneo, campeonResult.rows[0], 'pareja');
+        return cerrarConCampeon(
+          client,
+          idTorneo,
+          campeon ? { id: campeon.id, nombre: campeon.nombre_equipo } : null,
+          'pareja'
+        );
       }
 
       const campeonResult = await client.query(
@@ -721,21 +790,32 @@ async function guardarHistorialPosiciones(client, torneo) {
   await client.query('DELETE FROM historial_posiciones WHERE id_torneo = $1', [torneo.id]);
 
   if (torneo.modalidad === 'americano_parejas_fijas') {
-    const posiciones = await client.query(
+    const [posiciones, partidos] = await Promise.all([
+      client.query(
       `SELECT id, nombre_equipo, jugador_1, jugador_2, partidos_jugados,
-              partidos_ganados, partidos_perdidos, puntos_totales
+              partidos_ganados, partidos_perdidos, puntos_totales,
+              puntos_a_favor, puntos_en_contra, diferencia_puntos
          FROM parejas
         WHERE id_torneo = $1
-        ORDER BY puntos_totales DESC, partidos_ganados DESC, partidos_perdidos ASC, nombre_equipo ASC`,
+        ORDER BY nombre_equipo ASC`,
       [torneo.id]
-    );
+      ),
+      client.query(
+      `SELECT *
+         FROM partidos_parejas
+        WHERE id_torneo = $1
+        ORDER BY ronda, id`,
+      [torneo.id]
+      ),
+    ]);
 
-    for (const [index, item] of posiciones.rows.entries()) {
+    for (const [index, item] of ordenarParejas(posiciones.rows, partidos.rows).entries()) {
       await client.query(
         `INSERT INTO historial_posiciones
          (id_torneo, posicion, participante_tipo, participante_id, nombre, detalle,
-          partidos_jugados, partidos_ganados, partidos_perdidos, puntos_totales)
-         VALUES ($1, $2, 'pareja', $3, $4, $5, $6, $7, $8, $9)`,
+          partidos_jugados, partidos_ganados, partidos_perdidos, puntos_totales,
+          puntos_a_favor, puntos_en_contra, diferencia_puntos)
+         VALUES ($1, $2, 'pareja', $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
         [
           torneo.id,
           index + 1,
@@ -746,6 +826,9 @@ async function guardarHistorialPosiciones(client, torneo) {
           item.partidos_ganados,
           item.partidos_perdidos,
           item.puntos_totales,
+          item.puntos_a_favor,
+          item.puntos_en_contra,
+          item.diferencia_puntos,
         ]
       );
     }
@@ -793,6 +876,41 @@ async function guardarHistorialPosiciones(client, torneo) {
       ]
     );
   }
+}
+
+function ordenarParejas(parejas, partidos) {
+  return [...parejas].sort((a, b) => (
+    b.puntos_totales - a.puntos_totales
+    || b.diferencia_puntos - a.diferencia_puntos
+    || b.puntos_a_favor - a.puntos_a_favor
+    || compararEnfrentamientoDirectoParejas(a.id, b.id, partidos)
+    || b.partidos_ganados - a.partidos_ganados
+    || a.partidos_perdidos - b.partidos_perdidos
+    || a.nombre_equipo.localeCompare(b.nombre_equipo)
+  ));
+}
+
+function compararEnfrentamientoDirectoParejas(idA, idB, partidos) {
+  const directo = partidos.find((partido) => (
+    partido.estado === 'finalizado'
+    && !partido.es_fecha_libre
+    && (
+      (partido.id_pareja1 === idA && partido.id_pareja2 === idB)
+      || (partido.id_pareja1 === idB && partido.id_pareja2 === idA)
+    )
+  ));
+
+  if (!directo) {
+    return 0;
+  }
+
+  if (directo.ganador_id === idA) {
+    return -1;
+  }
+  if (directo.ganador_id === idB) {
+    return 1;
+  }
+  return 0;
 }
 
 function ordenarJugadoresIndividuales(jugadores, partidos) {

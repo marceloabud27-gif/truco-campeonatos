@@ -12,9 +12,9 @@ const state = {
 
 const MODES = {
   americano_parejas_fijas: {
-    min: 5,
-    initialRows: 5,
-    summary: 'Carga cada pareja en una fila: nombre del equipo y sus 2 jugadores.',
+    min: 4,
+    initialRows: 4,
+    summary: 'Carga parejas fijas. Todos contra todos, 2 mesas, partidos a 18 puntos, victoria 3 pts.',
   },
   americano_individual: {
     min: 7,
@@ -546,7 +546,7 @@ function fixtureRowForMode(modalidad, partido, index) {
 
 function fixtureModeLabel(modalidad) {
   if (modalidad === 'americano_parejas_fijas') {
-    return 'Americano por parejas fijas';
+    return 'Campeonato Paraguayo Express por Parejas';
   }
   if (modalidad === 'americano_individual_1v1') {
     return 'Americano individual 1 vs 1';
@@ -593,10 +593,10 @@ function pairFixtureRow(partido, index) {
         ${mesaBadge(index)}
         ${adminOnlyFixtureMeta(statusBadge(partido.estado))}
       </div>
-      <div class="match-body">
-        <span class="team-name">${partido.pareja1}</span>
+      <div class="match-body ${canShowFixtureResults() && partido.estado === 'finalizado' ? 'has-scoreboard' : ''}">
+        ${teamScoreCell(partido.pareja1, partido.puntaje_pareja1, partido.estado)}
         <span class="versus-cell"><span>VS</span><small>versus</small></span>
-        <span class="team-name">${partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2}</span>
+        ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2, partido.puntaje_pareja2, partido.estado)}
       </div>
       ${adminOnlyFixtureMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
     </article>
@@ -662,13 +662,13 @@ function renderPositions(detail) {
   const { torneo, participantes } = detail;
   const rows = participantes.map((item, index) => {
     if (torneo.modalidad === 'americano_parejas_fijas') {
-      return `<tr><td>${index + 1}</td><td>${item.nombre_equipo}</td><td>${item.jugador_1} / ${item.jugador_2}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_totales}</td><td>-</td></tr>`;
+      return `<tr><td>${index + 1}</td><td>${item.nombre_equipo}</td><td>${item.jugador_1} / ${item.jugador_2}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td><td>${item.diferencia_puntos}</td><td>${item.puntos_totales}</td></tr>`;
     }
     return `<tr><td>${index + 1}</td><td>${item.nombre}</td><td>${item.alias || '-'}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td></tr>`;
   }).join('');
 
   const head = torneo.modalidad === 'americano_parejas_fijas'
-    ? '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>'
+    ? '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>PF</th><th>PC</th><th>DIF</th><th>PTS</th>'
     : '<th>#</th><th>Jugador</th><th>Alias</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>';
 
   $('#positionsContent').innerHTML = `
@@ -678,7 +678,7 @@ function renderPositions(detail) {
         <tbody>${rows || '<tr><td colspan="6">Sin participantes</td></tr>'}</tbody>
       </table>
     </div>
-    ${torneo.modalidad !== 'americano_parejas_fijas' ? '<p class="meta standings-note">Desempate: puntos totales, menor contra y luego resultado directo entre jugadores enfrentados.</p>' : ''}
+    <p class="meta standings-note">${torneo.modalidad === 'americano_parejas_fijas' ? 'Desempate: PTS, diferencia, puntos a favor y resultado directo.' : 'Desempate: puntos totales, menor contra y luego resultado directo entre jugadores enfrentados.'}</p>
   `;
 }
 
@@ -687,8 +687,10 @@ function getSortedParticipants(detail) {
   if (detail.torneo.modalidad === 'americano_parejas_fijas') {
     return participantes.sort((a, b) => (
       b.puntos_totales - a.puntos_totales
+      || b.diferencia_puntos - a.diferencia_puntos
+      || b.puntos_a_favor - a.puntos_a_favor
+      || comparePairHeadToHead(a.id, b.id, detail.partidos)
       || b.partidos_ganados - a.partidos_ganados
-      || a.partidos_perdidos - b.partidos_perdidos
       || a.nombre_equipo.localeCompare(b.nombre_equipo)
     ));
   }
@@ -727,6 +729,28 @@ function compareHeadToHead(idA, idB, partidos) {
   return pointsB - pointsA;
 }
 
+function comparePairHeadToHead(idA, idB, partidos) {
+  const direct = partidos.find((partido) => (
+    partido.estado === 'finalizado'
+    && !partido.es_fecha_libre
+    && (
+      (partido.id_pareja1 === idA && partido.id_pareja2 === idB)
+      || (partido.id_pareja1 === idB && partido.id_pareja2 === idA)
+    )
+  ));
+
+  if (!direct) {
+    return 0;
+  }
+  if (direct.ganador_id === idA) {
+    return -1;
+  }
+  if (direct.ganador_id === idB) {
+    return 1;
+  }
+  return 0;
+}
+
 function getPlayerSide(partido, playerId) {
   if (partido.id_jugador_1 === playerId) {
     return 1;
@@ -760,7 +784,7 @@ function maybeShowTournamentFinished(detail) {
   $('#winnerTitle').textContent = `Ganador: ${winnerName}`;
   $('#winnerMessage').textContent = isIndividual
     ? `${winnerName} se lleva La Cofradía-2026 con ${winner.puntos_a_favor} puntos. En empate, manda menor contra y despues el resultado directo.`
-    : `${winnerName} se lleva La Cofradía-2026 con ${winner.puntos_totales} puntos.`;
+    : `${winnerName} se lleva La Cofradia-2026 con ${winner.puntos_totales} PTS y diferencia ${winner.diferencia_puntos}.`;
   $('#lastPlaceMessage').textContent = isIndividual
     ? `${lastName}: Bienvenido a la Turma da Monica`
     : '';
@@ -773,7 +797,7 @@ function renderTournamentHighlights(detail, sorted) {
   const top = sorted.slice(0, 3);
   const bestAttack = isIndividual
     ? [...sorted].sort((a, b) => b.puntos_a_favor - a.puntos_a_favor)[0]
-    : [...sorted].sort((a, b) => b.puntos_totales - a.puntos_totales)[0];
+    : [...sorted].sort((a, b) => b.puntos_a_favor - a.puntos_a_favor)[0];
   const bestDefense = isIndividual
     ? [...sorted].sort((a, b) => a.puntos_en_contra - b.puntos_en_contra)[0]
     : null;
@@ -818,10 +842,19 @@ function renderLoadMatches(detail, preferredMatchId = null) {
     $('#matchSelect').value = String(preferredMatchId);
   }
 
-  $('#pairResultFields').classList.toggle('is-hidden', torneo.modalidad !== 'americano_parejas_fijas');
-  $('#individualResultFields').classList.toggle('is-hidden', torneo.modalidad === 'americano_parejas_fijas');
-  $('#scoreOneLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 1' : 'Dupla 1';
-  $('#scoreTwoLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 2' : 'Dupla 2';
+  $('#pairResultFields').classList.add('is-hidden');
+  $('#individualResultFields').classList.remove('is-hidden');
+  if (torneo.modalidad === 'americano_parejas_fijas') {
+    $('#scoreOneLabel').textContent = 'Pareja 1';
+    $('#scoreTwoLabel').textContent = 'Pareja 2';
+    $('#scoreOne').max = '18';
+    $('#scoreTwo').max = '18';
+  } else {
+    $('#scoreOneLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 1' : 'Dupla 1';
+    $('#scoreTwoLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 2' : 'Dupla 2';
+    $('#scoreOne').max = '40';
+    $('#scoreTwo').max = '40';
+  }
   updateWinnerOptions();
   updateMatchStatusHint();
 }
@@ -852,9 +885,22 @@ function updateMatchStatusHint() {
   const selected = getSelectedMatch();
   const hint = $('#matchStatusHint');
   if (!selected) {
+    $('#scoreOne').value = '';
+    $('#scoreTwo').value = '';
     hint.textContent = 'No hay partidos pendientes para cargar.';
     hint.classList.remove('done');
     return;
+  }
+
+  if (state.currentDetail?.torneo.modalidad === 'americano_parejas_fijas') {
+    $('#scoreOne').value = selected.puntaje_pareja1 ?? '';
+    $('#scoreTwo').value = selected.puntaje_pareja2 ?? '';
+  } else if (state.currentDetail?.torneo.modalidad === 'americano_individual_1v1') {
+    $('#scoreOne').value = selected.puntaje_jugador_1 ?? '';
+    $('#scoreTwo').value = selected.puntaje_jugador_2 ?? '';
+  } else {
+    $('#scoreOne').value = selected.puntaje_dupla1 ?? '';
+    $('#scoreTwo').value = selected.puntaje_dupla2 ?? '';
   }
 
   if (selected.estado === 'finalizado') {
@@ -863,7 +909,9 @@ function updateMatchStatusHint() {
     return;
   }
 
-  hint.textContent = 'Pendiente de carga.';
+  hint.textContent = state.currentDetail?.torneo.modalidad === 'americano_parejas_fijas'
+    ? 'Carga marcador a 18. No se permiten empates.'
+    : 'Pendiente de carga.';
   hint.classList.remove('done');
 }
 
@@ -898,12 +946,12 @@ async function renderHistory() {
 function renderDetailPositionsTable(detail) {
   const rows = getSortedParticipants(detail).map((item, index) => {
     if (detail.torneo.modalidad === 'americano_parejas_fijas') {
-      return `<tr><td>${index + 1}</td><td>${item.nombre_equipo}</td><td>${item.jugador_1} / ${item.jugador_2}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_totales}</td><td>-</td></tr>`;
+      return `<tr><td>${index + 1}</td><td>${item.nombre_equipo}</td><td>${item.jugador_1} / ${item.jugador_2}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td><td>${item.diferencia_puntos}</td><td>${item.puntos_totales}</td></tr>`;
     }
     return `<tr><td>${index + 1}</td><td>${item.nombre}</td><td>${item.alias || '-'}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td></tr>`;
   }).join('');
   const head = detail.torneo.modalidad === 'americano_parejas_fijas'
-    ? '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>'
+    ? '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>PF</th><th>PC</th><th>DIF</th><th>PTS</th>'
     : '<th>#</th><th>Jugador</th><th>Alias</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>';
 
   return `
@@ -924,10 +972,10 @@ function renderHistoryPositions(torneo) {
   const isIndividual = torneo.modalidad !== 'americano_parejas_fijas';
   const head = isIndividual
     ? '<th>#</th><th>Jugador</th><th>Alias</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>'
-    : '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>Puntos</th><th>Contra</th>';
+    : '<th>#</th><th>Equipo</th><th>Jugadores</th><th>PJ</th><th>PG</th><th>PP</th><th>PF</th><th>PC</th><th>DIF</th><th>PTS</th>';
   const rows = torneo.posiciones.map((item) => isIndividual
     ? `<tr><td>${item.posicion}</td><td>${item.nombre}</td><td>${item.detalle || '-'}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td></tr>`
-    : `<tr><td>${item.posicion}</td><td>${item.nombre}</td><td>${item.detalle || '-'}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_totales}</td><td>-</td></tr>`
+    : `<tr><td>${item.posicion}</td><td>${item.nombre}</td><td>${item.detalle || '-'}</td><td>${item.partidos_jugados}</td><td>${item.partidos_ganados}</td><td>${item.partidos_perdidos}</td><td>${item.puntos_a_favor}</td><td>${item.puntos_en_contra}</td><td>${item.diferencia_puntos}</td><td>${item.puntos_totales}</td></tr>`
   ).join('');
 
   return `
@@ -963,10 +1011,10 @@ function tableTextFromDetail(detail) {
   const isIndividual = detail.torneo.modalidad !== 'americano_parejas_fijas';
   const headers = isIndividual
     ? ['#', 'Jugador', 'PJ', 'PG', 'PP', 'Pts', 'Contra']
-    : ['#', 'Equipo', 'PJ', 'PG', 'PP', 'Pts', 'Contra'];
+    : ['#', 'Equipo', 'PJ', 'PG', 'PP', 'PF', 'PC', 'DIF', 'PTS'];
   const rows = sorted.map((item, index) => isIndividual
     ? [index + 1, item.alias || item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra]
-    : [index + 1, item.nombre_equipo, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_totales, '-']
+    : [index + 1, item.nombre_equipo, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra, item.diferencia_puntos, item.puntos_totales]
   );
   return buildWhatsappTable(detail.torneo.nombre_torneo, headers, rows);
 }
@@ -976,10 +1024,10 @@ function tableTextFromHistory(torneo) {
   const isIndividual = torneo.modalidad !== 'americano_parejas_fijas';
   const headers = isIndividual
     ? ['#', 'Jugador', 'PJ', 'PG', 'PP', 'Pts', 'Contra']
-    : ['#', 'Equipo', 'PJ', 'PG', 'PP', 'Pts', 'Contra'];
+    : ['#', 'Equipo', 'PJ', 'PG', 'PP', 'PF', 'PC', 'DIF', 'PTS'];
   const rows = (torneo.posiciones || []).map((item) => isIndividual
     ? [item.posicion, item.detalle || item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra]
-    : [item.posicion, item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_totales, '-']
+    : [item.posicion, item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra, item.diferencia_puntos, item.puntos_totales]
   );
   return buildWhatsappTable(`${torneo.nombre_torneo}\nGanador: ${torneo.campeon_nombre || '-'}`, headers, rows);
 }
@@ -1042,7 +1090,7 @@ function parseParticipants(mode) {
     })).filter((pareja) => pareja.nombre_equipo || pareja.jugador_1 || pareja.jugador_2);
 
     if (parejas.length < MODES[mode].min) {
-      throw new Error('El torneo de parejas fijas empieza desde 5 parejas.');
+      throw new Error('El Campeonato Paraguayo Express empieza desde 4 parejas.');
     }
     parejas.forEach((pareja, index) => {
       if (!pareja.nombre_equipo || !pareja.jugador_1 || !pareja.jugador_2) {
@@ -1345,9 +1393,20 @@ async function saveResult(event) {
 
   try {
     if (detail.torneo.modalidad === 'americano_parejas_fijas') {
+      const scoreOne = Number($('#scoreOne').value);
+      const scoreTwo = Number($('#scoreTwo').value);
+      if (scoreOne === scoreTwo) {
+        throw new Error('No se permiten empates. Una pareja debe ganar.');
+      }
+      if (Math.max(scoreOne, scoreTwo) !== 18) {
+        throw new Error('El ganador debe llegar a 18 puntos.');
+      }
       await api(`/api/partidos/parejas/${match.id}/resultado`, {
         method: 'POST',
-        body: JSON.stringify({ ganador_id: Number($('#winnerSelect').value) }),
+        body: JSON.stringify({
+          puntaje_pareja1: scoreOne,
+          puntaje_pareja2: scoreTwo,
+        }),
       });
     } else if (detail.torneo.modalidad === 'americano_individual_1v1') {
       await api(`/api/partidos/individuales-1v1/${match.id}/resultado`, {

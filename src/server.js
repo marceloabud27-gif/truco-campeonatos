@@ -5,6 +5,7 @@ const cors = require('cors');
 const express = require('express');
 const auth = require('./auth');
 const controllers = require('./controllers');
+const db = require('./db');
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
@@ -46,6 +47,13 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Truco Campeonatos corriendo en http://localhost:${port}`);
-});
+db.ensureSchema()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Truco Campeonatos corriendo en http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('No se pudo preparar la base de datos.', error);
+    process.exit(1);
+  });

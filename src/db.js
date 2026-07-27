@@ -23,7 +23,23 @@ async function withTransaction(work) {
   }
 }
 
+async function ensureSchema() {
+  await query(`
+    ALTER TABLE parejas
+      ADD COLUMN IF NOT EXISTS puntos_a_favor INTEGER NOT NULL DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS puntos_en_contra INTEGER NOT NULL DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS diferencia_puntos INTEGER NOT NULL DEFAULT 0
+  `);
+
+  await query(`
+    ALTER TABLE partidos_parejas
+      ADD COLUMN IF NOT EXISTS puntaje_pareja1 INTEGER CHECK (puntaje_pareja1 BETWEEN 0 AND 40),
+      ADD COLUMN IF NOT EXISTS puntaje_pareja2 INTEGER CHECK (puntaje_pareja2 BETWEEN 0 AND 40)
+  `);
+}
+
 module.exports = {
   query,
   withTransaction,
+  ensureSchema,
 };

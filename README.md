@@ -34,7 +34,7 @@ La web queda disponible en `http://localhost:3000`.
 
 ## Formato de carga rapida
 
-Parejas fijas: desde 5 parejas. Una pareja por linea, separada por comas.
+Campeonato Paraguayo Express por Parejas: desde 4 parejas. Una pareja por linea, separada por comas. Cada partido se carga con marcador a 18 puntos, sin empate. Victoria suma 3 puntos; la tabla ordena por PTS, DIF, PF y enfrentamiento directo.
 
 ```text
 Equipo Norte, Ana, Luis

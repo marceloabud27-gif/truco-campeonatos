@@ -54,6 +54,9 @@ CREATE TABLE parejas (
   partidos_ganados INTEGER NOT NULL DEFAULT 0 CHECK (partidos_ganados >= 0),
   partidos_perdidos INTEGER NOT NULL DEFAULT 0 CHECK (partidos_perdidos >= 0),
   puntos_totales INTEGER NOT NULL DEFAULT 0,
+  puntos_a_favor INTEGER NOT NULL DEFAULT 0,
+  puntos_en_contra INTEGER NOT NULL DEFAULT 0,
+  diferencia_puntos INTEGER NOT NULL DEFAULT 0,
   UNIQUE (id_torneo, nombre_equipo)
 );
 
@@ -78,6 +81,8 @@ CREATE TABLE partidos_parejas (
   id_pareja2 INTEGER REFERENCES parejas(id) ON DELETE CASCADE,
   ronda INTEGER NOT NULL CHECK (ronda > 0),
   ganador_id INTEGER REFERENCES parejas(id) ON DELETE SET NULL,
+  puntaje_pareja1 INTEGER CHECK (puntaje_pareja1 BETWEEN 0 AND 40),
+  puntaje_pareja2 INTEGER CHECK (puntaje_pareja2 BETWEEN 0 AND 40),
   estado estado_partido NOT NULL DEFAULT 'pendiente',
   es_fecha_libre BOOLEAN NOT NULL DEFAULT FALSE,
   CHECK (

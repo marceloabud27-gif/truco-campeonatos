@@ -1,7 +1,7 @@
 function generarRoundRobinParejas(parejas) {
   const participantes = [...parejas];
-  if (participantes.length < 5) {
-    throw new Error('Se requieren al menos 5 parejas.');
+  if (participantes.length < 4) {
+    throw new Error('Se requieren al menos 4 parejas.');
   }
 
   if (participantes.length % 2 !== 0) {
