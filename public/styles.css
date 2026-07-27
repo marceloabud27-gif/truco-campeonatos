@@ -2472,6 +2472,32 @@ body:not(.spectator-fixture-only) .login-button {
     0 12px 24px rgba(0, 0, 0, 0.18);
 }
 
+body:not(.spectator-fixture-only) #generateFixtureButton {
+  min-height: 46px;
+  padding: 0 18px;
+  border-color: rgba(245, 218, 151, 0.58);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(39, 34, 20, 0.98), rgba(7, 13, 10, 0.98));
+  color: #ffe9ad;
+  font-size: 0.92rem;
+  font-weight: 950;
+  text-transform: none;
+  white-space: nowrap;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 244, 190, 0.14),
+    inset 0 -1px 0 rgba(122, 77, 25, 0.62);
+}
+
+body:not(.spectator-fixture-only) #generateFixtureButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 232, 170, 0.74);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(245, 218, 151, 0.2), transparent 48%),
+    linear-gradient(180deg, rgba(51, 42, 20, 0.98), rgba(8, 14, 10, 0.98));
+}
+
 body:not(.spectator-fixture-only) .danger {
   border: 1px solid rgba(255, 190, 118, 0.28);
   border-radius: 12px;

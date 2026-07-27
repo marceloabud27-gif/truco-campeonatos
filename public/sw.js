@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260727-parejas-express';
+const CACHE_NAME = 'truco-campeonatos-v20260727-regenerate-button';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
-  '/styles.css?v=20260727-parejas-express',
-  '/app.js?v=20260727-parejas-express',
+  '/styles.css?v=20260727-regenerate-button',
+  '/app.js?v=20260727-regenerate-button',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/manifest.webmanifest',
   '/assets/copa-referencia.png?v=20260519',
