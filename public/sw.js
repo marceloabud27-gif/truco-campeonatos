@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260729-premium-hero-exact';
+const CACHE_NAME = 'truco-campeonatos-v20260729-seven-pairs-mesa-fix';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/styles.css?v=20260729-premium-hero-exact',
-  '/app.js?v=20260729-premium-mode-cards-v2',
+  '/app.js?v=20260729-seven-pairs-mesa-fix',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/assets/pwa/icon-192.png',
   '/manifest.webmanifest',

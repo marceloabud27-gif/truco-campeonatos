@@ -296,7 +296,9 @@ function renderFixture(detail) {
         ${torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, items) : ''}
       </div>
       <div class="match-grid">
-        ${items.map((partido, index) => fixtureRowForMode(torneo.modalidad, partido, index)).join('')}
+        ${visibleRoundMatches(torneo.modalidad, items)
+          .map((partido, index) => fixtureRowForMode(torneo.modalidad, partido, index))
+          .join('')}
       </div>
     </section>
   `).join('');
@@ -397,11 +399,18 @@ function getUpcomingRound(grouped) {
     .map(([ronda, items]) => ({
       ronda,
       matches: items
-        .map((partido, index) => ({ partido, index }))
-        .filter(({ partido }) => partido.estado !== 'finalizado' && !partido.es_fecha_libre),
+        .filter((partido) => partido.estado !== 'finalizado' && !partido.es_fecha_libre)
+        .map((partido, index) => ({ partido, index })),
       allItems: items,
     }))
     .find((round) => round.matches.length);
+}
+
+function visibleRoundMatches(modalidad, items) {
+  if (modalidad === 'americano_parejas_fijas') {
+    return items.filter((partido) => !partido.es_fecha_libre);
+  }
+  return items;
 }
 
 function renderOfficialPlaque() {
@@ -485,7 +494,7 @@ function renderPublicRoundPreview(detail, ronda, items) {
       <p class="text-sm font-black uppercase tracking-wide text-[#d9b65e]">Ronda</p>
       <h2 class="mt-1 font-serif text-[2.35rem] font-extrabold leading-none text-[#f3d994]">${ronda}</h2>
       <div class="mt-5 grid gap-4">
-        ${items
+        ${visibleRoundMatches(detail.torneo.modalidad, items)
           .map((partido, index) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
           .join('')}
       </div>
