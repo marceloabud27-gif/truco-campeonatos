@@ -3074,3 +3074,286 @@ body:not(.spectator-fixture-only) #backupButton::before {
     border-radius: 11px;
   }
 }
+
+/* Final premium hero override: placed last so it wins over earlier admin rules. */
+body:not(.spectator-fixture-only) .hero {
+  min-height: 520px;
+  padding: 74px max(32px, calc((100vw - 1420px) / 2)) 70px;
+  justify-content: center;
+  gap: 34px;
+  background:
+    radial-gradient(circle at 13% 22%, rgba(197, 136, 44, 0.2), transparent 22%),
+    radial-gradient(circle at 94% 17%, rgba(17, 98, 65, 0.3), transparent 30%),
+    linear-gradient(90deg, rgba(3, 6, 5, 0.98) 0%, rgba(3, 8, 7, 0.96) 43%, rgba(2, 15, 12, 0.72) 74%, rgba(3, 12, 9, 0.96) 100%),
+    url("/assets/truco-argentino-hero.png");
+  background-position: center;
+  background-size: cover;
+  border-bottom: 1px solid rgba(190, 132, 46, 0.34);
+}
+
+body:not(.spectator-fixture-only) .hero > div:first-child {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 30px;
+  align-items: center;
+  width: min(100%, 1320px);
+  max-width: 1320px;
+}
+
+body:not(.spectator-fixture-only) .hero > div:first-child::before,
+body:not(.spectator-fixture-only) .hero > div:first-child::after {
+  content: none;
+  display: none;
+}
+
+body:not(.spectator-fixture-only) .hero-crest {
+  display: block;
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 24px 36px rgba(0, 0, 0, 0.52))
+    drop-shadow(0 0 18px rgba(220, 174, 85, 0.18));
+}
+
+body:not(.spectator-fixture-only) .hero-copy {
+  min-width: 0;
+}
+
+body:not(.spectator-fixture-only) .hero .eyebrow {
+  display: inline-flex;
+  width: auto;
+  padding: 7px 18px;
+  border: 1px solid rgba(255, 225, 152, 0.54);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(193, 136, 48, 0.94), rgba(93, 61, 21, 0.94));
+  color: #f9e5b5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.96rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 190, 0.2),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+body:not(.spectator-fixture-only) .hero h1 {
+  margin: 18px 0 2px;
+  color: rgba(245, 232, 201, 0.82);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 3.4vw, 3.25rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.56);
+}
+
+body:not(.spectator-fixture-only) .hero .brand-subtitle {
+  margin: 0;
+  color: #f3d890;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4.1rem, 7vw, 6.5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.72),
+    0 0 22px rgba(226, 179, 87, 0.22);
+}
+
+body:not(.spectator-fixture-only) .hero-copy::after {
+  content: "";
+  display: block;
+  width: min(500px, 44vw);
+  height: 1px;
+  margin-top: 30px;
+  background:
+    linear-gradient(90deg, rgba(178, 123, 45, 0.26), rgba(207, 151, 65, 0.82), rgba(178, 123, 45, 0.26));
+  box-shadow: 0 0 14px rgba(207, 151, 65, 0.18);
+}
+
+body:not(.spectator-fixture-only) .hero-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 1320px);
+  max-width: 1320px;
+  gap: 18px;
+}
+
+body:not(.spectator-fixture-only) .hero-actions button {
+  position: relative;
+  justify-content: flex-start;
+  min-height: 88px;
+  overflow: hidden;
+  padding: 0 44px;
+  border: 1px solid rgba(203, 140, 49, 0.82);
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 214, 136, 0.08), transparent 35%),
+    linear-gradient(180deg, rgba(23, 23, 22, 0.99), rgba(5, 7, 6, 0.99));
+  color: #f5e5c5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.45rem, 2.1vw, 2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: left;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.68);
+  box-shadow:
+    0 22px 40px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 240, 185, 0.08);
+}
+
+body:not(.spectator-fixture-only) .hero-actions .primary {
+  padding-right: 128px;
+  border-color: rgba(255, 202, 95, 0.95);
+  background:
+    linear-gradient(90deg, rgba(214, 150, 54, 0.16), transparent 22%),
+    radial-gradient(circle at 11% 0%, rgba(255, 214, 136, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(26, 26, 24, 0.99), rgba(6, 7, 6, 0.99));
+  box-shadow:
+    0 0 0 1px rgba(255, 202, 95, 0.16),
+    0 22px 42px rgba(202, 137, 42, 0.2),
+    inset 0 1px 0 rgba(255, 240, 185, 0.16);
+}
+
+body:not(.spectator-fixture-only) .hero-actions .primary::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 0;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #f5b13e, transparent);
+}
+
+body:not(.spectator-fixture-only) .hero-actions .primary::after {
+  content: "ACTIVO";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 7px 14px;
+  border: 1px solid rgba(203, 140, 49, 0.7);
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, rgba(38, 32, 19, 0.96), rgba(5, 7, 6, 0.96));
+  color: #e5b65e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-shadow: none;
+}
+
+body:not(.spectator-fixture-only) .quick-actions {
+  width: min(100%, 1320px);
+  max-width: 1320px;
+  gap: 16px;
+}
+
+body:not(.spectator-fixture-only) .quick-actions button {
+  min-width: 220px;
+  min-height: 60px;
+  padding: 0 28px;
+  border: 1px solid rgba(203, 140, 49, 0.82);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(255, 214, 136, 0.07), transparent 32%),
+    linear-gradient(180deg, rgba(20, 20, 19, 0.99), rgba(5, 7, 6, 0.99));
+  color: #f5e5c5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.32rem;
+  font-weight: 500;
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 240, 185, 0.08);
+}
+
+body:not(.spectator-fixture-only) #shareLinkButton::before {
+  content: "link";
+  margin-right: 12px;
+  color: #d9ad59;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body:not(.spectator-fixture-only) #backupButton::before {
+  content: "db";
+  margin-right: 12px;
+  color: #d9ad59;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  body:not(.spectator-fixture-only) .hero {
+    min-height: auto;
+    padding: 32px 18px 30px;
+    gap: 18px;
+  }
+
+  body:not(.spectator-fixture-only) .hero > div:first-child {
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 14px;
+    max-width: 100%;
+  }
+
+  body:not(.spectator-fixture-only) .hero-crest {
+    width: 68px;
+    height: 68px;
+  }
+
+  body:not(.spectator-fixture-only) .hero .eyebrow {
+    padding: 5px 11px;
+    font-size: 0.68rem;
+  }
+
+  body:not(.spectator-fixture-only) .hero h1 {
+    margin-top: 8px;
+    font-size: 1.28rem;
+  }
+
+  body:not(.spectator-fixture-only) .hero .brand-subtitle {
+    font-size: clamp(2.2rem, 12vw, 3.35rem);
+    line-height: 1;
+  }
+
+  body:not(.spectator-fixture-only) .hero-copy::after {
+    width: min(280px, 62vw);
+    margin-top: 16px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions button {
+    min-height: 58px;
+    padding: 0 18px;
+    font-size: 1.18rem;
+    text-align: left;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions .primary {
+    padding-right: 94px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions .primary::after {
+    right: 12px;
+    font-size: 0.62rem;
+  }
+
+  body:not(.spectator-fixture-only) .quick-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
