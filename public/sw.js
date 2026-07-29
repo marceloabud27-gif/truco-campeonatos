@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-campeonatos-v20260729-select-new-tournament';
+const CACHE_NAME = 'truco-campeonatos-v20260729-history-delete-picker';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',

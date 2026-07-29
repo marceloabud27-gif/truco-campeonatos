@@ -7,6 +7,8 @@ const state = {
   currentDetail: null,
   lastFinishedDetail: null,
   selectedHistoryTournament: null,
+  pendingHistoryDeleteId: null,
+  pendingDeleteAllHistory: false,
   installPromptEvent: null,
 };
 
@@ -1181,11 +1183,14 @@ function bindEvents() {
   $('#resultForm').addEventListener('submit', saveResult);
   $('#closeWinnerDialog').addEventListener('click', () => $('#winnerDialog').close());
   $('#closeHistoryDialog').addEventListener('click', () => $('#historyDialog').close());
+  $('#closeClearHistoryDialog').addEventListener('click', () => $('#clearHistoryDialog').close());
   $('#copyWinnerTableButton').addEventListener('click', () => copyText(tableTextFromDetail(state.lastFinishedDetail), 'Tabla final copiada.'));
   $('#copyHistoryTableButton').addEventListener('click', () => copyText(tableTextFromHistory(state.selectedHistoryTournament), 'Tabla del historial copiada.'));
   $('#shareLinkButton').addEventListener('click', shareLink);
   $('#backupButton').addEventListener('click', downloadBackup);
-  $('#clearHistoryButton').addEventListener('click', clearHistory);
+  $('#clearHistoryButton').addEventListener('click', openClearHistoryDialog);
+  $('#deleteAllHistoryButton').addEventListener('click', handleDeleteAllHistoryClick);
+  $('#historyDeleteList').addEventListener('click', handleHistoryDeleteListClick);
   $('#deleteFixtureTournamentButton').addEventListener('click', () => deleteSelectedTournament(state.selectedFixtureId));
   $('#deletePositionsTournamentButton').addEventListener('click', () => deleteSelectedTournament(state.selectedPositionsId));
   $('#historyContent').addEventListener('click', (event) => {
@@ -1329,14 +1334,129 @@ async function clearHistory() {
     return;
   }
 
-  if (!window.confirm('Esto va a borrar todos los torneos finalizados del historial.')) {
+  if (!state.pendingDeleteAllHistory) {
+    state.pendingHistoryDeleteId = null;
+    state.pendingDeleteAllHistory = true;
+    renderHistoryDeleteList();
     return;
   }
 
   try {
     const result = await api('/api/historial', { method: 'DELETE' });
     toast(`Historial borrado: ${result.torneos_borrados} torneo(s).`);
+    state.pendingDeleteAllHistory = false;
+    state.pendingHistoryDeleteId = null;
     await loadTorneos();
+    renderHistoryDeleteList();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function openClearHistoryDialog() {
+  if (!isAdmin()) {
+    toast('Solo Admin puede borrar el historial.');
+    return;
+  }
+
+  state.pendingHistoryDeleteId = null;
+  state.pendingDeleteAllHistory = false;
+  await renderHistory();
+  renderHistoryDeleteList();
+  $('#clearHistoryDialog').showModal();
+}
+
+function renderHistoryDeleteList() {
+  const list = $('#historyDeleteList');
+  const notice = $('#historyDeleteNotice');
+  const deleteAllButton = $('#deleteAllHistoryButton');
+
+  if (!state.historial.length) {
+    list.innerHTML = emptyCard('No hay campeonatos finalizados para borrar.');
+    notice.hidden = true;
+    deleteAllButton.disabled = true;
+    deleteAllButton.textContent = 'Borrar todo';
+    return;
+  }
+
+  deleteAllButton.disabled = false;
+  deleteAllButton.textContent = state.pendingDeleteAllHistory
+    ? 'Confirmar borrar todo'
+    : 'Borrar todo';
+  notice.hidden = !state.pendingDeleteAllHistory;
+  notice.textContent = state.pendingDeleteAllHistory
+    ? 'Vas a borrar todos los campeonatos finalizados. Toca confirmar solo si estas seguro.'
+    : '';
+
+  list.innerHTML = state.historial.map((torneo) => {
+    const confirming = state.pendingHistoryDeleteId === torneo.id;
+    const winner = torneo.campeon_nombre || '-';
+    const modality = torneo.modalidad === 'americano_parejas_fijas'
+      ? 'Campeonato Paraguayo Express por Parejas'
+      : torneo.modalidad;
+    const action = confirming
+      ? `<div class="history-delete-actions">
+          <button class="danger compact-danger" type="button" data-history-delete-confirm="${torneo.id}">Confirmar</button>
+          <button class="ghost compact-ghost" type="button" data-history-delete-cancel>Cancelar</button>
+        </div>`
+      : `<button class="danger compact-danger" type="button" data-history-delete="${torneo.id}">Borrar</button>`;
+
+    return `
+      <article class="history-delete-item ${confirming ? 'confirming' : ''}">
+        <div>
+          <p class="history-delete-title">${torneo.nombre_torneo}</p>
+          <p class="history-delete-meta">${formatDate(torneo.fecha_inicio)} | ${modality}</p>
+          <p class="history-delete-meta">Campeon: ${winner}</p>
+        </div>
+        ${action}
+      </article>
+    `;
+  }).join('');
+}
+
+function handleDeleteAllHistoryClick() {
+  clearHistory();
+}
+
+async function handleHistoryDeleteListClick(event) {
+  const cancelButton = event.target.closest('[data-history-delete-cancel]');
+  if (cancelButton) {
+    state.pendingHistoryDeleteId = null;
+    renderHistoryDeleteList();
+    return;
+  }
+
+  const confirmButton = event.target.closest('[data-history-delete-confirm]');
+  if (confirmButton) {
+    await deleteHistoryTournament(Number(confirmButton.dataset.historyDeleteConfirm));
+    return;
+  }
+
+  const deleteButton = event.target.closest('[data-history-delete]');
+  if (deleteButton) {
+    state.pendingDeleteAllHistory = false;
+    state.pendingHistoryDeleteId = Number(deleteButton.dataset.historyDelete);
+    renderHistoryDeleteList();
+  }
+}
+
+async function deleteHistoryTournament(tournamentId) {
+  if (!isAdmin()) {
+    toast('Solo Admin puede borrar el historial.');
+    return;
+  }
+
+  try {
+    const result = await api(`/api/historial/${tournamentId}`, { method: 'DELETE' });
+    toast(`Borrado del historial: ${result.torneo_borrado.nombre_torneo}.`);
+    if (state.selectedHistoryTournament?.id === tournamentId) {
+      state.selectedHistoryTournament = null;
+      $('#historyDialog').close();
+    }
+    state.pendingHistoryDeleteId = null;
+    state.pendingDeleteAllHistory = false;
+    await loadTorneos();
+    renderHistoryDeleteList();
   } catch (error) {
     toast(error.message);
   }

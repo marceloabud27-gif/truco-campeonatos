@@ -991,6 +991,28 @@ async function borrarHistorial(req, res, next) {
   }
 }
 
+async function borrarTorneoHistorial(req, res, next) {
+  try {
+    const idTorneo = Number(req.params.id);
+    const result = await db.query(
+      `DELETE FROM torneos
+        WHERE id = $1
+          AND estado = 'finalizado'
+        RETURNING id, nombre_torneo, estado`,
+      [idTorneo]
+    );
+
+    const torneo = result.rows[0];
+    if (!torneo) {
+      return res.status(404).json({ message: 'Torneo finalizado no encontrado en el historial.' });
+    }
+
+    return res.json({ torneo_borrado: torneo });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 async function borrarTorneo(req, res, next) {
   try {
     const idTorneo = Number(req.params.id);
@@ -1048,4 +1070,5 @@ module.exports = {
   finalizarTorneo,
   borrarTorneo,
   borrarHistorial,
+  borrarTorneoHistorial,
 };

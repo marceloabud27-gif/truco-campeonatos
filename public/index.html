@@ -195,8 +195,22 @@
       </div>
     </dialog>
 
+    <dialog id="clearHistoryDialog">
+      <div class="winner-panel wide-dialog history-delete-dialog">
+        <p class="eyebrow">Borrar historial</p>
+        <h2>Elegí el campeonato</h2>
+        <p class="meta">Borra solo el torneo finalizado que quieras quitar del Salon de la Fama.</p>
+        <div id="historyDeleteNotice" class="history-delete-notice" hidden></div>
+        <div id="historyDeleteList" class="history-delete-list"></div>
+        <div class="dialog-actions">
+          <button id="closeClearHistoryDialog" class="ghost" type="button">Cancelar</button>
+          <button id="deleteAllHistoryButton" class="danger" type="button">Borrar todo</button>
+        </div>
+      </div>
+    </dialog>
+
     <div id="toast" role="status" aria-live="polite"></div>
-    <script src="/app.js?v=20260729-select-new-tournament" type="module"></script>
+    <script src="/app.js?v=20260729-history-delete-picker" type="module"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

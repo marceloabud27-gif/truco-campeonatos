@@ -31,6 +31,7 @@ app.post('/api/torneos', auth.requireAdmin, controllers.crearTorneo);
 app.post('/api/torneos/:id/generar-fixture', auth.requireAdmin, controllers.generarFixture);
 app.post('/api/torneos/:id/finalizar', auth.requireAdmin, controllers.finalizarTorneo);
 app.delete('/api/torneos/:id', auth.requireAdmin, controllers.borrarTorneo);
+app.delete('/api/historial/:id', auth.requireAdmin, controllers.borrarTorneoHistorial);
 app.delete('/api/historial', auth.requireAdmin, controllers.borrarHistorial);
 app.post('/api/partidos/parejas/:id/resultado', auth.requireAdmin, controllers.cargarResultadoParejas);
 app.post('/api/partidos/individuales/:id/resultado', auth.requireAdmin, controllers.cargarResultadoIndividual);
