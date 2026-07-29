@@ -3175,7 +3175,7 @@ body:not(.spectator-fixture-only) .hero-copy::after {
 }
 
 body:not(.spectator-fixture-only) .hero-actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
   width: min(100%, 1320px);
   max-width: 1320px;
   gap: 18px;
