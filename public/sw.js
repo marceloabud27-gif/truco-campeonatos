@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260729-premium-mode-cards-v2';
+const CACHE_NAME = 'truco-campeonatos-v20260729-premium-hero-actions';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
-  '/styles.css?v=20260729-select-new-tournament',
-  '/app.js?v=20260729-select-new-tournament',
+  '/styles.css?v=20260729-premium-hero-actions',
+  '/app.js?v=20260729-premium-mode-cards-v2',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/manifest.webmanifest',
   '/assets/copa-referencia.png?v=20260519',
