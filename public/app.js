@@ -1357,6 +1357,8 @@ async function createTournament(event) {
     });
     await api(`/api/torneos/${torneo.id}/generar-fixture`, { method: 'POST', body: '{}' });
     toast('Torneo creado con fixture.');
+    state.selectedFixtureId = torneo.id;
+    state.selectedPositionsId = torneo.id;
     event.target.reset();
     setCreateMode(modalidad);
     await loadTorneos();
