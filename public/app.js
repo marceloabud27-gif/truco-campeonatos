@@ -113,16 +113,21 @@ function applyAuthUi() {
 
 function polishModeCards() {
   const copy = {
-    americano_parejas_fijas: ['Paraguayo Express Parejas', '4+ parejas · todos contra todos · a 18 pts'],
-    americano_individual: ['Americano Individual', 'Rotativo · desde 7 jugadores'],
-    americano_individual_1v1: ['Individual 1 vs 1', 'Todos contra todos · mano a mano'],
+    americano_parejas_fijas: ['Paraguayo Express Parejas', '4+ parejas · todos contra todos · 18 pts', '♣'],
+    americano_individual: ['Americano Individual', 'Rotativo · desde 7 jugadores', '♠'],
+    americano_individual_1v1: ['Individual 1 vs 1', 'Todos contra todos · mano a mano', '♦'],
   };
 
   $$('[data-mode-pick]').forEach((button) => {
-    const [title, subtitle] = copy[button.dataset.modePick] || [];
+    const [title, subtitle, icon] = copy[button.dataset.modePick] || [];
     if (!title) return;
-    button.querySelector('strong').textContent = title;
-    button.querySelector('span').textContent = subtitle;
+    button.innerHTML = `
+      <span class="mode-card-icon" aria-hidden="true">${icon}</span>
+      <span class="mode-card-copy">
+        <strong>${title}</strong>
+        <span>${subtitle}</span>
+      </span>
+    `;
   });
 }
 

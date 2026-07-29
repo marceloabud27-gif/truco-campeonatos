@@ -2512,18 +2512,21 @@ body:not(.spectator-fixture-only) .danger {
 body:not(.spectator-fixture-only) .mode-card {
   position: relative;
   overflow: hidden;
-  min-height: 116px;
-  align-content: start;
-  gap: 10px;
-  padding: 22px 18px 18px;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  min-height: 142px;
+  gap: 20px;
+  padding: 24px 24px 22px;
   border-color: rgba(177, 132, 54, 0.38);
-  border-radius: 14px;
+  border-radius: 18px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(245, 218, 151, 0.07), transparent 42%),
-    linear-gradient(180deg, rgba(28, 32, 31, 0.98), rgba(10, 14, 13, 0.98));
+    radial-gradient(circle at 50% 0%, rgba(245, 218, 151, 0.08), transparent 44%),
+    linear-gradient(180deg, rgba(22, 24, 23, 0.99), rgba(7, 10, 9, 0.99));
   box-shadow:
-    0 18px 34px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 244, 190, 0.055);
+    0 18px 34px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 244, 190, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
   transition:
     transform 160ms ease,
     border-color 160ms ease,
@@ -2534,70 +2537,128 @@ body:not(.spectator-fixture-only) .mode-card {
 body:not(.spectator-fixture-only) .mode-card::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
-  background: linear-gradient(180deg, rgba(245, 218, 151, 0), rgba(177, 132, 54, 0.72), rgba(245, 218, 151, 0));
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, rgba(247, 214, 140, 0.18), transparent 28%),
+    radial-gradient(circle at 16% 50%, rgba(245, 218, 151, 0.12), transparent 24%);
   opacity: 0;
+  pointer-events: none;
+}
+
+body:not(.spectator-fixture-only) .mode-card-copy {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
 }
 
 body:not(.spectator-fixture-only) .mode-card strong {
   color: #f7ead0;
-  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.14rem, 1.55vw, 1.46rem);
+  font-weight: 800;
   line-height: 1.25;
   text-wrap: balance;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+
+body:not(.spectator-fixture-only) .mode-card strong::after {
+  content: "";
+  display: block;
+  width: min(100%, 230px);
+  height: 1px;
+  margin-top: 10px;
+  background:
+    linear-gradient(90deg, rgba(197, 168, 92, 0.86), rgba(197, 168, 92, 0.2));
 }
 
 body:not(.spectator-fixture-only) .mode-card span {
-  max-width: 23ch;
   color: rgba(246, 234, 208, 0.62);
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.45;
+}
+
+body:not(.spectator-fixture-only) .mode-card-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(212, 168, 76, 0.68);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 38% 28%, rgba(255, 229, 154, 0.26), transparent 28%),
+    linear-gradient(180deg, rgba(14, 49, 34, 0.96), rgba(5, 13, 10, 0.98));
+  color: #e8c878;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 190, 0.18),
+    0 14px 28px rgba(0, 0, 0, 0.28);
 }
 
 body:not(.spectator-fixture-only) .mode-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(245, 218, 151, 0.5);
+  border-color: rgba(245, 218, 151, 0.62);
   box-shadow:
     0 22px 42px rgba(0, 0, 0, 0.24),
     inset 0 1px 0 rgba(255, 244, 190, 0.08);
 }
 
 body:not(.spectator-fixture-only) .mode-card.active {
-  border-color: rgba(245, 218, 151, 0.66);
+  border-color: rgba(255, 209, 102, 0.88);
   background:
-    linear-gradient(180deg, rgba(255, 235, 171, 0.9), rgba(185, 123, 36, 0.92) 64%, rgba(93, 58, 18, 0.96));
-  color: #140d08;
+    radial-gradient(circle at 14% 35%, rgba(245, 218, 151, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(25, 26, 24, 0.99), rgba(7, 10, 9, 0.99));
+  color: #f7ead0;
   box-shadow:
-    0 20px 40px rgba(122, 77, 25, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.52),
-    inset 0 -1px 0 rgba(100, 58, 14, 0.58);
+    0 0 0 1px rgba(255, 209, 102, 0.22),
+    0 22px 46px rgba(197, 136, 44, 0.2),
+    0 0 34px rgba(255, 184, 65, 0.1),
+    inset 0 1px 0 rgba(255, 244, 190, 0.18);
 }
 
 body:not(.spectator-fixture-only) .mode-card.active::before {
   opacity: 1;
-  background: linear-gradient(180deg, rgba(255, 244, 190, 0.2), rgba(255, 244, 190, 0.95), rgba(255, 244, 190, 0.2));
 }
 
 body:not(.spectator-fixture-only) .mode-card.active::after {
-  content: "Seleccionado";
+  content: "SELECCIONADO";
   position: absolute;
-  right: 14px;
-  top: 12px;
-  padding: 5px 9px;
-  border: 1px solid rgba(54, 35, 12, 0.2);
+  right: 18px;
+  top: 18px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 230, 166, 0.6);
   border-radius: 999px;
-  background: rgba(20, 13, 8, 0.12);
-  color: rgba(20, 13, 8, 0.82);
+  background:
+    linear-gradient(180deg, rgba(43, 36, 19, 0.96), rgba(8, 12, 10, 0.96));
+  color: #f5d98e;
   font-size: 0.68rem;
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 190, 0.18),
+    0 10px 22px rgba(0, 0, 0, 0.24);
 }
 
 body:not(.spectator-fixture-only) .mode-card.active strong,
 body:not(.spectator-fixture-only) .mode-card.active span {
-  color: #140d08;
-  text-shadow: none;
+  color: #f7ead0;
+}
+
+body:not(.spectator-fixture-only) .mode-card.active .mode-card-icon {
+  border-color: rgba(255, 225, 152, 0.92);
+  color: #ffe7a0;
+  box-shadow:
+    0 0 0 1px rgba(255, 209, 102, 0.18),
+    0 0 28px rgba(255, 184, 65, 0.18),
+    inset 0 1px 0 rgba(255, 244, 190, 0.24);
+}
+
+body:not(.spectator-fixture-only) .mode-card.active .mode-card-copy {
+  padding-top: 20px;
 }
 
 body:not(.spectator-fixture-only) .participant-number {
