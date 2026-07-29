@@ -16,7 +16,7 @@ const MODES = {
   americano_parejas_fijas: {
     min: 4,
     initialRows: 4,
-    summary: 'Carga parejas fijas. Todos contra todos, 2 mesas, partidos a 18 puntos, victoria 3 pts.',
+    summary: 'Carga parejas fijas. Todos contra todos, partidos a 18 puntos, victoria 3 pts.',
   },
   americano_individual: {
     min: 7,
@@ -109,6 +109,21 @@ function applyAuthUi() {
   if (isFixturePublicMode() && !isAdmin()) {
     switchView('fixtureView');
   }
+}
+
+function polishModeCards() {
+  const copy = {
+    americano_parejas_fijas: ['Paraguayo Express Parejas', '4+ parejas · todos contra todos · a 18 pts'],
+    americano_individual: ['Americano Individual', 'Rotativo · desde 7 jugadores'],
+    americano_individual_1v1: ['Individual 1 vs 1', 'Todos contra todos · mano a mano'],
+  };
+
+  $$('[data-mode-pick]').forEach((button) => {
+    const [title, subtitle] = copy[button.dataset.modePick] || [];
+    if (!title) return;
+    button.querySelector('strong').textContent = title;
+    button.querySelector('span').textContent = subtitle;
+  });
 }
 
 function setCreateMode(mode) {
@@ -1570,6 +1585,7 @@ async function saveResult(event) {
 
 async function init() {
   applyAuthUi();
+  polishModeCards();
   setCreateMode('americano_parejas_fijas');
   bindEvents();
   try {
