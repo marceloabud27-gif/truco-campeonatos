@@ -253,6 +253,8 @@ async function refreshSelectedViews() {
 
   if (isAdmin()) {
     await renderHistory();
+  } else if (isFixturePublicMode()) {
+    await renderPublicHistory();
   } else {
     state.historial = [];
     $('#historyContent').innerHTML = '';
@@ -338,6 +340,52 @@ function renderPublicFixturePremium(detail) {
         ${historicalRounds.map(({ ronda, items }) => renderPublicRoundPreview(detail, ronda, items)).join('')}
       </div>
     </article>
+  `;
+}
+
+async function renderPublicHistory() {
+  try {
+    state.historial = await api('/api/historial-publico');
+    const html = renderPublicFinalHistory(state.historial);
+    if (html) {
+      $('#fixtureContent').insertAdjacentHTML('beforeend', html);
+    }
+  } catch (error) {
+    // El historial publico no debe bloquear la vista principal del fixture.
+  }
+}
+
+function renderPublicFinalHistory(historial) {
+  const finished = (historial || []).filter((torneo) => torneo.estado === 'finalizado');
+  if (!finished.length) {
+    return '';
+  }
+
+  return `
+    <section class="public-final-history" aria-label="Historial final">
+      <div class="public-history-title">
+        <span class="round-kicker">Salon de la Fama</span>
+        <h2>Historial final</h2>
+        <p class="meta">Campeonatos cerrados con tabla oficial y resultados cargados.</p>
+      </div>
+      <div class="public-history-list">
+        ${finished.map((torneo, index) => `
+          <details class="public-history-card" ${index === 0 ? 'open' : ''}>
+            <summary>
+              <span>
+                <strong>${escapeHtml(torneo.nombre_torneo)}</strong>
+                <small>Campeon: ${escapeHtml(torneo.campeon_nombre || '-')}</small>
+              </span>
+              <span class="public-history-date">${formatDate(torneo.fecha_fin || torneo.fecha_inicio)}</span>
+            </summary>
+            <div class="public-history-detail">
+              ${renderHistoryPositions(torneo)}
+              ${renderHistoryResults(torneo)}
+            </div>
+          </details>
+        `).join('')}
+      </div>
+    </section>
   `;
 }
 

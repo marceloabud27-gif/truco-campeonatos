@@ -1667,6 +1667,116 @@ dialog::backdrop {
   font-weight: 800;
 }
 
+.public-final-history {
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid rgba(197, 168, 92, 0.34);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(197, 168, 92, 0.14), transparent 42%),
+    linear-gradient(180deg, rgba(8, 11, 10, 0.98), rgba(2, 16, 11, 0.98));
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.public-history-title {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+
+.public-history-title h2 {
+  color: #f4dfaa;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 8vw, 3.1rem);
+  line-height: 1;
+}
+
+.public-history-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.public-history-card {
+  border: 1px solid rgba(197, 168, 92, 0.35);
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(166, 116, 38, 0.22), transparent 16px),
+    linear-gradient(180deg, rgba(29, 33, 34, 0.98), rgba(8, 10, 10, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  overflow: hidden;
+}
+
+.public-history-card summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 76px;
+  padding: 16px 18px;
+  color: #f5e5bb;
+  cursor: pointer;
+  list-style: none;
+}
+
+.public-history-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.public-history-card summary::after {
+  content: "⌄";
+  display: grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(197, 168, 92, 0.38);
+  border-radius: 999px;
+  color: #e8c775;
+  transition: transform 160ms ease;
+}
+
+.public-history-card[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.public-history-card summary span:first-child {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.public-history-card summary strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.18rem, 5.2vw, 1.6rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-history-card summary small,
+.public-history-date {
+  color: rgba(245, 229, 187, 0.68);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.public-history-date {
+  white-space: nowrap;
+}
+
+.public-history-detail {
+  display: grid;
+  gap: 18px;
+  padding: 0 14px 16px;
+}
+
+.public-history-detail .table-wrap {
+  margin: 0;
+}
+
 .last-place {
   color: #f3c5c5;
   font-weight: 800;

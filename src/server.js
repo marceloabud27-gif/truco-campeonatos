@@ -24,6 +24,7 @@ app.post('/api/auth/login', auth.login);
 app.get('/api/torneos', controllers.listarTorneos);
 app.get('/api/torneos/:id', auth.optionalAdmin, controllers.obtenerTorneo);
 app.get('/api/historial', auth.requireAdmin, controllers.listarHistorial);
+app.get('/api/historial-publico', controllers.listarHistorial);
 app.get('/api/share-info', controllers.obtenerInfoCompartir);
 app.get('/api/backup', auth.requireAdmin, controllers.exportarBackup);
 
