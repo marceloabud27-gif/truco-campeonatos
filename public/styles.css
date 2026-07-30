@@ -1777,6 +1777,115 @@ dialog::backdrop {
   margin: 0;
 }
 
+@media (max-width: 560px) {
+  .public-final-history {
+    margin-top: 18px;
+    padding: 14px 10px;
+    border-radius: 18px;
+    overflow-x: hidden;
+  }
+
+  .public-history-card,
+  .public-history-detail,
+  .history-results,
+  .history-round,
+  .history-match-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .public-history-card summary {
+    padding: 14px 12px;
+  }
+
+  .public-history-date {
+    white-space: normal;
+    text-align: right;
+  }
+
+  .public-history-detail {
+    padding: 0 8px 12px;
+    overflow-x: hidden;
+  }
+
+  .history-results-heading .meta {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .history-round {
+    padding: 10px;
+  }
+
+  .history-match-card {
+    gap: 10px;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .history-match-top {
+    align-items: flex-start;
+  }
+
+  .history-winner {
+    max-width: calc(100% - 86px);
+    padding: 5px 8px;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    text-align: right;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .history-scoreline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .history-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 54px;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .history-side:last-child {
+    text-align: left;
+  }
+
+  .history-side span,
+  .history-side:last-child span {
+    grid-column: 1;
+    grid-row: 1;
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    line-height: 1.18;
+  }
+
+  .history-side strong,
+  .history-side:last-child strong {
+    grid-column: 2;
+    grid-row: 1;
+    width: 54px;
+    min-width: 54px;
+    height: 50px;
+    font-size: 1.85rem;
+  }
+
+  .history-vs {
+    justify-self: center;
+    padding: 1px 8px;
+    font-size: 0.72rem;
+  }
+}
+
 .last-place {
   color: #f3c5c5;
   font-weight: 800;

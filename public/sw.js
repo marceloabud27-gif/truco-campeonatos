@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260730-public-history-scroll-fix';
+const CACHE_NAME = 'truco-campeonatos-v20260730-mobile-history-readable';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
-  '/styles.css?v=20260730-public-history',
-  '/app.js?v=20260730-public-history-scroll-fix',
+  '/styles.css?v=20260730-mobile-history-readable',
+  '/app.js?v=20260730-mobile-history-readable',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/assets/pwa/icon-192.png',
   '/manifest.webmanifest',
