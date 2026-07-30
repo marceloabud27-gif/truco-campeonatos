@@ -742,10 +742,16 @@ function canShowFixtureResults() {
 }
 
 function teamScoreCell(name, score, status) {
+  const normalizedNameLength = String(name || '').replace(/\s+/g, '').length;
+  const nameLengthClass = normalizedNameLength > 17
+    ? ' team-name-extra-long'
+    : normalizedNameLength > 11
+      ? ' team-name-long'
+      : '';
   const scoreBadge = canShowFixtureResults() && status === 'finalizado'
     ? `<span class="score-number">${score ?? 0}</span>`
     : '';
-  return `<span class="team-score-cell"><span class="team-name">${name}</span>${scoreBadge}</span>`;
+  return `<span class="team-score-cell"><span class="team-name${nameLengthClass}">${name}</span>${scoreBadge}</span>`;
 }
 
 function mesaBadge(index) {
