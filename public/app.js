@@ -584,19 +584,42 @@ function renderPublicMatchCard(leftName, rightName, index) {
     <article class="relative rounded-[18px] border border-[#9f6f2a]/76 bg-[linear-gradient(90deg,rgba(166,116,38,.55),transparent_15px),radial-gradient(circle_at_50%_0%,rgba(255,228,142,.08),transparent_42%),linear-gradient(180deg,rgba(19,19,17,.99),rgba(6,7,7,.99))] px-3 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,235,170,.08),0_16px_28px_rgba(0,0,0,.38)]">
       <div class="absolute left-1/2 top-0 grid min-h-8 min-w-[5.75rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[9px] border border-[#9f6f2a]/70 bg-[linear-gradient(180deg,#17140d,#060807)] px-4 text-[.74rem] font-black uppercase tracking-[0.08em] text-[#f0d58e] shadow-[0_10px_20px_rgba(0,0,0,.36)]">Mesa ${index + 1}</div>
       <div class="grid min-h-[5.7rem] grid-cols-[minmax(0,1fr)_3.05rem_minmax(0,1fr)] items-center gap-2 pt-4 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)]">
-        <span class="min-w-0 text-center font-serif text-[clamp(1.03rem,4.2vw,1.7rem)] font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [text-wrap:balance]">${formatPublicTeamName(leftName)}</span>
+        <span class="min-w-0 break-words text-center font-serif ${publicTeamNameSizeClass(leftName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance]">${formatPublicTeamName(leftName)}</span>
         <span class="grid place-items-center text-center font-serif text-[#352615]">
           <span class="grid h-9 w-9 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.74),transparent_22%),linear-gradient(145deg,#ffe9a4,#ad7627_70%,#4f310f)] text-[.78rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)] sm:h-10 sm:w-10">VS</span>
           <small class="mt-0.5 text-[.56rem] font-black lowercase tracking-wide text-[#c9a85c]">versus</small>
         </span>
-        <span class="min-w-0 text-center font-serif text-[clamp(1.03rem,4.2vw,1.7rem)] font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [text-wrap:balance]">${formatPublicTeamName(rightName)}</span>
+        <span class="min-w-0 break-words text-center font-serif ${publicTeamNameSizeClass(rightName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance]">${formatPublicTeamName(rightName)}</span>
       </div>
     </article>
   `;
 }
 
 function formatPublicTeamName(name) {
-  return escapeHtml(name).replace(/\s+\/\s+/g, ' /<wbr> ');
+  return String(name ?? '')
+    .split(/(\s+)/)
+    .map((part) => {
+      if (!part || /^\s+$/.test(part) || part === '/') {
+        return escapeHtml(part);
+      }
+      const characters = Array.from(part);
+      if (characters.length <= 10) {
+        return escapeHtml(part);
+      }
+      const splitAt = Math.ceil(characters.length / 2);
+      return `${escapeHtml(characters.slice(0, splitAt).join(''))}<wbr>${escapeHtml(characters.slice(splitAt).join(''))}`;
+    })
+    .join('')
+    .replace(/\s+\/\s+/g, ' /<wbr> ');
+}
+
+function publicTeamNameSizeClass(name) {
+  const longestWord = String(name ?? '')
+    .split(/\s+/)
+    .reduce((longest, word) => Math.max(longest, Array.from(word).length), 0);
+  return longestWord > 10
+    ? 'text-[clamp(.88rem,3.65vw,1.32rem)]'
+    : 'text-[clamp(1.03rem,4.2vw,1.7rem)]';
 }
 
 function renderUpcomingMatches(detail, grouped) {

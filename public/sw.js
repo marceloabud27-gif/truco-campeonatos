@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20260730-mobile-long-team-names';
+const CACHE_NAME = 'truco-campeonatos-v20260730-mobile-unbroken-team-names';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/styles.css?v=20260730-mobile-long-team-names',
-  '/app.js?v=20260730-mobile-long-team-names',
+  '/app.js?v=20260730-mobile-unbroken-team-names',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/assets/pwa/icon-192.png',
   '/manifest.webmanifest',
