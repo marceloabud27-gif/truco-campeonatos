@@ -191,9 +191,75 @@ async function listarHistorial(req, res, next) {
       return map;
     }, {});
 
+    const [partidosParejas, partidosIndividuales, partidosIndividuales1v1] = await Promise.all([
+      db.query(
+        `SELECT pp.id_torneo, pp.ronda, pp.id, pp.estado, pp.es_fecha_libre,
+                p1.nombre_equipo AS equipo_1, p2.nombre_equipo AS equipo_2,
+                pp.puntaje_pareja1 AS puntaje_1, pp.puntaje_pareja2 AS puntaje_2,
+                pg.nombre_equipo AS ganador
+           FROM partidos_parejas pp
+           JOIN parejas p1 ON p1.id = pp.id_pareja1
+      LEFT JOIN parejas p2 ON p2.id = pp.id_pareja2
+      LEFT JOIN parejas pg ON pg.id = pp.ganador_id
+          WHERE pp.id_torneo = ANY($1::int[])
+          ORDER BY pp.id_torneo, pp.ronda, pp.id`,
+        [ids]
+      ),
+      db.query(
+        `SELECT pi.id_torneo, pi.ronda, pi.id, pi.estado, false AS es_fecha_libre,
+                CONCAT(ja.nombre, ' / ', jb.nombre) AS equipo_1,
+                CONCAT(jc.nombre, ' / ', jd.nombre) AS equipo_2,
+                pi.puntaje_dupla1 AS puntaje_1, pi.puntaje_dupla2 AS puntaje_2,
+                CASE
+                  WHEN pi.estado = 'finalizado' AND pi.puntaje_dupla1 > pi.puntaje_dupla2 THEN CONCAT(ja.nombre, ' / ', jb.nombre)
+                  WHEN pi.estado = 'finalizado' AND pi.puntaje_dupla2 > pi.puntaje_dupla1 THEN CONCAT(jc.nombre, ' / ', jd.nombre)
+                  ELSE NULL
+                END AS ganador
+           FROM partidos_individuales pi
+           JOIN jugadores_individuales ja ON ja.id = pi.id_jugador_A
+           JOIN jugadores_individuales jb ON jb.id = pi.id_jugador_B
+           JOIN jugadores_individuales jc ON jc.id = pi.id_jugador_C
+           JOIN jugadores_individuales jd ON jd.id = pi.id_jugador_D
+          WHERE pi.id_torneo = ANY($1::int[])
+          ORDER BY pi.id_torneo, pi.ronda, pi.id`,
+        [ids]
+      ),
+      db.query(
+        `SELECT pi.id_torneo, pi.ronda, pi.id, pi.estado, pi.es_fecha_libre,
+                j1.nombre AS equipo_1, j2.nombre AS equipo_2,
+                pi.puntaje_jugador_1 AS puntaje_1, pi.puntaje_jugador_2 AS puntaje_2,
+                CASE
+                  WHEN pi.estado = 'finalizado' AND pi.puntaje_jugador_1 > pi.puntaje_jugador_2 THEN j1.nombre
+                  WHEN pi.estado = 'finalizado' AND pi.puntaje_jugador_2 > pi.puntaje_jugador_1 THEN j2.nombre
+                  ELSE NULL
+                END AS ganador
+           FROM partidos_individuales_1v1 pi
+           JOIN jugadores_individuales j1 ON j1.id = pi.id_jugador_1
+      LEFT JOIN jugadores_individuales j2 ON j2.id = pi.id_jugador_2
+          WHERE pi.id_torneo = ANY($1::int[])
+          ORDER BY pi.id_torneo, pi.ronda, pi.id`,
+        [ids]
+      ),
+    ]);
+
+    const partidosPorTorneo = [
+      ...partidosParejas.rows,
+      ...partidosIndividuales.rows,
+      ...partidosIndividuales1v1.rows,
+    ].reduce((map, partido) => {
+      map[partido.id_torneo] ||= [];
+      map[partido.id_torneo].push(partido);
+      return map;
+    }, {});
+
+    for (const partidos of Object.values(partidosPorTorneo)) {
+      partidos.sort((a, b) => a.ronda - b.ronda || a.id - b.id);
+    }
+
     return res.json(torneosResult.rows.map((torneo) => ({
       ...torneo,
       posiciones: posicionesPorTorneo[torneo.id] || [],
+      partidos: partidosPorTorneo[torneo.id] || [],
     })));
   } catch (error) {
     return next(error);

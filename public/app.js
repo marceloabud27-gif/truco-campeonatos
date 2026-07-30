@@ -1019,6 +1019,59 @@ function renderHistoryPositions(torneo) {
   `;
 }
 
+function renderHistoryResults(torneo) {
+  const partidos = (torneo.partidos || []).filter((partido) => !partido.es_fecha_libre);
+  if (!partidos.length) {
+    return '<p class="meta">Resultados de partidos no disponibles para este torneo.</p>';
+  }
+
+  const grouped = groupBy(partidos, (partido) => partido.ronda);
+  return `
+    <section class="history-results" aria-label="Resultados por ronda">
+      <div class="history-results-heading">
+        <span class="round-kicker">Resultados por ronda</span>
+        <p class="meta">Cada juego cargado por mesa, con ganador resaltado.</p>
+      </div>
+      ${Object.entries(grouped).map(([round, matches]) => `
+        <article class="history-round">
+          <h3>Ronda ${round}</h3>
+          <div class="history-match-grid">
+            ${matches.map((partido, index) => renderHistoryMatch(partido, index)).join('')}
+          </div>
+        </article>
+      `).join('')}
+    </section>
+  `;
+}
+
+function renderHistoryMatch(partido, index) {
+  const scoreOne = partido.puntaje_1 ?? '-';
+  const scoreTwo = partido.puntaje_2 ?? '-';
+  const winner = partido.ganador || '';
+  const teamOneWins = winner && winner === partido.equipo_1;
+  const teamTwoWins = winner && winner === partido.equipo_2;
+
+  return `
+    <article class="history-match-card">
+      <div class="history-match-top">
+        <span class="mesa-badge">Mesa ${index + 1}</span>
+        <span class="history-winner">${winner ? `Gana ${winner}` : 'Sin ganador'}</span>
+      </div>
+      <div class="history-scoreline">
+        <div class="history-side ${teamOneWins ? 'winner' : ''}">
+          <span>${partido.equipo_1 || '-'}</span>
+          <strong>${scoreOne}</strong>
+        </div>
+        <span class="history-vs">VS</span>
+        <div class="history-side ${teamTwoWins ? 'winner' : ''}">
+          <strong>${scoreTwo}</strong>
+          <span>${partido.equipo_2 || 'Fecha libre'}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function openHistoryTournament(torneoId) {
   const torneo = state.historial.find((item) => item.id === torneoId);
   if (!torneo) {
@@ -1032,7 +1085,7 @@ function openHistoryTournament(torneoId) {
 
   $('#historyDialogTitle').textContent = torneo.nombre_torneo;
   $('#historyDialogMeta').textContent = `Ganador: ${winner} | ${lastText}`;
-  $('#historyDialogTable').innerHTML = renderHistoryPositions(torneo);
+  $('#historyDialogTable').innerHTML = `${renderHistoryPositions(torneo)}${renderHistoryResults(torneo)}`;
   state.selectedHistoryTournament = torneo;
   $('#historyDialog').showModal();
 }
@@ -1060,7 +1113,13 @@ function tableTextFromHistory(torneo) {
     ? [item.posicion, item.detalle || item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra]
     : [item.posicion, item.nombre, item.partidos_jugados, item.partidos_ganados, item.partidos_perdidos, item.puntos_a_favor, item.puntos_en_contra, item.diferencia_puntos, item.puntos_totales]
   );
-  return buildWhatsappTable(`${torneo.nombre_torneo}\nGanador: ${torneo.campeon_nombre || '-'}`, headers, rows);
+  const table = buildWhatsappTable(`${torneo.nombre_torneo}\nGanador: ${torneo.campeon_nombre || '-'}`, headers, rows);
+  const grouped = groupBy((torneo.partidos || []).filter((partido) => !partido.es_fecha_libre), (partido) => partido.ronda);
+  const matches = Object.entries(grouped).flatMap(([round, partidos]) => partidos
+    .map((partido, index) => `Ronda ${round} - Mesa ${index + 1}: ${partido.equipo_1} ${partido.puntaje_1 ?? '-'} - ${partido.puntaje_2 ?? '-'} ${partido.equipo_2}${partido.ganador ? ` | Gana ${partido.ganador}` : ''}`));
+  return matches.length
+    ? `${table}\n\nResultados por ronda\n${matches.join('\n')}`
+    : table;
 }
 
 function buildWhatsappTable(title, headers, rows) {
