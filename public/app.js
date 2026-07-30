@@ -222,6 +222,11 @@ async function refreshLiveData() {
     return;
   }
 
+  if (isReadingPublicHistory()) {
+    updateLiveStatus();
+    return;
+  }
+
   try {
     state.torneos = await api('/api/torneos');
     renderTournamentSelects();
@@ -230,6 +235,20 @@ async function refreshLiveData() {
   } catch (error) {
     // El refresco en vivo no debe interrumpir a los espectadores si la red cae un instante.
   }
+}
+
+function isReadingPublicHistory() {
+  if (!isFixturePublicMode() || isAdmin()) {
+    return false;
+  }
+
+  const history = document.querySelector('.public-final-history');
+  if (!history) {
+    return false;
+  }
+
+  const rect = history.getBoundingClientRect();
+  return rect.top <= window.innerHeight * 0.65 && rect.bottom > 80;
 }
 
 async function refreshSelectedViews() {
