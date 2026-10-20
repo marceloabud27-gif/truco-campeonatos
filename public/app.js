@@ -83,6 +83,14 @@ function openLoginDialog() {
   }
 }
 
+function openAdminWorkspace() {
+  if (isFixturePublicMode() && isAdmin()) {
+    window.location.assign('/');
+    return;
+  }
+  openLoginDialog();
+}
+
 function toast(message) {
   const element = $('#toast');
   element.textContent = message;
@@ -105,7 +113,9 @@ function applyAuthUi() {
   $$('.admin-only').forEach((element) => {
     element.classList.toggle('is-hidden', !isAdminWorkspace());
   });
-  $('#loginToggle').textContent = isAdmin() ? 'Admin activo' : 'Admin';
+  $('#loginToggle').textContent = isFixturePublicMode() && isAdmin()
+    ? 'Ir a Admin'
+    : (isAdmin() ? 'Admin activo' : 'Admin');
   $('.bottom-nav').style.gridTemplateColumns = isAdminWorkspace() ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)';
   if (!isAdminWorkspace() && !$('#fixtureView').classList.contains('active')) {
     switchView('fixtureView');
@@ -1398,7 +1408,7 @@ function bindEvents() {
     state.selectedPositionsId = Number(event.target.value) || null;
     await refreshSelectedViews();
   });
-  $('#loginToggle').addEventListener('click', openLoginDialog);
+  $('#loginToggle').addEventListener('click', openAdminWorkspace);
   $('#logoutButton').addEventListener('click', () => {
     clearAdminSession();
     $('#loginDialog').close();
@@ -1412,6 +1422,10 @@ function bindEvents() {
     });
     state.token = result.token;
     localStorage.setItem('truco_admin_token', result.token);
+    if (isFixturePublicMode()) {
+      window.location.assign('/');
+      return;
+    }
     applyAuthUi();
     $('#loginDialog').close();
     toast('Admin autenticado.');
