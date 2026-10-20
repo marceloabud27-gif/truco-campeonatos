@@ -540,13 +540,13 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
   }
 
   return `
-    <section class="rounded-[24px] border border-[#9f6f2a]/62 bg-[radial-gradient(circle_at_50%_0%,rgba(174,124,42,.13),transparent_38%),linear-gradient(180deg,rgba(16,17,15,.99),rgba(5,7,6,.995))] p-4 shadow-[0_24px_42px_rgba(0,0,0,.46),inset_0_0_0_1px_rgba(255,231,160,.05)] sm:p-5">
+    <section class="public-upcoming-card rounded-[24px] border border-[#9f6f2a]/62 bg-[radial-gradient(circle_at_50%_0%,rgba(174,124,42,.13),transparent_38%),linear-gradient(180deg,rgba(16,17,15,.99),rgba(5,7,6,.995))] p-4 shadow-[0_24px_42px_rgba(0,0,0,.46),inset_0_0_0_1px_rgba(255,231,160,.05)] sm:p-5">
       <div class="text-center">
         <p class="flex items-center justify-center gap-3 text-[.92rem] font-black uppercase tracking-[0.10em] text-[#d9b65e] before:h-px before:w-10 before:bg-[#8f6426]/70 after:h-px after:w-10 after:bg-[#8f6426]/70 sm:text-[1rem]">Proximos partidos</p>
         <h2 class="mt-2 font-serif text-[3rem] font-extrabold leading-none text-[#f3d994] drop-shadow-[0_4px_10px_rgba(0,0,0,.72),0_0_16px_rgba(197,168,92,.12)] sm:text-[3.65rem]">Ronda ${upcomingRound.ronda}</h2>
         ${detail.torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, upcomingRound.allItems) : ''}
       </div>
-      <div class="mt-5 grid gap-4 sm:mt-6">
+      <div class="public-match-grid mt-5 grid gap-4 sm:mt-6">
         ${upcomingRound.matches
           .map(({ partido, index }) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
           .join('')}
@@ -557,10 +557,10 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
 
 function renderPublicRoundPreview(detail, ronda, items) {
   return `
-    <section class="mb-7 rounded-[20px] border border-[#8f6426]/45 bg-[linear-gradient(180deg,rgba(16,17,15,.92),rgba(6,8,7,.96))] p-5 shadow-[inset_0_0_0_1px_rgba(255,231,160,.04)]">
+    <section class="public-round-preview mb-7 rounded-[20px] border border-[#8f6426]/45 bg-[linear-gradient(180deg,rgba(16,17,15,.92),rgba(6,8,7,.96))] p-5 shadow-[inset_0_0_0_1px_rgba(255,231,160,.04)]">
       <p class="text-sm font-black uppercase tracking-wide text-[#d9b65e]">Ronda</p>
       <h2 class="mt-1 font-serif text-[2.35rem] font-extrabold leading-none text-[#f3d994]">${ronda}</h2>
-      <div class="mt-5 grid gap-4">
+      <div class="public-match-grid mt-5 grid gap-4">
         ${visibleRoundMatches(detail.torneo.modalidad, items)
           .map((partido, index) => publicFixtureRowForMode(detail.torneo.modalidad, partido, index))
           .join('')}
@@ -581,15 +581,15 @@ function publicFixtureRowForMode(modalidad, partido, index) {
 
 function renderPublicMatchCard(leftName, rightName, index) {
   return `
-    <article class="relative rounded-[18px] border border-[#9f6f2a]/76 bg-[linear-gradient(90deg,rgba(166,116,38,.55),transparent_15px),radial-gradient(circle_at_50%_0%,rgba(255,228,142,.08),transparent_42%),linear-gradient(180deg,rgba(19,19,17,.99),rgba(6,7,7,.99))] px-3 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,235,170,.08),0_16px_28px_rgba(0,0,0,.38)]">
-      <div class="absolute left-1/2 top-0 grid min-h-8 min-w-[5.75rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[9px] border border-[#9f6f2a]/70 bg-[linear-gradient(180deg,#17140d,#060807)] px-4 text-[.74rem] font-black uppercase tracking-[0.08em] text-[#f0d58e] shadow-[0_10px_20px_rgba(0,0,0,.36)]">Mesa ${index + 1}</div>
-      <div class="grid min-h-[9.5rem] grid-cols-1 items-center gap-1 pt-5 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)] sm:gap-2 sm:pt-4">
-        <span class="min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(leftName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(leftName)}</span>
-        <span class="grid place-items-center text-center font-serif text-[#352615]">
+    <article class="public-match-card relative rounded-[18px] border border-[#9f6f2a]/76 bg-[linear-gradient(90deg,rgba(166,116,38,.55),transparent_15px),radial-gradient(circle_at_50%_0%,rgba(255,228,142,.08),transparent_42%),linear-gradient(180deg,rgba(19,19,17,.99),rgba(6,7,7,.99))] px-3 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,235,170,.08),0_16px_28px_rgba(0,0,0,.38)]">
+      <div class="public-match-table-badge absolute left-1/2 top-0 grid min-h-8 min-w-[5.75rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[9px] border border-[#9f6f2a]/70 bg-[linear-gradient(180deg,#17140d,#060807)] px-4 text-[.74rem] font-black uppercase tracking-[0.08em] text-[#f0d58e] shadow-[0_10px_20px_rgba(0,0,0,.36)]">Mesa ${index + 1}</div>
+      <div class="public-match-body grid min-h-[9.5rem] grid-cols-1 items-center gap-1 pt-5 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)] sm:gap-2 sm:pt-4">
+        <span class="public-match-team min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(leftName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(leftName)}</span>
+        <span class="public-match-versus grid place-items-center text-center font-serif text-[#352615]">
           <span class="grid h-8 w-8 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.74),transparent_22%),linear-gradient(145deg,#ffe9a4,#ad7627_70%,#4f310f)] text-[.72rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)] sm:h-10 sm:w-10 sm:text-[.78rem]">VS</span>
           <small class="mt-0.5 text-[.56rem] font-black lowercase tracking-wide text-[#c9a85c]">versus</small>
         </span>
-        <span class="min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(rightName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(rightName)}</span>
+        <span class="public-match-team min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(rightName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(rightName)}</span>
       </div>
     </article>
   `;

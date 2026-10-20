@@ -1,11 +1,11 @@
-const CACHE_NAME = 'truco-campeonatos-v20261020-local-tailwind';
+const CACHE_NAME = 'truco-campeonatos-v20261020-player-mobile-stack-v1';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
   '/tailwind.css?v=20261020-local-tailwind',
-  '/styles.css?v=20261019-iphone-admin-v3',
-  '/app.js?v=20261019-iphone-admin-v3',
+  '/styles.css?v=20261020-player-mobile-stack-v1',
+  '/app.js?v=20261020-player-mobile-stack-v1',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/assets/pwa/icon-192.png',
   '/manifest.webmanifest',
