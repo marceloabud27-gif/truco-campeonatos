@@ -420,14 +420,14 @@ function renderPwaInstallBanner() {
     : 'Acceso directo al fixture';
 
   return `
-    <section class="relative z-[2] mb-4 grid grid-cols-[3.25rem_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-[18px] border border-[#c5a85c]/45 bg-[linear-gradient(120deg,rgba(18,21,21,.96),rgba(7,18,13,.95))] p-3 shadow-[0_18px_34px_rgba(0,0,0,.28),inset_0_1px_0_rgba(255,255,255,.06)] sm:mb-5 sm:grid-cols-[3.75rem_minmax(0,1fr)_auto_auto] sm:p-3.5">
-      <img src="/assets/pwa/icon-192.png?v=20260724" alt="" aria-hidden="true" class="h-12 w-12 rounded-[13px] border border-[#c5a85c]/35 object-cover shadow-[0_10px_20px_rgba(0,0,0,.28)] sm:h-14 sm:w-14">
-      <div class="min-w-0">
+    <section class="pwa-install-banner relative z-[2] mb-4 grid grid-cols-[3.25rem_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-[18px] border border-[#c5a85c]/45 bg-[linear-gradient(120deg,rgba(18,21,21,.96),rgba(7,18,13,.95))] p-3 shadow-[0_18px_34px_rgba(0,0,0,.28),inset_0_1px_0_rgba(255,255,255,.06)] sm:mb-5 sm:grid-cols-[3.75rem_minmax(0,1fr)_auto_auto] sm:p-3.5">
+      <img src="/assets/pwa/icon-192.png?v=20260724" alt="" aria-hidden="true" class="pwa-install-icon h-12 w-12 rounded-[13px] border border-[#c5a85c]/35 object-cover shadow-[0_10px_20px_rgba(0,0,0,.28)] sm:h-14 sm:w-14">
+      <div class="pwa-install-copy min-w-0">
         <p class="truncate font-serif text-[1.18rem] font-bold leading-tight text-[#f4dfaa] sm:text-[1.32rem]">Instalá La Cofradía</p>
         <p class="mt-0.5 text-[.76rem] font-semibold leading-tight text-white/62 sm:text-[.86rem]">${helperText}</p>
       </div>
-      <button type="button" data-install-pwa class="rounded-[10px] border border-[#f4dfaa]/40 bg-[linear-gradient(180deg,#ffe7a0,#b78228)] px-3.5 py-2 text-[.82rem] font-black text-[#17100a] shadow-[0_10px_20px_rgba(0,0,0,.26),inset_0_1px_0_rgba(255,255,255,.52)] sm:px-4 sm:text-[.9rem]">${buttonLabel}</button>
-      <button type="button" data-dismiss-install-banner aria-label="Cerrar aviso de instalacion" class="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[.03] text-xl leading-none text-[#f4dfaa]/80">×</button>
+      <button type="button" data-install-pwa class="pwa-install-action rounded-[10px] border border-[#f4dfaa]/40 bg-[linear-gradient(180deg,#ffe7a0,#b78228)] px-3.5 py-2 text-[.82rem] font-black text-[#17100a] shadow-[0_10px_20px_rgba(0,0,0,.26),inset_0_1px_0_rgba(255,255,255,.52)] sm:px-4 sm:text-[.9rem]">${buttonLabel}</button>
+      <button type="button" data-dismiss-install-banner aria-label="Cerrar aviso de instalacion" class="pwa-install-dismiss grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[.03] text-xl leading-none text-[#f4dfaa]/80">×</button>
     </section>
   `;
 }
@@ -1101,7 +1101,46 @@ function renderHistoryPositions(torneo) {
         <tbody>${rows}</tbody>
       </table>
     </div>
+    ${renderHistoryPositionCards(torneo, isIndividual)}
   `;
+}
+
+function renderHistoryPositionCards(torneo, isIndividual) {
+  const cards = torneo.posiciones.map((item) => {
+    const featuredValue = isIndividual ? item.puntos_a_favor : item.puntos_totales;
+    const featuredLabel = isIndividual ? 'Puntos' : 'PTS';
+    const stats = [
+      ['PJ', item.partidos_jugados],
+      ['PG', item.partidos_ganados],
+      ['PP', item.partidos_perdidos],
+      ...(!isIndividual ? [
+        ['PF', item.puntos_a_favor],
+        ['PC', item.puntos_en_contra],
+        ['DIF', item.diferencia_puntos],
+      ] : [
+        ['Contra', item.puntos_en_contra],
+      ]),
+    ];
+
+    return `
+      <article class="history-standing-card">
+        <span class="history-standing-rank">${item.posicion}</span>
+        <div class="history-standing-team">
+          <strong>${escapeHtml(item.nombre)}</strong>
+          <span>${escapeHtml(item.detalle || '-')}</span>
+        </div>
+        <div class="history-standing-points">
+          <strong>${featuredValue ?? 0}</strong>
+          <span>${featuredLabel}</span>
+        </div>
+        <dl class="history-standing-stats ${isIndividual ? 'is-individual' : 'is-pairs'}">
+          ${stats.map(([label, value]) => `<div><dt>${label}</dt><dd>${value ?? 0}</dd></div>`).join('')}
+        </dl>
+      </article>
+    `;
+  }).join('');
+
+  return `<div class="history-mobile-standings" aria-label="Tabla final adaptada para celular">${cards}</div>`;
 }
 
 function renderHistoryResults(torneo) {

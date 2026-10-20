@@ -1,10 +1,10 @@
-const CACHE_NAME = 'truco-campeonatos-v20261019-mobile-fixture-layout';
+const CACHE_NAME = 'truco-campeonatos-v20261019-player-mobile-v2';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
-  '/styles.css?v=20261019-mobile-fixture-layout',
-  '/app.js?v=20261019-mobile-fixture-layout',
+  '/styles.css?v=20261019-player-mobile-v2',
+  '/app.js?v=20261019-player-mobile-v2',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
   '/assets/pwa/icon-192.png',
   '/manifest.webmanifest',
