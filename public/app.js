@@ -794,8 +794,54 @@ function renderPositions(detail) {
         <tbody>${rows || '<tr><td colspan="6">Sin participantes</td></tr>'}</tbody>
       </table>
     </div>
+    ${renderLivePositionCards(torneo, participantes)}
     <p class="meta standings-note">${torneo.modalidad === 'americano_parejas_fijas' ? 'Desempate: PTS, diferencia, puntos a favor y resultado directo.' : 'Desempate: puntos totales, menor contra y luego resultado directo entre jugadores enfrentados.'}</p>
   `;
+}
+
+function renderLivePositionCards(torneo, participantes) {
+  if (!participantes.length) {
+    return '<p class="admin-mobile-standings meta">Sin participantes</p>';
+  }
+
+  const isIndividual = torneo.modalidad !== 'americano_parejas_fijas';
+  const cards = participantes.map((item, index) => {
+    const name = isIndividual ? item.nombre : item.nombre_equipo;
+    const detail = isIndividual ? item.alias : `${item.jugador_1} / ${item.jugador_2}`;
+    const featuredValue = isIndividual ? item.puntos_a_favor : item.puntos_totales;
+    const featuredLabel = isIndividual ? 'Puntos' : 'PTS';
+    const stats = [
+      ['PJ', item.partidos_jugados],
+      ['PG', item.partidos_ganados],
+      ['PP', item.partidos_perdidos],
+      ...(!isIndividual ? [
+        ['PF', item.puntos_a_favor],
+        ['PC', item.puntos_en_contra],
+        ['DIF', item.diferencia_puntos],
+      ] : [
+        ['Contra', item.puntos_en_contra],
+      ]),
+    ];
+
+    return `
+      <article class="history-standing-card">
+        <span class="history-standing-rank">${index + 1}</span>
+        <div class="history-standing-team">
+          <strong>${escapeHtml(name || '-')}</strong>
+          <span>${escapeHtml(detail || '-')}</span>
+        </div>
+        <div class="history-standing-points">
+          <strong>${featuredValue ?? 0}</strong>
+          <span>${featuredLabel}</span>
+        </div>
+        <dl class="history-standing-stats ${isIndividual ? 'is-individual' : 'is-pairs'}">
+          ${stats.map(([label, value]) => `<div><dt>${label}</dt><dd>${value ?? 0}</dd></div>`).join('')}
+        </dl>
+      </article>
+    `;
+  }).join('');
+
+  return `<div class="admin-mobile-standings" aria-label="Posiciones adaptadas para celular">${cards}</div>`;
 }
 
 function getSortedParticipants(detail) {

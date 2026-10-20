@@ -1781,6 +1781,10 @@ dialog::backdrop {
   display: none;
 }
 
+.admin-mobile-standings {
+  display: none;
+}
+
 @media (max-width: 560px) {
   .public-final-history {
     margin-top: 18px;
@@ -3991,5 +3995,303 @@ body:not(.spectator-fixture-only) #backupButton::before {
   .pwa-install-dismiss {
     grid-column: 3;
     grid-row: 1 / span 2;
+  }
+}
+
+/* Final mobile admin polish: keep navigation and standings useful above the fold. */
+@media (max-width: 560px) {
+  body:not(.spectator-fixture-only) {
+    overflow-x: clip;
+  }
+
+  body:not(.spectator-fixture-only) .hero {
+    min-height: auto;
+    padding: 58px 12px 18px;
+    gap: 12px;
+  }
+
+  body:not(.spectator-fixture-only) .hero > div:first-child {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-crest {
+    width: 56px;
+    height: 56px;
+  }
+
+  body:not(.spectator-fixture-only) .hero .eyebrow {
+    display: none;
+  }
+
+  body:not(.spectator-fixture-only) .hero h1 {
+    margin: 0 0 3px;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  body:not(.spectator-fixture-only) .hero .brand-subtitle {
+    font-size: clamp(1.35rem, 7.2vw, 1.85rem);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  body:not(.spectator-fixture-only) .hero-copy::after {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions button {
+    min-width: 0;
+    min-height: 52px;
+    padding: 7px 10px;
+    font-size: 0.96rem;
+    line-height: 1.08;
+    text-align: left;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions .primary {
+    grid-column: 1 / -1;
+    padding-right: 82px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions .primary::after {
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 0.58rem;
+  }
+
+  body:not(.spectator-fixture-only) .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body:not(.spectator-fixture-only) .quick-actions button {
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 9px;
+    font-size: 0.92rem;
+    line-height: 1.1;
+  }
+
+  body:not(.spectator-fixture-only) #shareLinkButton::before,
+  body:not(.spectator-fixture-only) #backupButton::before {
+    margin-right: 7px;
+    font-size: 0.62rem;
+  }
+
+  body:not(.spectator-fixture-only) .login-button {
+    top: 11px;
+    right: 11px;
+    min-height: 38px;
+    padding: 0 12px;
+    font-size: 0.82rem;
+  }
+
+  #positionsView #positionsContent > .table-wrap {
+    display: none;
+  }
+
+  .admin-mobile-standings {
+    display: grid;
+    gap: 10px;
+  }
+
+  #positionsView .standings-note {
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 900px) {
+  body:not(.spectator-fixture-only) .hero {
+    min-height: auto;
+    padding: 28px 18px 22px;
+    gap: 12px;
+  }
+
+  body:not(.spectator-fixture-only) .hero > div:first-child {
+    grid-template-columns: 60px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-crest {
+    width: 60px;
+    height: 60px;
+  }
+
+  body:not(.spectator-fixture-only) .hero .eyebrow {
+    display: none;
+  }
+
+  body:not(.spectator-fixture-only) .hero h1 {
+    margin: 0 0 3px;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  body:not(.spectator-fixture-only) .hero .brand-subtitle {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  body:not(.spectator-fixture-only) .hero-copy::after {
+    width: min(360px, 80%);
+    margin-top: 10px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions button {
+    min-height: 52px;
+    padding: 7px 14px;
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  body:not(.spectator-fixture-only) .hero-actions .primary {
+    grid-column: 1 / -1;
+    padding-right: 90px;
+  }
+
+  body:not(.spectator-fixture-only) .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body:not(.spectator-fixture-only) .quick-actions button {
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 12px;
+    font-size: 0.96rem;
+  }
+
+  #positionsView #positionsContent > .table-wrap {
+    display: none;
+  }
+
+  .admin-mobile-standings {
+    display: grid;
+    gap: 10px;
+  }
+
+  .admin-mobile-standings .history-standing-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 64px;
+    gap: 12px;
+    align-items: center;
+    padding: 14px;
+    border: 1px solid rgba(197, 168, 92, 0.32);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 0 0, rgba(214, 168, 79, 0.13), transparent 36%),
+      linear-gradient(180deg, rgba(10, 20, 16, 0.98), rgba(4, 12, 9, 0.98));
+    box-shadow: inset 0 1px 0 rgba(255, 245, 204, 0.045);
+  }
+
+  .admin-mobile-standings .history-standing-rank {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgba(214, 168, 79, 0.48);
+    border-radius: 999px;
+    color: #f5d98e;
+    font-weight: 950;
+  }
+
+  .admin-mobile-standings .history-standing-team {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .admin-mobile-standings .history-standing-team strong {
+    color: #fff2ce;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.12rem;
+    line-height: 1.12;
+    overflow-wrap: break-word;
+  }
+
+  .admin-mobile-standings .history-standing-team span {
+    color: rgba(245, 229, 187, 0.68);
+    font-size: 0.8rem;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+
+  .admin-mobile-standings .history-standing-points {
+    display: grid;
+    min-width: 64px;
+    min-height: 60px;
+    place-items: center;
+    align-content: center;
+    border: 1px solid rgba(255, 221, 137, 0.52);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(69, 57, 25, 0.94), rgba(16, 20, 14, 0.98));
+  }
+
+  .admin-mobile-standings .history-standing-points strong {
+    color: #ffe9ab;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .admin-mobile-standings .history-standing-points span {
+    margin-top: 3px;
+    color: rgba(255, 235, 181, 0.72);
+    font-size: 0.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .admin-mobile-standings .history-standing-stats {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid rgba(197, 168, 92, 0.18);
+  }
+
+  .admin-mobile-standings .history-standing-stats.is-pairs {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .admin-mobile-standings .history-standing-stats.is-individual {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .admin-mobile-standings .history-standing-stats div {
+    display: grid;
+    gap: 2px;
+    place-items: center;
+    min-width: 0;
+  }
+
+  .admin-mobile-standings .history-standing-stats dt {
+    color: rgba(245, 229, 187, 0.58);
+    font-size: 0.64rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .admin-mobile-standings .history-standing-stats dd {
+    margin: 0;
+    color: #fff7df;
+    font-size: 0.94rem;
+    font-weight: 900;
   }
 }
