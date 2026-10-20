@@ -43,6 +43,10 @@ function isFixturePublicMode() {
   return PUBLIC_MODE === 'fixture';
 }
 
+function isAdminWorkspace() {
+  return isAdmin() && !isFixturePublicMode();
+}
+
 function api(path, options = {}) {
   const headers = {
     'Content-Type': 'application/json',
@@ -97,16 +101,16 @@ function updateLiveStatus() {
 
 function applyAuthUi() {
   document.body.classList.toggle('fixture-public-mode', isFixturePublicMode());
-  document.body.classList.toggle('spectator-fixture-only', !isAdmin());
+  document.body.classList.toggle('spectator-fixture-only', !isAdminWorkspace());
   $$('.admin-only').forEach((element) => {
-    element.classList.toggle('is-hidden', !isAdmin());
+    element.classList.toggle('is-hidden', !isAdminWorkspace());
   });
   $('#loginToggle').textContent = isAdmin() ? 'Admin activo' : 'Admin';
-  $('.bottom-nav').style.gridTemplateColumns = isAdmin() ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)';
-  if (!isAdmin() && !$('#fixtureView').classList.contains('active')) {
+  $('.bottom-nav').style.gridTemplateColumns = isAdminWorkspace() ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)';
+  if (!isAdminWorkspace() && !$('#fixtureView').classList.contains('active')) {
     switchView('fixtureView');
   }
-  if (isFixturePublicMode() && !isAdmin()) {
+  if (isFixturePublicMode()) {
     switchView('fixtureView');
   }
 }
@@ -217,7 +221,7 @@ function renderTournamentSelects() {
 }
 
 async function refreshLiveData() {
-  if (isAdmin() && $('#loadView').classList.contains('active')) {
+  if (isAdminWorkspace() && $('#loadView').classList.contains('active')) {
     updateLiveStatus();
     return;
   }
@@ -238,7 +242,7 @@ async function refreshLiveData() {
 }
 
 function isReadingPublicHistory() {
-  if (!isFixturePublicMode() || isAdmin()) {
+  if (!isFixturePublicMode()) {
     return false;
   }
 
@@ -256,7 +260,7 @@ async function refreshSelectedViews() {
     const detail = await api(`/api/torneos/${state.selectedFixtureId}`);
     state.currentDetail = detail;
     renderFixture(detail);
-    if (isAdmin()) {
+    if (isAdminWorkspace()) {
       renderLoadMatches(detail);
     }
   } else {
@@ -264,13 +268,13 @@ async function refreshSelectedViews() {
     $('#matchSelect').innerHTML = '';
   }
 
-  if (isAdmin() && state.selectedPositionsId) {
+  if (isAdminWorkspace() && state.selectedPositionsId) {
     renderPositions(await api(`/api/torneos/${state.selectedPositionsId}`));
   } else {
     $('#positionsContent').innerHTML = emptyCard('No hay posiciones disponibles.');
   }
 
-  if (isAdmin()) {
+  if (isAdminWorkspace()) {
     await renderHistory();
   } else if (isFixturePublicMode()) {
     await renderPublicHistory();
@@ -300,7 +304,7 @@ function renderFixture(detail) {
     return;
   }
 
-  if (isFixturePublicMode() && !isAdmin()) {
+  if (isFixturePublicMode()) {
     renderPublicFixturePremium(detail);
     return;
   }
@@ -434,7 +438,6 @@ function renderPwaInstallBanner() {
 
 function shouldShowInstallBanner() {
   return isFixturePublicMode()
-    && !isAdmin()
     && !isPwaStandalone()
     && localStorage.getItem(INSTALL_BANNER_DISMISSED_KEY) !== '1';
 }

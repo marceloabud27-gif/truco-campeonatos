@@ -4426,19 +4426,19 @@ body:not(.spectator-fixture-only) #backupButton::before {
  * Player fixture on phones: use one deterministic stacked layout even when
  * iOS opens a link with a desktop-sized layout viewport.
  */
-@media (max-width: 639px), (hover: none) and (pointer: coarse) {
-  .fixture-public-mode.spectator-fixture-only .public-upcoming-card,
-  .fixture-public-mode.spectator-fixture-only .public-round-preview {
+@media screen {
+  .fixture-public-mode .public-upcoming-card,
+  .fixture-public-mode .public-round-preview {
     width: 100%;
     max-width: 100%;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-grid {
+  .fixture-public-mode .public-match-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-card {
+  .fixture-public-mode .public-match-card {
     position: relative;
     width: 100%;
     min-width: 0;
@@ -4455,7 +4455,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
     overflow: visible;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-table-badge {
+  .fixture-public-mode .public-match-table-badge {
     position: absolute;
     top: 0;
     left: 50%;
@@ -4476,14 +4476,14 @@ body:not(.spectator-fixture-only) #backupButton::before {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.36);
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-body {
+  .fixture-public-mode .public-match-body {
     grid-template-columns: minmax(0, 1fr);
     min-height: 9.5rem;
     gap: 4px;
     padding-top: 20px;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-team {
+  .fixture-public-mode .public-match-team {
     width: 100%;
     min-width: 0;
     padding-right: 8px;
@@ -4492,13 +4492,13 @@ body:not(.spectator-fixture-only) #backupButton::before {
     overflow-wrap: anywhere;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-versus {
+  .fixture-public-mode .public-match-versus {
     justify-self: center;
     width: 48px;
     min-width: 48px;
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-versus > span {
+  .fixture-public-mode .public-match-versus > span {
     display: grid;
     width: 32px;
     height: 32px;
@@ -4511,10 +4511,34 @@ body:not(.spectator-fixture-only) #backupButton::before {
     clip-path: polygon(50% 0, 90% 17%, 84% 76%, 50% 100%, 16% 76%, 10% 17%);
   }
 
-  .fixture-public-mode.spectator-fixture-only .public-match-versus small {
+  .fixture-public-mode .public-match-versus small {
     margin-top: 2px;
     color: #c9a85c;
     font-size: 0.56rem;
     font-weight: 900;
+  }
+
+  /* Fallback for a tab that still has the previous renderer in memory. */
+  .fixture-public-mode .cup-board .match-card .match-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px;
+  }
+
+  .fixture-public-mode .cup-board .match-card .team-score-cell {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .fixture-public-mode .cup-board .match-card .team-name {
+    width: 100%;
+    min-height: 0;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .fixture-public-mode .cup-board .match-card .versus-cell {
+    justify-self: center;
   }
 }

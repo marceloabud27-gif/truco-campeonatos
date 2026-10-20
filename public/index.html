@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/pwa/favicon-32.png">
     <link rel="apple-touch-icon" href="/assets/pwa/apple-touch-icon.png">
     <link rel="stylesheet" href="/tailwind.css?v=20261020-local-tailwind">
-    <link rel="stylesheet" href="/styles.css?v=20261020-player-mobile-stack-v1">
+    <link rel="stylesheet" href="/styles.css?v=20261020-public-view-force-v2">
   </head>
   <body>
     <header class="hero">
@@ -209,11 +209,20 @@
     </dialog>
 
     <div id="toast" role="status" aria-live="polite"></div>
-    <script src="/app.js?v=20261020-player-mobile-stack-v1" type="module"></script>
+    <script src="/app.js?v=20261020-public-view-force-v2" type="module"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        window.addEventListener('load', async () => {
+          const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
+          await Promise.all(registrations.map((registration) => registration.unregister()));
+          if ('caches' in window) {
+            const cacheNames = await caches.keys().catch(() => []);
+            await Promise.all(
+              cacheNames
+                .filter((name) => name.startsWith('truco-campeonatos-'))
+                .map((name) => caches.delete(name))
+            );
+          }
         });
       }
     </script>

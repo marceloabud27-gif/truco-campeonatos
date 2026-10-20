@@ -13,6 +13,25 @@ app.set('port', port);
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  const uncachedShellPaths = new Set([
+    '/',
+    '/index.html',
+    '/app.js',
+    '/styles.css',
+    '/tailwind.css',
+    '/sw.js',
+  ]);
+
+  if (req.method === 'GET' && uncachedShellPaths.has(req.path)) {
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    });
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/healthz', (req, res) => {
