@@ -4006,18 +4006,18 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .hero {
     min-height: auto;
-    padding: 58px 12px 18px;
-    gap: 12px;
+    padding: 48px 10px 12px;
+    gap: 8px;
   }
 
   body:not(.spectator-fixture-only) .hero > div:first-child {
-    grid-template-columns: 56px minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
   }
 
   body:not(.spectator-fixture-only) .hero-crest {
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
   }
 
   body:not(.spectator-fixture-only) .hero .eyebrow {
@@ -4025,45 +4025,24 @@ body:not(.spectator-fixture-only) #backupButton::before {
   }
 
   body:not(.spectator-fixture-only) .hero h1 {
-    margin: 0 0 3px;
-    font-size: 1rem;
+    margin: 0 0 2px;
+    font-size: 0.82rem;
     line-height: 1;
   }
 
   body:not(.spectator-fixture-only) .hero .brand-subtitle {
-    font-size: clamp(1.35rem, 7.2vw, 1.85rem);
+    font-size: clamp(1.08rem, 5.8vw, 1.48rem);
     line-height: 1;
     white-space: nowrap;
   }
 
   body:not(.spectator-fixture-only) .hero-copy::after {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 7px;
   }
 
   body:not(.spectator-fixture-only) .hero-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  body:not(.spectator-fixture-only) .hero-actions button {
-    min-width: 0;
-    min-height: 52px;
-    padding: 7px 10px;
-    font-size: 0.96rem;
-    line-height: 1.08;
-    text-align: left;
-  }
-
-  body:not(.spectator-fixture-only) .hero-actions .primary {
-    grid-column: 1 / -1;
-    padding-right: 82px;
-  }
-
-  body:not(.spectator-fixture-only) .hero-actions .primary::after {
-    right: 10px;
-    padding: 6px 10px;
-    font-size: 0.58rem;
+    display: none;
   }
 
   body:not(.spectator-fixture-only) .quick-actions {
@@ -4074,24 +4053,24 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .quick-actions button {
     min-width: 0;
-    min-height: 46px;
-    padding: 0 9px;
-    font-size: 0.92rem;
+    min-height: 40px;
+    padding: 0 8px;
+    font-size: 0.78rem;
     line-height: 1.1;
   }
 
   body:not(.spectator-fixture-only) #shareLinkButton::before,
   body:not(.spectator-fixture-only) #backupButton::before {
-    margin-right: 7px;
-    font-size: 0.62rem;
+    margin-right: 5px;
+    font-size: 0.56rem;
   }
 
   body:not(.spectator-fixture-only) .login-button {
-    top: 11px;
-    right: 11px;
-    min-height: 38px;
-    padding: 0 12px;
-    font-size: 0.82rem;
+    top: 8px;
+    right: 9px;
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 0.75rem;
   }
 
   #positionsView #positionsContent > .table-wrap {
@@ -4112,18 +4091,18 @@ body:not(.spectator-fixture-only) #backupButton::before {
 @media (min-width: 561px) and (max-width: 900px) {
   body:not(.spectator-fixture-only) .hero {
     min-height: auto;
-    padding: 28px 18px 22px;
-    gap: 12px;
+    padding: 20px 16px 16px;
+    gap: 10px;
   }
 
   body:not(.spectator-fixture-only) .hero > div:first-child {
-    grid-template-columns: 60px minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
   }
 
   body:not(.spectator-fixture-only) .hero-crest {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
   }
 
   body:not(.spectator-fixture-only) .hero .eyebrow {
@@ -4137,7 +4116,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
   }
 
   body:not(.spectator-fixture-only) .hero .brand-subtitle {
-    font-size: 2rem;
+    font-size: 1.65rem;
     line-height: 1;
   }
 
@@ -4147,20 +4126,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
   }
 
   body:not(.spectator-fixture-only) .hero-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  body:not(.spectator-fixture-only) .hero-actions button {
-    min-height: 52px;
-    padding: 7px 14px;
-    font-size: 1rem;
-    line-height: 1.1;
-  }
-
-  body:not(.spectator-fixture-only) .hero-actions .primary {
-    grid-column: 1 / -1;
-    padding-right: 90px;
+    display: none;
   }
 
   body:not(.spectator-fixture-only) .quick-actions {
@@ -4171,9 +4137,9 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .quick-actions button {
     min-width: 0;
-    min-height: 46px;
-    padding: 0 12px;
-    font-size: 0.96rem;
+    min-height: 40px;
+    padding: 0 10px;
+    font-size: 0.84rem;
   }
 
   #positionsView #positionsContent > .table-wrap {
