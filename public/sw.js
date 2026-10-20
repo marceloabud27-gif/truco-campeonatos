@@ -1,8 +1,9 @@
-const CACHE_NAME = 'truco-campeonatos-v20261019-iphone-admin-v3';
+const CACHE_NAME = 'truco-campeonatos-v20261020-local-tailwind';
 const APP_SHELL = [
   '/',
   '/?public=fixture&source=pwa',
   '/index.html',
+  '/tailwind.css?v=20261020-local-tailwind',
   '/styles.css?v=20261019-iphone-admin-v3',
   '/app.js?v=20261019-iphone-admin-v3',
   '/assets/fixture-oficial-card.png?v=20260724-admin-luxury',
