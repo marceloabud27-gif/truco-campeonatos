@@ -3771,3 +3771,71 @@ body:not(.spectator-fixture-only) #backupButton::before {
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile public fixture: compact header and full-width matchups keep names readable. */
+@media (max-width: 639px) {
+  .fixture-public-mode.spectator-fixture-only .hero {
+    min-height: auto;
+    padding: 58px 16px 20px;
+    gap: 0;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .hero > div:first-child {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .hero-crest {
+    display: block;
+    width: 82px;
+    height: 82px;
+    object-fit: contain;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .hero-copy {
+    min-width: 0;
+  }
+
+  .fixture-public-mode.spectator-fixture-only h1 {
+    font-size: clamp(2.05rem, 11vw, 2.75rem);
+    line-height: 0.95;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .brand-subtitle {
+    margin-top: 7px;
+    font-size: clamp(0.9rem, 4.1vw, 1.08rem);
+    line-height: 1.15;
+  }
+
+  .fixture-public-mode.spectator-fixture-only main {
+    padding: 20px 10px 34px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .section-title {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .section-title h2 {
+    font-size: clamp(1.8rem, 9vw, 2.25rem);
+  }
+
+  .fixture-public-mode.spectator-fixture-only #fixtureTournamentSelect {
+    min-height: 58px;
+    padding: 0 16px;
+    font-size: 1rem;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .cup-board {
+    gap: 18px;
+    padding: 28px 10px 18px;
+  }
+
+  .fixture-public-mode.spectator-fixture-only .upcoming-panel,
+  .fixture-public-mode.spectator-fixture-only .cup-round-card {
+    padding: 14px 10px;
+  }
+}
