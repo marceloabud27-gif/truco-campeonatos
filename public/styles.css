@@ -26,9 +26,20 @@
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 50% -10%, rgba(217, 173, 89, 0.18), transparent 34%),
     linear-gradient(180deg, #061f18, var(--felt-deep) 46%);
@@ -4259,5 +4270,154 @@ body:not(.spectator-fixture-only) #backupButton::before {
     color: #fff7df;
     font-size: 0.94rem;
     font-weight: 900;
+  }
+}
+
+/* iPhone admin: prioritize tournament controls and matches, never decorative scale. */
+@media (max-width: 560px) {
+  body:not(.spectator-fixture-only),
+  body:not(.spectator-fixture-only) main,
+  body:not(.spectator-fixture-only) .view,
+  body:not(.spectator-fixture-only) .section-title,
+  body:not(.spectator-fixture-only) .title-actions,
+  body:not(.spectator-fixture-only) #fixtureContent,
+  body:not(.spectator-fixture-only) .cup-board,
+  body:not(.spectator-fixture-only) .upcoming-panel,
+  body:not(.spectator-fixture-only) .cup-round-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body:not(.spectator-fixture-only) main {
+    padding: 10px 8px calc(88px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .section-title {
+    gap: 6px;
+    margin: 0 0 10px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .section-title h2 {
+    font-size: 1rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .title-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 76px;
+    gap: 6px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) #fixtureTournamentSelect,
+  .fixture-public-mode:not(.spectator-fixture-only) #positionsTournamentSelect {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 46px;
+    padding: 0 10px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .title-actions .danger {
+    width: 76px;
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 6px;
+    border-radius: 11px;
+    font-size: 0.78rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board {
+    gap: 10px;
+    padding: 10px 8px 12px;
+    border-radius: 16px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board > header {
+    display: none;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel,
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-round-card {
+    padding: 10px 8px;
+    border-radius: 14px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .round-kicker {
+    font-size: 0.7rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .round-title,
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-round-header .round-title {
+    font-size: 1.55rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .match-grid {
+    gap: 8px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board .match-card {
+    gap: 7px;
+    padding: 8px;
+    border-radius: 13px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .cup-board .mesa-badge {
+    min-width: 62px;
+    min-height: 28px;
+    padding: 0 7px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .status {
+    min-height: 24px;
+    padding: 0 6px;
+    border-radius: 8px;
+    font-size: 0.62rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .match-body {
+    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .team-name {
+    font-size: clamp(0.72rem, 3.5vw, 0.88rem);
+    line-height: 1.08;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell {
+    width: 32px;
+    min-width: 32px;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell span {
+    width: 28px;
+    height: 28px;
+    font-size: 0.64rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell small {
+    font-size: 0.5rem;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .bottom-nav {
+    left: max(8px, env(safe-area-inset-left, 0px));
+    right: max(8px, env(safe-area-inset-right, 0px));
+    bottom: max(6px, env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-width: none;
+    padding: 5px;
+    transform: none;
+  }
+
+  .fixture-public-mode:not(.spectator-fixture-only) .nav-item {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 3px;
+    font-size: 0.68rem;
   }
 }
