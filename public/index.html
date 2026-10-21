@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="/styles.css?v=20261021-admin-vs-only-v3">
   </head>
   <body>
+    <script>
+      if (new URLSearchParams(window.location.search).get('public') === 'fixture') {
+        document.body.classList.add('fixture-public-mode', 'spectator-fixture-only');
+      }
+    </script>
     <header class="hero">
       <div>
         <img class="hero-crest" src="/assets/pwa/icon-192.png" alt="" aria-hidden="true" />
@@ -209,7 +214,7 @@
     </dialog>
 
     <div id="toast" role="status" aria-live="polite"></div>
-    <script src="/app.js?v=20261020-admin-entry-v3" type="module"></script>
+    <script src="/app.js?v=20261021-public-fixture-lock-v4" type="module"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
