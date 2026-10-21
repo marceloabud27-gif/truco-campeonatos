@@ -4274,7 +4274,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
 }
 
 /* iPhone admin: prioritize tournament controls and matches, never decorative scale. */
-@media (max-width: 560px) {
+@media (max-width: 639px), (hover: none) and (pointer: coarse) {
   body:not(.spectator-fixture-only),
   body:not(.spectator-fixture-only) main,
   body:not(.spectator-fixture-only) .view,
@@ -4294,23 +4294,23 @@ body:not(.spectator-fixture-only) #backupButton::before {
     overflow-x: hidden;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .section-title {
+  body:not(.spectator-fixture-only) .section-title {
     gap: 6px;
     margin: 0 0 10px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .section-title h2 {
+  body:not(.spectator-fixture-only) .section-title h2 {
     font-size: 1rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .title-actions {
+  body:not(.spectator-fixture-only) .title-actions {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 76px;
     gap: 6px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) #fixtureTournamentSelect,
-  .fixture-public-mode:not(.spectator-fixture-only) #positionsTournamentSelect {
+  body:not(.spectator-fixture-only) #fixtureTournamentSelect,
+  body:not(.spectator-fixture-only) #positionsTournamentSelect {
     width: 100%;
     min-width: 0;
     max-width: 100%;
@@ -4320,7 +4320,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
     font-size: 0.95rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .title-actions .danger {
+  body:not(.spectator-fixture-only) .title-actions .danger {
     width: 76px;
     min-width: 0;
     min-height: 46px;
@@ -4329,42 +4329,42 @@ body:not(.spectator-fixture-only) #backupButton::before {
     font-size: 0.78rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-board {
+  body:not(.spectator-fixture-only) .cup-board {
     gap: 10px;
     padding: 10px 8px 12px;
     border-radius: 16px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-board > header {
+  body:not(.spectator-fixture-only) .cup-board > header {
     display: none;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel,
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-round-card {
+  body:not(.spectator-fixture-only) .upcoming-panel,
+  body:not(.spectator-fixture-only) .cup-round-card {
     padding: 10px 8px;
     border-radius: 14px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .round-kicker {
+  body:not(.spectator-fixture-only) .round-kicker {
     font-size: 0.7rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .upcoming-panel .round-title,
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-round-header .round-title {
+  body:not(.spectator-fixture-only) .upcoming-panel .round-title,
+  body:not(.spectator-fixture-only) .cup-round-header .round-title {
     font-size: 1.55rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .match-grid {
+  body:not(.spectator-fixture-only) .match-grid {
     gap: 8px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-board .match-card {
-    gap: 7px;
-    padding: 8px;
+  body:not(.spectator-fixture-only) .cup-board .match-card {
+    gap: 10px;
+    padding: 10px 12px 14px;
     border-radius: 13px;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .cup-board .mesa-badge {
+  body:not(.spectator-fixture-only) .cup-board .mesa-badge {
     min-width: 62px;
     min-height: 28px;
     padding: 0 7px;
@@ -4372,39 +4372,76 @@ body:not(.spectator-fixture-only) #backupButton::before {
     font-size: 0.7rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .status {
+  body:not(.spectator-fixture-only) .status {
     min-height: 24px;
     padding: 0 6px;
     border-radius: 8px;
     font-size: 0.62rem;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .match-body {
-    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
-    gap: 5px;
+  body:not(.spectator-fixture-only) .match-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .team-name {
-    font-size: clamp(0.72rem, 3.5vw, 0.88rem);
-    line-height: 1.08;
+  body:not(.spectator-fixture-only) .team-score-cell {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell {
+  body:not(.spectator-fixture-only) .team-score-cell:not(:has(.score-number)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body:not(.spectator-fixture-only) .team-name {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    font-size: clamp(1rem, 5vw, 1.2rem);
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  body:not(.spectator-fixture-only) .versus-cell {
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    width: 36px;
+    min-width: 36px;
+    color: #352615;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0;
+  }
+
+  body:not(.spectator-fixture-only) .versus-cell span {
+    display: grid;
+    place-items: center;
     width: 32px;
-    min-width: 32px;
+    height: 32px;
+    background:
+      radial-gradient(circle at 38% 24%, rgba(255, 255, 255, 0.66), transparent 22%),
+      linear-gradient(145deg, #fff0ad, #b58434 70%, #684216);
+    clip-path: polygon(50% 0, 90% 17%, 84% 76%, 50% 100%, 16% 76%, 10% 17%);
+    font-size: 0.68rem;
+    font-weight: 950;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell span {
-    width: 28px;
-    height: 28px;
-    font-size: 0.64rem;
+  body:not(.spectator-fixture-only) .versus-cell small {
+    display: block;
+    margin-top: 2px;
+    color: #d3bd7d;
+    font-size: 0.52rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: lowercase;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .versus-cell small {
-    font-size: 0.5rem;
-  }
-
-  .fixture-public-mode:not(.spectator-fixture-only) .bottom-nav {
+  body:not(.spectator-fixture-only) .bottom-nav {
     left: max(8px, env(safe-area-inset-left, 0px));
     right: max(8px, env(safe-area-inset-right, 0px));
     bottom: max(6px, env(safe-area-inset-bottom, 0px));
@@ -4414,7 +4451,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
     transform: none;
   }
 
-  .fixture-public-mode:not(.spectator-fixture-only) .nav-item {
+  body:not(.spectator-fixture-only) .nav-item {
     min-width: 0;
     min-height: 44px;
     padding: 0 3px;
