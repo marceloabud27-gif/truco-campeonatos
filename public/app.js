@@ -211,13 +211,15 @@ async function loadTorneos() {
 function renderTournamentSelects() {
   const previousFixtureId = state.selectedFixtureId || Number($('#fixtureTournamentSelect').value) || null;
   const previousPositionsId = state.selectedPositionsId || Number($('#positionsTournamentSelect').value) || null;
-  const activos = state.torneos.filter((torneo) => torneo.estado === 'activo');
-  const options = activos.map((torneo) => `<option value="${torneo.id}">${torneo.nombre_torneo}</option>`).join('');
-  $('#fixtureTournamentSelect').innerHTML = options || '<option value="">Sin torneos activos</option>';
-  $('#positionsTournamentSelect').innerHTML = options || '<option value="">Sin torneos activos</option>';
+  const options = state.torneos.map((torneo) => {
+    const status = torneo.estado === 'finalizado' ? 'Finalizado' : 'En curso';
+    return `<option value="${torneo.id}">${escapeHtml(torneo.nombre_torneo)} · ${status} · #${torneo.id}</option>`;
+  }).join('');
+  $('#fixtureTournamentSelect').innerHTML = options || '<option value="">Sin torneos disponibles</option>';
+  $('#positionsTournamentSelect').innerHTML = options || '<option value="">Sin torneos disponibles</option>';
 
-  const fixtureStillExists = activos.some((torneo) => torneo.id === previousFixtureId);
-  const positionsStillExists = activos.some((torneo) => torneo.id === previousPositionsId);
+  const fixtureStillExists = state.torneos.some((torneo) => torneo.id === previousFixtureId);
+  const positionsStillExists = state.torneos.some((torneo) => torneo.id === previousPositionsId);
 
   if (fixtureStillExists) {
     $('#fixtureTournamentSelect').value = String(previousFixtureId);
