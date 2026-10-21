@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node src/server.js",
+    "test": "node --test",
     "create-admin": "node scripts/create-admin.js",
     "check": "node --check src/server.js && node --check src/controllers.js && node --check src/fixtures.js && node --check src/auth.js && node --check public/app.js"
   },

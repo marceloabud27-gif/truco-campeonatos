@@ -8,7 +8,8 @@ const {
 
 const VALID_MODALIDADES = new Set(['americano_parejas_fijas', 'americano_individual', 'americano_individual_1v1']);
 const MIN_PAREJAS_FIJAS = 4;
-const PUNTAJE_PAREJAS_EXPRESS = 18;
+const PUNTAJES_PAREJAS_EXPRESS = new Set([12, 14, 16, 18]);
+const PUNTAJE_PAREJAS_EXPRESS_DEFAULT = 18;
 const PUNTOS_VICTORIA_PAREJAS = 3;
 const MIN_JUGADORES_INDIVIDUAL = 7;
 const MIN_JUGADORES_1V1 = 2;
@@ -57,7 +58,7 @@ async function listarTorneos(req, res, next) {
 
     const result = await db.query(
       `SELECT id, nombre_torneo, fecha_inicio, fecha_fin, modalidad, estado, id_campeon,
-              campeon_tipo, campeon_nombre
+              campeon_tipo, campeon_nombre, puntaje_objetivo
          FROM torneos
          ${where}
         ORDER BY fecha_inicio DESC, id DESC`,
@@ -109,6 +110,9 @@ function partidoPublico(torneo, partido) {
       es_fecha_libre: partido.es_fecha_libre,
       pareja1: partido.pareja1,
       pareja2: partido.pareja2,
+      puntaje_pareja1: partido.puntaje_pareja1,
+      puntaje_pareja2: partido.puntaje_pareja2,
+      ganador: partido.ganador,
     };
   }
 
@@ -122,6 +126,8 @@ function partidoPublico(torneo, partido) {
       id_jugador_2: partido.id_jugador_2,
       jugador_1: partido.jugador_1,
       jugador_2: partido.jugador_2,
+      puntaje_jugador_1: partido.puntaje_jugador_1,
+      puntaje_jugador_2: partido.puntaje_jugador_2,
     };
   }
 
@@ -137,13 +143,25 @@ function partidoPublico(torneo, partido) {
     jugador_b: partido.jugador_b,
     jugador_c: partido.jugador_c,
     jugador_d: partido.jugador_d,
+    puntaje_dupla1: partido.puntaje_dupla1,
+    puntaje_dupla2: partido.puntaje_dupla2,
   };
 }
 
 function assertPairScore(value, label) {
   const number = Number(value);
-  if (!Number.isInteger(number) || number < 0 || number > PUNTAJE_PAREJAS_EXPRESS) {
-    const error = new Error(`${label} debe ser un entero entre 0 y ${PUNTAJE_PAREJAS_EXPRESS}.`);
+  if (!Number.isInteger(number) || number < 0 || number > 40) {
+    const error = new Error(`${label} debe ser un entero entre 0 y 40.`);
+    error.statusCode = 400;
+    throw error;
+  }
+  return number;
+}
+
+function assertPairTarget(value) {
+  const number = value == null || value === '' ? PUNTAJE_PAREJAS_EXPRESS_DEFAULT : Number(value);
+  if (!PUNTAJES_PAREJAS_EXPRESS.has(number)) {
+    const error = new Error('El puntaje objetivo debe ser 12, 14, 16 o 18.');
     error.statusCode = 400;
     throw error;
   }
@@ -166,7 +184,7 @@ async function listarHistorial(req, res, next) {
   try {
     const torneosResult = await db.query(
       `SELECT id, nombre_torneo, fecha_inicio, fecha_fin, modalidad, estado, id_campeon,
-              campeon_tipo, campeon_nombre
+              campeon_tipo, campeon_nombre, puntaje_objetivo
          FROM torneos
         WHERE estado = 'finalizado'
         ORDER BY fecha_fin DESC, id DESC`
@@ -403,8 +421,18 @@ async function obtenerTorneo(req, res, next) {
 
 async function crearTorneo(req, res, next) {
   try {
-    const { nombre_torneo, modalidad, fecha_inicio, parejas = [], jugadores = [] } = req.body;
+    const {
+      nombre_torneo,
+      modalidad,
+      fecha_inicio,
+      puntaje_objetivo,
+      parejas = [],
+      jugadores = [],
+    } = req.body;
     assertModalidad(modalidad);
+    const puntajeObjetivo = modalidad === 'americano_parejas_fijas'
+      ? assertPairTarget(puntaje_objetivo)
+      : PUNTAJE_PAREJAS_EXPRESS_DEFAULT;
 
     if (!nombre_torneo) {
       return res.status(400).json({ message: 'El nombre del torneo es obligatorio.' });
@@ -412,10 +440,10 @@ async function crearTorneo(req, res, next) {
 
     const torneo = await db.withTransaction(async (client) => {
       const torneoResult = await client.query(
-        `INSERT INTO torneos (nombre_torneo, modalidad, fecha_inicio)
-         VALUES ($1, $2, COALESCE($3, CURRENT_DATE))
+        `INSERT INTO torneos (nombre_torneo, modalidad, fecha_inicio, puntaje_objetivo)
+         VALUES ($1, $2, COALESCE($3, CURRENT_DATE), $4)
          RETURNING *`,
-        [nombre_torneo, modalidad, fecha_inicio || null]
+        [nombre_torneo, modalidad, fecha_inicio || null, puntajeObjetivo]
       );
       const nuevoTorneo = torneoResult.rows[0];
 
@@ -550,14 +578,15 @@ async function cargarResultadoParejas(req, res, next) {
       error.statusCode = 400;
       throw error;
     }
-    if (Math.max(puntajePareja1, puntajePareja2) !== PUNTAJE_PAREJAS_EXPRESS) {
-      const error = new Error(`El ganador debe llegar a ${PUNTAJE_PAREJAS_EXPRESS} puntos.`);
-      error.statusCode = 400;
-      throw error;
-    }
-
     const partido = await db.withTransaction(async (client) => {
-      const partidoResult = await client.query('SELECT * FROM partidos_parejas WHERE id = $1 FOR UPDATE', [idPartido]);
+      const partidoResult = await client.query(
+        `SELECT pp.*, t.puntaje_objetivo
+           FROM partidos_parejas pp
+           JOIN torneos t ON t.id = pp.id_torneo
+          WHERE pp.id = $1
+          FOR UPDATE OF pp`,
+        [idPartido]
+      );
       const actual = partidoResult.rows[0];
       if (!actual) {
         const error = new Error('Partido no encontrado.');
@@ -566,6 +595,18 @@ async function cargarResultadoParejas(req, res, next) {
       }
       if (actual.es_fecha_libre) {
         const error = new Error('Una fecha libre no admite resultado.');
+        error.statusCode = 400;
+        throw error;
+      }
+
+      const puntajeObjetivo = assertPairTarget(actual.puntaje_objetivo);
+      if (puntajePareja1 > puntajeObjetivo || puntajePareja2 > puntajeObjetivo) {
+        const error = new Error(`El marcador debe estar entre 0 y ${puntajeObjetivo}.`);
+        error.statusCode = 400;
+        throw error;
+      }
+      if (Math.max(puntajePareja1, puntajePareja2) !== puntajeObjetivo) {
+        const error = new Error(`El ganador debe llegar a ${puntajeObjetivo} puntos.`);
         error.statusCode = 400;
         throw error;
       }
@@ -957,7 +998,7 @@ function ordenarParejas(parejas, partidos) {
 }
 
 function compararEnfrentamientoDirectoParejas(idA, idB, partidos) {
-  const directo = partidos.find((partido) => (
+  const directos = partidos.filter((partido) => (
     partido.estado === 'finalizado'
     && !partido.es_fecha_libre
     && (
@@ -966,17 +1007,24 @@ function compararEnfrentamientoDirectoParejas(idA, idB, partidos) {
     )
   ));
 
-  if (!directo) {
+  if (!directos.length) {
     return 0;
   }
 
-  if (directo.ganador_id === idA) {
-    return -1;
+  let victoriasA = 0;
+  let victoriasB = 0;
+  let puntosA = 0;
+  let puntosB = 0;
+
+  for (const partido of directos) {
+    victoriasA += partido.ganador_id === idA ? 1 : 0;
+    victoriasB += partido.ganador_id === idB ? 1 : 0;
+    const aEsPareja1 = partido.id_pareja1 === idA;
+    puntosA += aEsPareja1 ? partido.puntaje_pareja1 : partido.puntaje_pareja2;
+    puntosB += aEsPareja1 ? partido.puntaje_pareja2 : partido.puntaje_pareja1;
   }
-  if (directo.ganador_id === idB) {
-    return 1;
-  }
-  return 0;
+
+  return victoriasB - victoriasA || puntosB - puntosA;
 }
 
 function ordenarJugadoresIndividuales(jugadores, partidos) {

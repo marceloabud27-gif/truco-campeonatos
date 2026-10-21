@@ -32,6 +32,7 @@ CREATE TABLE torneos (
   fecha_inicio DATE NOT NULL DEFAULT CURRENT_DATE,
   fecha_fin DATE,
   modalidad modalidad_torneo NOT NULL,
+  puntaje_objetivo INTEGER NOT NULL DEFAULT 18 CHECK (puntaje_objetivo IN (12, 14, 16, 18)),
   estado estado_torneo NOT NULL DEFAULT 'activo',
   id_campeon INTEGER,
   campeon_tipo campeon_tipo,

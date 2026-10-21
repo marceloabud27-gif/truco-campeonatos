@@ -16,7 +16,7 @@ const MODES = {
   americano_parejas_fijas: {
     min: 4,
     initialRows: 4,
-    summary: 'Carga parejas fijas. Todos contra todos, partidos a 18 puntos, victoria 3 pts.',
+    summary: 'Carga parejas fijas. Ida y vuelta, puntaje configurable, victoria 3 pts.',
   },
   americano_individual: {
     min: 7,
@@ -127,7 +127,7 @@ function applyAuthUi() {
 
 function polishModeCards() {
   const copy = {
-    americano_parejas_fijas: ['Paraguayo Express Parejas', '4+ parejas · todos contra todos · 18 pts', '♣'],
+    americano_parejas_fijas: ['Paraguayo Express Parejas', '4+ parejas · ida y vuelta · 12/14/16/18 pts', '♣'],
     americano_individual: ['Americano Individual', 'Rotativo · desde 7 jugadores', '♠'],
     americano_individual_1v1: ['Individual 1 vs 1', 'Todos contra todos · mano a mano', '♦'],
   };
@@ -148,6 +148,7 @@ function polishModeCards() {
 function setCreateMode(mode) {
   $('#createMode').value = mode;
   $('#modeSummary').textContent = MODES[mode].summary;
+  $('#pairTargetFields').classList.toggle('is-hidden', mode !== 'americano_parejas_fijas');
   $$('[data-mode-pick]').forEach((button) => {
     button.classList.toggle('active', button.dataset.modePick === mode);
   });
@@ -550,6 +551,7 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
       <section class="rounded-[22px] border border-[#c5a85c]/25 bg-[#1d2426]/95 p-6 shadow-[0_18px_34px_rgba(0,0,0,.24)]">
         <p class="text-sm font-black uppercase tracking-wide text-[#e4c56f]">Estado</p>
         <h2 class="mt-2 font-serif text-4xl font-extrabold text-[#f5e3b1]">Fixture completo</h2>
+        ${renderPublicPairRules(detail.torneo)}
       </section>
     `;
   }
@@ -559,6 +561,7 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
       <div class="text-center">
         <p class="flex items-center justify-center gap-3 text-[.92rem] font-black uppercase tracking-[0.10em] text-[#d9b65e] before:h-px before:w-10 before:bg-[#8f6426]/70 after:h-px after:w-10 after:bg-[#8f6426]/70 sm:text-[1rem]">Proximos partidos</p>
         <h2 class="mt-2 font-serif text-[3rem] font-extrabold leading-none text-[#f3d994] drop-shadow-[0_4px_10px_rgba(0,0,0,.72),0_0_16px_rgba(197,168,92,.12)] sm:text-[3.65rem]">Ronda ${upcomingRound.ronda}</h2>
+        ${renderPublicPairRules(detail.torneo)}
         ${detail.torneo.modalidad !== 'americano_parejas_fijas' ? renderWaitingPlayers(detail, upcomingRound.allItems) : ''}
       </div>
       <div class="public-match-grid mt-5 grid gap-4 sm:mt-6">
@@ -568,6 +571,14 @@ function renderPublicUpcomingPremium(detail, upcomingRound) {
       </div>
     </section>
   `;
+}
+
+function renderPublicPairRules(torneo) {
+  if (torneo.modalidad !== 'americano_parejas_fijas') {
+    return '';
+  }
+  const target = Number(torneo.puntaje_objetivo) || 18;
+  return `<p class="mt-2 text-sm font-bold uppercase tracking-wide text-[#c9a85c]">Ida y vuelta · Partidos a ${target} puntos</p>`;
 }
 
 function renderPublicRoundPreview(detail, ronda, items) {
@@ -1054,10 +1065,11 @@ function renderLoadMatches(detail, preferredMatchId = null) {
   $('#pairResultFields').classList.add('is-hidden');
   $('#individualResultFields').classList.remove('is-hidden');
   if (torneo.modalidad === 'americano_parejas_fijas') {
+    const target = Number(torneo.puntaje_objetivo) || 18;
     $('#scoreOneLabel').textContent = 'Pareja 1';
     $('#scoreTwoLabel').textContent = 'Pareja 2';
-    $('#scoreOne').max = '18';
-    $('#scoreTwo').max = '18';
+    $('#scoreOne').max = String(target);
+    $('#scoreTwo').max = String(target);
   } else {
     $('#scoreOneLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 1' : 'Dupla 1';
     $('#scoreTwoLabel').textContent = torneo.modalidad === 'americano_individual_1v1' ? 'Jugador 2' : 'Dupla 2';
@@ -1118,8 +1130,9 @@ function updateMatchStatusHint() {
     return;
   }
 
+  const pairTarget = Number(state.currentDetail?.torneo.puntaje_objetivo) || 18;
   hint.textContent = state.currentDetail?.torneo.modalidad === 'americano_parejas_fijas'
-    ? 'Carga marcador a 18. No se permiten empates.'
+    ? `Carga marcador a ${pairTarget}. No se permiten empates.`
     : 'Pendiente de carga.';
   hint.classList.remove('done');
 }
@@ -1781,6 +1794,9 @@ async function createTournament(event) {
       body: JSON.stringify({
         nombre_torneo: $('#tournamentName').value,
         modalidad,
+        puntaje_objetivo: modalidad === 'americano_parejas_fijas'
+          ? Number($('#pairTargetScore').value)
+          : undefined,
         ...participants,
       }),
     });
@@ -1826,11 +1842,15 @@ async function saveResult(event) {
     if (detail.torneo.modalidad === 'americano_parejas_fijas') {
       const scoreOne = Number($('#scoreOne').value);
       const scoreTwo = Number($('#scoreTwo').value);
+      const pairTarget = Number(detail.torneo.puntaje_objetivo) || 18;
       if (scoreOne === scoreTwo) {
         throw new Error('No se permiten empates. Una pareja debe ganar.');
       }
-      if (Math.max(scoreOne, scoreTwo) !== 18) {
-        throw new Error('El ganador debe llegar a 18 puntos.');
+      if (scoreOne < 0 || scoreTwo < 0 || scoreOne > pairTarget || scoreTwo > pairTarget) {
+        throw new Error(`El marcador debe estar entre 0 y ${pairTarget}.`);
+      }
+      if (Math.max(scoreOne, scoreTwo) !== pairTarget) {
+        throw new Error(`El ganador debe llegar a ${pairTarget} puntos.`);
       }
       await api(`/api/partidos/parejas/${match.id}/resultado`, {
         method: 'POST',

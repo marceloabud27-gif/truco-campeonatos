@@ -25,6 +25,11 @@ async function withTransaction(work) {
 
 async function ensureSchema() {
   await query(`
+    ALTER TABLE torneos
+      ADD COLUMN IF NOT EXISTS puntaje_objetivo INTEGER NOT NULL DEFAULT 18
+  `);
+
+  await query(`
     ALTER TABLE parejas
       ADD COLUMN IF NOT EXISTS puntos_a_favor INTEGER NOT NULL DEFAULT 0,
       ADD COLUMN IF NOT EXISTS puntos_en_contra INTEGER NOT NULL DEFAULT 0,

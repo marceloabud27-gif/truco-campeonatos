@@ -8,7 +8,7 @@ function generarRoundRobinParejas(parejas) {
     participantes.push({ id: null, nombre_equipo: 'Fecha libre' });
   }
 
-  const rondas = [];
+  const rondasIda = [];
   const total = participantes.length;
   const mitad = total / 2;
   let rotacion = [...participantes];
@@ -38,11 +38,23 @@ function generarRoundRobinParejas(parejas) {
       }
     }
 
-    rondas.push(partidos);
+    rondasIda.push(partidos);
     rotacion = [rotacion[0], rotacion[total - 1], ...rotacion.slice(1, total - 1)];
   }
 
-  return rondas.flat();
+  const cantidadRondasIda = rondasIda.length;
+  const rondasVuelta = rondasIda.map((partidos, index) => partidos.map((partido) => (
+    partido.es_fecha_libre
+      ? { ...partido, ronda: cantidadRondasIda + index + 1 }
+      : {
+          ...partido,
+          ronda: cantidadRondasIda + index + 1,
+          id_pareja1: partido.id_pareja2,
+          id_pareja2: partido.id_pareja1,
+        }
+  )));
+
+  return [...rondasIda, ...rondasVuelta].flat();
 }
 
 function generarRotacionIndividual(jugadores) {

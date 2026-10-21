@@ -78,7 +78,7 @@
         <div class="mode-grid">
           <button class="mode-card active" type="button" data-mode-pick="americano_parejas_fijas">
             <strong>Paraguayo Express Parejas</strong>
-            <span>4+ parejas · todos contra todos · a 18 pts</span>
+            <span>4+ parejas · ida y vuelta · 12/14/16/18 pts</span>
           </button>
           <button class="mode-card" type="button" data-mode-pick="americano_individual">
             <strong>Americano Individual</strong>
@@ -97,6 +97,17 @@
             Nombre
             <input id="tournamentName" type="text" required>
           </label>
+          <div id="pairTargetFields">
+            <label>
+              Puntos para ganar cada partido
+              <select id="pairTargetScore">
+                <option value="12">12 puntos</option>
+                <option value="14">14 puntos</option>
+                <option value="16">16 puntos</option>
+                <option value="18" selected>18 puntos</option>
+              </select>
+            </label>
+          </div>
           <div>
             <label class="field-title">Participantes</label>
             <div id="participantsRows" class="participants-grid"></div>
@@ -214,7 +225,7 @@
     </dialog>
 
     <div id="toast" role="status" aria-live="polite"></div>
-    <script src="/app.js?v=20261021-public-scores-v1" type="module"></script>
+    <script src="/app.js?v=20261021-roundtrip-target-v1" type="module"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', async () => {
