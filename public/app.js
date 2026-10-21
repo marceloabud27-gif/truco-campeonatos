@@ -586,25 +586,57 @@ function renderPublicRoundPreview(detail, ronda, items) {
 
 function publicFixtureRowForMode(modalidad, partido, index) {
   if (modalidad === 'americano_parejas_fijas') {
-    return renderPublicMatchCard(partido.pareja1, partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2, index);
+    return renderPublicMatchCard(
+      partido.pareja1,
+      partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2,
+      index,
+      partido.puntaje_pareja1,
+      partido.puntaje_pareja2,
+      partido.estado,
+    );
   }
   if (modalidad === 'americano_individual_1v1') {
-    return renderPublicMatchCard(partido.jugador_1, partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, index);
+    return renderPublicMatchCard(
+      partido.jugador_1,
+      partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2,
+      index,
+      partido.puntaje_jugador_1,
+      partido.puntaje_jugador_2,
+      partido.estado,
+    );
   }
-  return renderPublicMatchCard(`${partido.jugador_a} / ${partido.jugador_b}`, `${partido.jugador_c} / ${partido.jugador_d}`, index);
+  return renderPublicMatchCard(
+    `${partido.jugador_a} / ${partido.jugador_b}`,
+    `${partido.jugador_c} / ${partido.jugador_d}`,
+    index,
+    partido.puntaje_dupla1,
+    partido.puntaje_dupla2,
+    partido.estado,
+  );
 }
 
-function renderPublicMatchCard(leftName, rightName, index) {
+function renderPublicMatchCard(leftName, rightName, index, leftScore, rightScore, status) {
+  const hasResult = status === 'finalizado' && leftScore != null && rightScore != null;
+  const leftWon = hasResult && Number(leftScore) > Number(rightScore);
+  const rightWon = hasResult && Number(rightScore) > Number(leftScore);
+
+  const renderSide = (name, score, won) => `
+    <span class="public-match-team-side${won ? ' is-winner' : ''}">
+      <span class="public-match-team min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(name)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(name)}</span>
+      ${hasResult ? `<strong class="public-match-score" aria-label="${escapeHtml(name)}: ${Number(score)} puntos">${Number(score)}</strong>` : ''}
+    </span>
+  `;
+
   return `
     <article class="public-match-card relative rounded-[18px] border border-[#9f6f2a]/76 bg-[linear-gradient(90deg,rgba(166,116,38,.55),transparent_15px),radial-gradient(circle_at_50%_0%,rgba(255,228,142,.08),transparent_42%),linear-gradient(180deg,rgba(19,19,17,.99),rgba(6,7,7,.99))] px-3 pb-4 pt-3 shadow-[inset_0_1px_0_rgba(255,235,170,.08),0_16px_28px_rgba(0,0,0,.38)]">
       <div class="public-match-table-badge absolute left-1/2 top-0 grid min-h-8 min-w-[5.75rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-[9px] border border-[#9f6f2a]/70 bg-[linear-gradient(180deg,#17140d,#060807)] px-4 text-[.74rem] font-black uppercase tracking-[0.08em] text-[#f0d58e] shadow-[0_10px_20px_rgba(0,0,0,.36)]">Mesa ${index + 1}</div>
       <div class="public-match-body grid min-h-[9.5rem] grid-cols-1 items-center gap-1 pt-5 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)] sm:gap-2 sm:pt-4">
-        <span class="public-match-team min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(leftName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(leftName)}</span>
+        ${renderSide(leftName, leftScore, leftWon)}
         <span class="public-match-versus grid place-items-center text-center font-serif text-[#352615]">
           <span class="grid h-8 w-8 place-items-center bg-[radial-gradient(circle_at_38%_24%,rgba(255,255,255,.74),transparent_22%),linear-gradient(145deg,#ffe9a4,#ad7627_70%,#4f310f)] text-[.72rem] font-black [clip-path:polygon(50%_0,90%_17%,84%_76%,50%_100%,16%_76%,10%_17%)] sm:h-10 sm:w-10 sm:text-[.78rem]">VS</span>
           <small class="mt-0.5 text-[.56rem] font-black lowercase tracking-wide text-[#c9a85c]">versus</small>
         </span>
-        <span class="public-match-team min-w-0 break-words px-2 text-center font-serif ${publicTeamNameSizeClass(rightName)} font-bold uppercase leading-[1.08] text-[#f6ead0] drop-shadow-[0_3px_0_rgba(0,0,0,.78)] [overflow-wrap:anywhere] [text-wrap:balance] sm:px-0">${formatPublicTeamName(rightName)}</span>
+        ${renderSide(rightName, rightScore, rightWon)}
       </div>
     </article>
   `;
