@@ -4290,7 +4290,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
   }
 
   body:not(.spectator-fixture-only) main {
-    padding: 10px 8px calc(88px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 8px calc(112px + env(safe-area-inset-bottom, 0px));
     overflow-x: hidden;
   }
 
@@ -4341,7 +4341,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .upcoming-panel,
   body:not(.spectator-fixture-only) .cup-round-card {
-    padding: 10px 8px;
+    padding: 9px 8px;
     border-radius: 14px;
   }
 
@@ -4351,16 +4351,16 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .upcoming-panel .round-title,
   body:not(.spectator-fixture-only) .cup-round-header .round-title {
-    font-size: 1.55rem;
+    font-size: 1.35rem;
   }
 
   body:not(.spectator-fixture-only) .match-grid {
-    gap: 8px;
+    gap: 7px;
   }
 
   body:not(.spectator-fixture-only) .cup-board .match-card {
-    gap: 10px;
-    padding: 10px 12px 14px;
+    gap: 6px;
+    padding: 8px 10px 10px;
     border-radius: 13px;
   }
 
@@ -4381,7 +4381,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
 
   body:not(.spectator-fixture-only) .match-body {
     grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
+    gap: 3px;
     width: 100%;
     min-width: 0;
   }
@@ -4400,7 +4400,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
     width: 100%;
     min-width: 0;
     min-height: 0;
-    font-size: clamp(1rem, 5vw, 1.2rem);
+    font-size: clamp(0.94rem, 4.6vw, 1.1rem);
     line-height: 1.15;
     text-align: center;
     white-space: normal;
@@ -4411,8 +4411,8 @@ body:not(.spectator-fixture-only) #backupButton::before {
     display: grid;
     place-items: center;
     justify-self: center;
-    width: 36px;
-    min-width: 36px;
+    width: 32px;
+    min-width: 32px;
     color: #352615;
     font-family: Georgia, "Times New Roman", serif;
     font-size: 0;
@@ -4421,13 +4421,13 @@ body:not(.spectator-fixture-only) #backupButton::before {
   body:not(.spectator-fixture-only) .versus-cell span {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 27px;
+    height: 27px;
     background:
       radial-gradient(circle at 38% 24%, rgba(255, 255, 255, 0.66), transparent 22%),
       linear-gradient(145deg, #fff0ad, #b58434 70%, #684216);
     clip-path: polygon(50% 0, 90% 17%, 84% 76%, 50% 100%, 16% 76%, 10% 17%);
-    font-size: 0.68rem;
+    font-size: 0.61rem;
     font-weight: 950;
   }
 
@@ -4435,7 +4435,7 @@ body:not(.spectator-fixture-only) #backupButton::before {
     display: block;
     margin-top: 2px;
     color: #d3bd7d;
-    font-size: 0.52rem;
+    font-size: 0.46rem;
     font-weight: 950;
     line-height: 1;
     text-transform: lowercase;
