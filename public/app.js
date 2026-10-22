@@ -766,7 +766,7 @@ function pairFixtureRow(partido, index) {
         <span class="versus-cell"><span>VS</span><small>versus</small></span>
         ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.pareja2, partido.puntaje_pareja2, partido.estado)}
       </div>
-      ${adminOnlyFixtureMeta(partido.estado === 'finalizado' && partido.ganador ? `<div class="match-score">Ganador: ${partido.ganador}</div>` : '')}
+      ${renderMatchAdminActions(partido, partido.ganador)}
     </article>
   `;
 }
@@ -783,6 +783,7 @@ function individualFixtureRow(partido, index) {
         <span class="versus-cell"><span>VS</span><small>versus</small></span>
         ${teamScoreCell(`${partido.jugador_c} / ${partido.jugador_d}`, partido.puntaje_dupla2, partido.estado)}
       </div>
+      ${renderMatchAdminActions(partido)}
     </article>
   `;
 }
@@ -799,7 +800,21 @@ function individual1v1FixtureRow(partido, index) {
         <span class="versus-cell">${partido.es_fecha_libre ? '<span>Libre</span>' : '<span>VS</span><small>versus</small>'}</span>
         ${teamScoreCell(partido.es_fecha_libre ? 'Fecha libre' : partido.jugador_2, partido.puntaje_jugador_2, partido.estado)}
       </div>
+      ${partido.es_fecha_libre ? '' : renderMatchAdminActions(partido)}
     </article>
+  `;
+}
+
+function renderMatchAdminActions(partido, winnerName = '') {
+  if (!isAdmin() || partido.estado !== 'finalizado') {
+    return '';
+  }
+
+  return `
+    <div class="match-admin-actions">
+      ${winnerName ? `<div class="match-score">Ganador: ${escapeHtml(winnerName)}</div>` : '<span></span>'}
+      <button class="edit-result-button" type="button" data-edit-result="${partido.id}">Editar resultado</button>
+    </div>
   `;
 }
 
@@ -1105,11 +1120,13 @@ function updateWinnerOptions() {
 function updateMatchStatusHint() {
   const selected = getSelectedMatch();
   const hint = $('#matchStatusHint');
+  const saveButton = $('#saveResultButton');
   if (!selected) {
     $('#scoreOne').value = '';
     $('#scoreTwo').value = '';
     hint.textContent = 'No hay partidos pendientes para cargar.';
     hint.classList.remove('done');
+    saveButton.textContent = 'Guardar resultado';
     return;
   }
 
@@ -1125,8 +1142,9 @@ function updateMatchStatusHint() {
   }
 
   if (selected.estado === 'finalizado') {
-    hint.textContent = 'Resultado ya cargado. Si guardas de nuevo, vas a corregir este resultado.';
+    hint.textContent = 'Estás corrigiendo un resultado cargado. Revisa los puntos y guarda la corrección.';
     hint.classList.add('done');
+    saveButton.textContent = 'Guardar corrección';
     return;
   }
 
@@ -1135,6 +1153,7 @@ function updateMatchStatusHint() {
     ? `Carga marcador a ${pairTarget}. No se permiten empates.`
     : 'Pendiente de carga.';
   hint.classList.remove('done');
+  saveButton.textContent = 'Guardar resultado';
 }
 
 function getSelectedMatch() {
@@ -1541,6 +1560,12 @@ function bindEvents() {
 }
 
 async function handleFixtureContentClick(event) {
+  const editButton = event.target.closest('[data-edit-result]');
+  if (editButton) {
+    openResultCorrection(Number(editButton.dataset.editResult));
+    return;
+  }
+
   if (event.target.closest('[data-dismiss-install-banner]')) {
     localStorage.setItem(INSTALL_BANNER_DISMISSED_KEY, '1');
     if (state.currentDetail) {
@@ -1552,6 +1577,26 @@ async function handleFixtureContentClick(event) {
   if (event.target.closest('[data-install-pwa]')) {
     await promptInstallPwa();
   }
+}
+
+function openResultCorrection(matchId) {
+  if (!isAdmin() || !state.currentDetail) {
+    return;
+  }
+
+  const match = state.currentDetail.partidos.find((partido) => partido.id === matchId);
+  if (!match || match.estado !== 'finalizado') {
+    toast('No encontré ese resultado para corregir.');
+    return;
+  }
+
+  $('#showFinishedMatches').checked = true;
+  renderLoadMatches(state.currentDetail, matchId);
+  switchView('loadView');
+  window.requestAnimationFrame(() => {
+    $('#resultForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  toast('Resultado listo para corregir.');
 }
 
 async function promptInstallPwa() {
